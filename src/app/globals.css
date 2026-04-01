@@ -111,11 +111,32 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.6), transparent 50%, rgba(163, 230, 53, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .glass-card:hover {
-  border-color: rgba(124, 58, 237, 0.4);
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+  transform: translateY(-2px);
+}
+
+.glass-card:hover::before {
+  opacity: 1;
 }
 
 /* ============================
@@ -149,16 +170,25 @@ body {
 }
 
 /* ============================
-   Button Glow
+   Button Glow & Interactions
    ============================ */
 .btn-glow {
   box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-glow:hover {
   box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
-  transform: translateY(-1px);
+}
+
+/* Global Button Interactive States */
+a.rounded-full, button, input[type="submit"] {
+  transition: all 0.2s ease !important;
+}
+
+a.rounded-full:hover, button:hover:not(:disabled), input[type="submit"]:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
 }
 
 /* ============================
