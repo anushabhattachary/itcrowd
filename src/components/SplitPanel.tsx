@@ -29,7 +29,7 @@ export default function SplitPanel() {
               </p>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 mt-6 px-6 py-3 rounded-full bg-brand-purple text-white font-semibold btn-glow group"
+                className="flex justify-center items-center gap-2 mt-6 px-6 py-3 rounded-full bg-brand-purple text-white font-semibold btn-glow group w-full md:w-auto md:inline-flex"
               >
                 Find My Influencers
                 <ArrowRight
@@ -57,7 +57,7 @@ export default function SplitPanel() {
               </p>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 mt-6 px-6 py-3 rounded-full border border-brand-lime/30 text-brand-lime font-semibold hover:bg-brand-lime/10 transition-all group"
+                className="flex justify-center items-center gap-2 mt-6 px-6 py-3 rounded-full border border-brand-lime/30 text-brand-lime font-semibold hover:bg-brand-lime/10 transition-all group w-full md:w-auto md:inline-flex"
               >
                 Join the Network
                 <ArrowRight

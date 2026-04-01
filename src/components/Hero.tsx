@@ -161,7 +161,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="mt-8 text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-extrabold leading-[0.95] tracking-tight font-[family-name:var(--font-syne)]"
+          className="mt-8 text-[48px] sm:text-7xl md:text-8xl lg:text-[100px] font-extrabold leading-[0.95] tracking-tight font-[family-name:var(--font-syne)]"
         >
           Startups Meet
           <br />

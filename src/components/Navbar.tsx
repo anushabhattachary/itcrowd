@@ -83,34 +83,53 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-2xl transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8 ${
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
+        onClick={() => setMobileOpen(false)}
+      />
+
+      {/* Mobile drawer sidebar */}
+      <div
+        className={`fixed top-0 right-0 bottom-0 w-[80%] max-w-sm z-50 bg-surface/95 backdrop-blur-3xl border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col p-8 ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        {navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
+        <div className="flex justify-end mb-8">
+          <button
             onClick={() => setMobileOpen(false)}
-            className="text-2xl font-semibold text-white hover:text-brand-purple transition-colors"
+            className="text-white p-2"
+            aria-label="Close menu"
           >
-            {link.label}
-          </a>
-        ))}
-        <div className="flex flex-col gap-4 mt-4 w-64">
+            <X size={24} />
+          </button>
+        </div>
+        <div className="flex flex-col gap-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className="text-2xl font-semibold text-white hover:text-brand-purple transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <div className="flex flex-col gap-4 mt-auto w-full">
           <a
             href="#for-influencers"
             onClick={() => setMobileOpen(false)}
-            className="text-center px-6 py-3 rounded-full border border-white/20 text-white hover:border-brand-purple transition-all"
+            className="text-center px-6 py-4 w-full rounded-full border border-white/20 text-white hover:border-brand-purple transition-all"
           >
             Join as Influencer
           </a>
           <a
             href="#contact"
             onClick={() => setMobileOpen(false)}
-            className="text-center px-6 py-3 rounded-full bg-brand-purple text-white btn-glow font-medium"
+            className="text-center px-6 py-4 w-full rounded-full bg-brand-purple text-white btn-glow font-medium"
           >
             Get Started
           </a>

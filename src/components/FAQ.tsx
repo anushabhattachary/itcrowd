@@ -73,7 +73,7 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className={`w-full text-left p-5 rounded-xl border transition-all ${
+                className={`w-full text-left p-5 min-h-[64px] rounded-xl border transition-all ${
                   openIndex === i
                     ? "border-brand-purple/30 bg-brand-purple/5"
                     : "border-white/5 bg-surface-light/50 hover:border-white/10"

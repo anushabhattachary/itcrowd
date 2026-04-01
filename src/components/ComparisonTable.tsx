@@ -70,13 +70,61 @@ export default function ComparisonTable() {
           </h2>
         </motion.div>
 
-        {/* Table */}
+        {/* Mobile View: Cards */}
+        <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-4 pb-8 -mx-6 px-6">
+          {/* ItCrowd Card */}
+          <div className="flex-none w-[85vw] snap-center bg-brand-purple/5 border border-brand-purple/20 rounded-2xl p-6 relative">
+            <h3 className="text-xl font-bold text-brand-purple-light mb-6">ItCrowd ✅</h3>
+            <ul className="space-y-4">
+              {rows.map((row, i) => (
+                <li key={i} className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0">
+                  <span className="text-sm text-muted">{row.feature}</span>
+                  <span className="text-sm font-medium text-brand-lime flex items-center gap-2">
+                    <CellValue value={row.itcrowd} />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Agency Card */}
+          <div className="flex-none w-[85vw] snap-center bg-surface border border-white/10 rounded-2xl p-6 relative">
+            <h3 className="text-xl font-bold text-muted mb-6">Traditional Agency ❌</h3>
+            <ul className="space-y-4">
+              {rows.map((row, i) => (
+                <li key={i} className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0">
+                  <span className="text-sm text-muted">{row.feature}</span>
+                  <span className="text-sm font-medium text-muted flex items-center gap-2">
+                    <CellValue value={row.agency} />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* DIY Card */}
+          <div className="flex-none w-[85vw] snap-center bg-surface border border-white/10 rounded-2xl p-6 relative">
+            <h3 className="text-xl font-bold text-muted mb-6">DIY ❌</h3>
+            <ul className="space-y-4">
+              {rows.map((row, i) => (
+                <li key={i} className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0">
+                  <span className="text-sm text-muted">{row.feature}</span>
+                  <span className="text-sm font-medium text-muted flex items-center gap-2">
+                    <CellValue value={row.diy} />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Desktop View: Table */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="overflow-x-auto"
+          className="hidden md:block overflow-x-auto"
         >
           <table className="w-full min-w-[600px]">
             <thead>
