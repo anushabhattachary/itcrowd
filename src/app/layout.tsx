@@ -16,9 +16,10 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://itcrowd.io"),
   title: "ItCrowd | Where Startups Meet Their Match",
   description:
-    "ItCrowd connects early-stage startups with influencers and athletes who promote brands for cash or equity. Founded at Georgia Tech.",
+    "ItCrowd connects early-stage startups with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for founders.",
   keywords: [
     "influencer marketing",
     "startup marketing",
@@ -26,18 +27,47 @@ export const metadata: Metadata = {
     "influencer platform",
     "Georgia Tech",
   ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "ItCrowd | Where Startups Meet Their Match",
     description:
-      "Connect with influencers and athletes who don't just post — they invest. Cash or equity deals for early-stage startups.",
-    type: "website",
+      "ItCrowd connects early-stage startups with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for founders.",
+    url: "https://itcrowd.io",
     siteName: "ItCrowd",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ItCrowd Preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "ItCrowd | Where Startups Meet Their Match",
     description:
-      "Connect with influencers and athletes who don't just post — they invest.",
+      "ItCrowd connects early-stage startups with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for founders.",
+    images: ["/og-image.jpg"],
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ItCrowd",
+  url: "https://itcrowd.io",
+  logo: "https://itcrowd.io/icon.svg",
+  description: "A platform connecting early-stage startups with influencers and athletes for cash or equity deals.",
+  foundingDate: "2025",
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    url: "https://itcrowd.io/contact",
   },
 };
 
@@ -52,6 +82,10 @@ export default function RootLayout({
         <link
           rel="icon"
           href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2L12 14h8L14 30l2-12H8L16 2z' fill='%237C3AED'/></svg>"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased pb-20 md:pb-0">

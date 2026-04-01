@@ -73,6 +73,8 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                aria-expanded={openIndex === i}
+                aria-controls={`faq-answer-${i}`}
                 className={`w-full text-left p-5 min-h-[64px] rounded-xl border transition-all ${
                   openIndex === i
                     ? "border-brand-purple/30 bg-brand-purple/5"
@@ -93,6 +95,7 @@ export default function FAQ() {
                 <AnimatePresence>
                   {openIndex === i && (
                     <motion.div
+                      id={`faq-answer-${i}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
