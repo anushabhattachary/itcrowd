@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 
 const navLinks = [
   { label: "How It Works", href: "#how-it-works" },
@@ -58,6 +58,13 @@ export default function Navbar() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
+            <Link
+              href="/login"
+              className="text-muted hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors"
+              title="Admin Login"
+            >
+              <LogIn size={20} />
+            </Link>
             <a
               href="#for-influencers"
               className="text-sm px-5 py-2.5 rounded-full border border-white/20 text-white hover:border-brand-purple hover:text-brand-purple-light transition-all"
@@ -119,6 +126,13 @@ export default function Navbar() {
           ))}
         </div>
         <div className="flex flex-col gap-4 mt-auto w-full">
+          <Link
+            href="/login"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center justify-center gap-2 text-center px-6 py-4 w-full rounded-full bg-white/5 border border-white/10 text-white hover:border-brand-purple transition-all"
+          >
+            <LogIn size={20} /> Admin Login
+          </Link>
           <a
             href="#for-influencers"
             onClick={() => setMobileOpen(false)}
