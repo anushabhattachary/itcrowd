@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (email === adminEmail && password === adminPassword) {
+    if (email.toLowerCase() === adminEmail.toLowerCase() && password === adminPassword) {
       // Create response indicating success
       const response = NextResponse.json(
         { success: true, message: 'Logged in successfully' },
