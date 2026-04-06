@@ -15,6 +15,15 @@
   --color-surface-light: #1A1A24;
   --color-muted: #9CA3AF;
   --color-muted-light: #D1D5DB;
+  --color-dashboard-bg: #0D0D14;
+  --color-dashboard-card: #1A1A27;
+  --color-dashboard-sidebar: #111118;
+  --color-dashboard-bg: #0D0D14;
+  --color-dashboard-card: #1A1A27;
+  --color-dashboard-sidebar: #111118;
+  --color-dashboard-bg: #0D0D14;
+  --color-dashboard-card: #1A1A27;
+  --color-dashboard-sidebar: #111118;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Syne", system-ui, sans-serif;
 }
