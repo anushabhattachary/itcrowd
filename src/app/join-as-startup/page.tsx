@@ -21,39 +21,40 @@ export default function JoinAsStartupPage() {
   const [deliverable, setDeliverable] = useState("");
   const [goal, setGoal] = useState("");
 
+  const [submitError, setSubmitError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    const formData = new URLSearchParams();
-    formData.append("entry.711067904", name);
-    formData.append("entry.573063937", companyName);
-    formData.append("entry.916226803", timeToMarket);
-    formData.append("entry.1524423916", hasWebsite);
-    if (hasWebsite === "Yes") {
-      formData.append("entry.1475748518", websiteLink);
-    }
-    formData.append("entry.112368477", targetNiche);
-    formData.append("entry.785964323", brandRep);
-    formData.append("entry.36609408", budget);
-    formData.append("entry.1500590143", deliverable);
-    formData.append("entry.369205800", goal);
+    setSubmitError("");
 
     try {
-      await fetch(
-        "https://docs.google.com/forms/d/e/1FAIpQLSe2rvJoIqMfXwnb0OPJUi6LMO0Z69CaM5zfmeYT-4ZxrBEpwA/formResponse",
-        {
-          method: "POST",
-          body: formData,
-          mode: "no-cors",
-        }
-      );
-      // Since mode is no-cors, we won't get a proper response, but we can assume success if no throw
-      setIsSuccess(true);
+      const res = await fetch("/api/submit-startup-interest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          companyName,
+          timeToMarket,
+          hasWebsite,
+          websiteLink: hasWebsite === "Yes" ? websiteLink : "",
+          targetNiche,
+          brandRep,
+          budget,
+          deliverable,
+          goal,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setIsSuccess(true);
+      } else {
+        setSubmitError("Something went wrong. Please try again.");
+      }
     } catch (error) {
       console.error("Form submission error", error);
-      // Fallback: still show success since no-cors might cause issues in some environments
-      setIsSuccess(true);
+      setSubmitError("Network error — please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -230,6 +231,9 @@ export default function JoinAsStartupPage() {
                 </div>
 
                 <div className="pt-4">
+                  {submitError && (
+                    <p className="text-red-400 text-sm mb-4 text-center">{submitError}</p>
+                  )}
                   <button
                     type="submit"
                     disabled={isSubmitting}
