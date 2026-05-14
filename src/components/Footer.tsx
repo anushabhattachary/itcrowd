@@ -69,7 +69,9 @@ export default function Footer() {
                 <InstagramIcon />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/itcrowd-llc/posts/?feedView=all"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted hover:text-brand-purple transition-colors"
                 aria-label="LinkedIn"
               >
