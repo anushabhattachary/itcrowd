@@ -1,47 +1,61 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const GOOGLE_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSe2rvJoIqMfXwnb0OPJUi6LMO0Z69CaM5zfmeYT-4ZxrBEpwA/formResponse";
+// Google Apps Script Web App URL — writes directly to the Google Sheet
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxOJubT5fXEf32LuDcI9OU4NiR3a5bPqikxRZ5g47hhNA7WZthlb8GZ7tOqY0qzP3qZDw/exec";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const formData = new URLSearchParams();
-    formData.append("entry.711067904", body.name ?? "");
-    formData.append("entry.573063937", body.companyName ?? "");
-    formData.append("entry.916226803", body.timeToMarket ?? "");
-    formData.append("entry.1524423916", body.hasWebsite ?? "");
-    if (body.hasWebsite === "Yes") {
-      formData.append("entry.1475748518", body.websiteLink ?? "");
-    }
-    formData.append("entry.112368477", body.targetNiche ?? "");
-    formData.append("entry.785964323", body.brandRep ?? "");
-    formData.append("entry.36609408", body.budget ?? "");
-    formData.append("entry.1500590143", body.deliverable ?? "");
-    formData.append("entry.369205800", body.goal ?? "");
+    const payload = {
+      name:         body.name         ?? "",
+      companyName:  body.companyName  ?? "",
+      timeToMarket: body.timeToMarket ?? "",
+      hasWebsite:   body.hasWebsite   ?? "",
+      websiteLink:  body.hasWebsite === "Yes" ? (body.websiteLink ?? "") : "",
+      targetNiche:  body.targetNiche  ?? "",
+      brandRep:     body.brandRep     ?? "",
+      budget:       body.budget       ?? "",
+      deliverable:  body.deliverable  ?? "",
+      goal:         body.goal         ?? "",
+    };
 
-    // Server-side fetch — no CORS restrictions
-    const response = await fetch(GOOGLE_FORM_URL, {
+    // Apps Script returns a 302 redirect to the actual response.
+    // We must NOT auto-follow redirects — instead we follow manually
+    // so we can read the JSON from the redirected URL.
+    const firstRes = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData.toString(),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      redirect: "manual", // Don't auto-follow — 302 would lose the body
     });
 
-    // Google Forms redirects on success (status 200 or 302).
-    // Any non-5xx response is treated as success.
-    if (response.ok || response.status === 302 || response.redirected) {
+    // Follow the redirect manually (GET the echo URL)
+    const redirectUrl =
+      firstRes.headers.get("location") ?? "";
+
+    if (!redirectUrl) {
+      // If no redirect, try reading the body directly
+      const text = await firstRes.text();
+      console.log("[submit-startup-interest] Direct response:", text);
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
+    const echoRes = await fetch(redirectUrl);
+    const result  = await echoRes.json();
+
+    if (result.success) {
+      return NextResponse.json({ success: true }, { status: 200 });
+    }
+
+    console.error("[submit-startup-interest] Apps Script error:", result.error);
     return NextResponse.json(
-      { success: false, error: `Google Forms returned status ${response.status}` },
+      { success: false, error: result.error ?? "Unknown error from Apps Script" },
       { status: 500 }
     );
   } catch (error) {
-    console.error("Startup interest form submission error:", error);
+    console.error("[submit-startup-interest] Unhandled error:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }
