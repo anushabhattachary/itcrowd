@@ -6,14 +6,14 @@ import ContactForm from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "For Influencers & Athletes | ItCrowd",
   description:
-    "Join the ItCrowd network and earn cash or equity promoting startups you believe in.",
+    "Join the ItCrowd network and earn cash or equity promoting businesses you believe in.",
 };
 
 const perks = [
   {
     icon: "💰",
     title: "Cash or Equity — Your Call",
-    desc: "Get paid in cash per post, take a small equity stake in the startup, or mix both. It's your deal, your terms.",
+    desc: "Get paid in cash per post, take a small equity stake in the business, or mix both. It's your deal, your terms.",
   },
   {
     icon: "🎯",
@@ -32,8 +32,8 @@ const perks = [
   },
   {
     icon: "📈",
-    title: "Grow With Startups",
-    desc: "If you take equity and the startup succeeds, your stake grows with them. Real upside, not just a paycheck.",
+    title: "Grow With Businesses",
+    desc: "If you take equity and the business succeeds, your stake grows with them. Real upside, not just a paycheck.",
   },
   {
     icon: "🤝",
@@ -58,7 +58,7 @@ export default function ForInfluencersPage() {
               <span className="gradient-text">Start Owning Your Deals.</span>
             </h1>
             <p className="mt-6 text-lg text-muted max-w-2xl leading-relaxed">
-              ItCrowd matches you with startups in your niche — and lets you
+              ItCrowd matches you with businesses in your niche — and lets you
               earn cash, equity, or both for promoting brands you actually
               believe in.
             </p>
@@ -119,7 +119,7 @@ export default function ForInfluencersPage() {
                   Get Matched
                 </h3>
                 <p className="mt-2 text-sm text-muted">
-                  We send you startup deals that match your niche. You choose which ones to accept.
+                  We send you business campaigns that match your niche. You choose which ones to accept.
                 </p>
               </div>
               <div className="glass-card p-6">

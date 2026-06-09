@@ -18,12 +18,12 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://itcrowd.io"),
-  title: "ItCrowd | Where Startups Meet Their Match",
+  title: "ItCrowd | Where Businesses Meet Their Match",
   description:
-    "ItCrowd connects early-stage startups with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for founders.",
+    "ItCrowd connects established businesses with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for business owners.",
   keywords: [
     "influencer marketing",
-    "startup marketing",
+    "business marketing",
     "equity deals",
     "influencer platform",
     "Georgia Tech",
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "ItCrowd | Where Startups Meet Their Match",
+    title: "ItCrowd | Where Businesses Meet Their Match",
     description:
-      "ItCrowd connects early-stage startups with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for founders.",
+      "ItCrowd connects established businesses with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for business owners.",
     url: "https://itcrowd.io",
     siteName: "ItCrowd",
     images: [
@@ -50,9 +50,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ItCrowd | Where Startups Meet Their Match",
+    title: "ItCrowd | Where Businesses Meet Their Match",
     description:
-      "ItCrowd connects early-stage startups with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for founders.",
+      "ItCrowd connects established businesses with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for business owners.",
     images: ["/og-image.jpg"],
   },
 };
@@ -63,7 +63,7 @@ const jsonLd = {
   name: "ItCrowd",
   url: "https://itcrowd.io",
   logo: "https://itcrowd.io/icon.svg",
-  description: "A platform connecting early-stage startups with influencers and athletes for cash or equity deals.",
+  description: "A platform connecting established businesses with influencers and athletes for cash or equity deals.",
   foundingDate: "2025",
   contactPoint: {
     "@type": "ContactPoint",

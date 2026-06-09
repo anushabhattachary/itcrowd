@@ -4,22 +4,35 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
   BarChart3, 
-  Building2, 
-  Users, 
   Link as LinkIcon, 
+  Image,
+  MessageSquare,
+  TrendingUp,
   Settings, 
   Plus, 
   Bell, 
-  LogOut
+  LogOut,
+  Sparkles,
+  Lock,
+  Compass,
+  CalendarDays,
+  ShoppingBag
 } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 
 const navItems = [
-  { icon: BarChart3, label: "Dashboard", href: "/dashboard" },
-  { icon: Building2, label: "Companies", href: "/dashboard/companies" },
-  { icon: Users, label: "Influencers", href: "/dashboard/influencers" },
+  { icon: BarChart3, label: "Overview", href: "/dashboard" },
   { icon: LinkIcon, label: "Campaigns", href: "/dashboard/campaigns" },
+  { icon: Image, label: "Content Library", href: "/dashboard/content" },
+  { icon: MessageSquare, label: "Messages", href: "/dashboard/messages" },
+  { icon: TrendingUp, label: "Reports", href: "/dashboard/reports" },
   { icon: Settings, label: "Settings", href: "/dashboard/settings" },
+];
+
+const comingSoonItems = [
+  { icon: CalendarDays, label: "Book Campaign" },
+  { icon: Compass, label: "Creator Network" },
+  { icon: ShoppingBag, label: "Marketplace" },
 ];
 
 export default function DashboardLayout({
@@ -42,9 +55,14 @@ export default function DashboardLayout({
 
   // Format page title from pathname
   const getPageTitle = () => {
-    if (pathname === "/dashboard") return "Overview";
+    if (pathname === "/dashboard") return "Dashboard Overview";
     const segment = pathname.split("/").filter(Boolean)[1];
-    if (!segment) return "Overview";
+    if (!segment) return "Dashboard Overview";
+    if (segment === "campaigns") return "Campaign Management";
+    if (segment === "content") return "Content Library";
+    if (segment === "messages") return "Messaging & Support";
+    if (segment === "reports") return "Performance Reports";
+    if (segment === "settings") return "Business Profile";
     return segment.charAt(0).toUpperCase() + segment.slice(1);
   };
 
@@ -62,24 +80,43 @@ export default function DashboardLayout({
           </Link>
         </div>
 
-        <nav className="flex-1 mt-4 space-y-1">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center px-6 py-3 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-brand-purple/15 text-brand-purple border-l-4 border-brand-purple"
-                    : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-l-4 border-transparent"
-                }`}
+        <nav className="flex-1 mt-4 space-y-6 overflow-y-auto px-4 pb-4">
+          <div className="space-y-1">
+            <span className="px-2 text-[10px] font-semibold tracking-wider text-[#475569] uppercase">Manage</span>
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-xl transition-all ${
+                    isActive
+                      ? "bg-brand-purple/15 text-brand-purple-light border-l-2 border-brand-purple"
+                      : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+                  }`}
+                >
+                  <item.icon size={16} className="mr-3" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="space-y-1">
+            <span className="px-2 text-[10px] font-semibold tracking-wider text-[#475569] uppercase">Coming Soon</span>
+            {comingSoonItems.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between px-3 py-2 text-sm font-medium text-[#475569] cursor-not-allowed opacity-60"
               >
-                <item.icon size={18} className="mr-3" />
-                {item.label}
-              </Link>
-            );
-          })}
+                <div className="flex items-center">
+                  <item.icon size={16} className="mr-3 text-[#475569]" />
+                  <span>{item.label}</span>
+                </div>
+                <Lock size={12} className="text-[#475569]" />
+              </div>
+            ))}
+          </div>
         </nav>
 
         <div className="p-6 border-t border-white/5">

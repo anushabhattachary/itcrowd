@@ -6,12 +6,12 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "How much does ItCrowd cost for startups?",
+    q: "How much does ItCrowd cost for businesses?",
     a: "Most campaigns run between $500–$2,000/month depending on the number of influencers and post frequency. There are no agency retainer fees. You pay the influencers directly through us.",
   },
   {
     q: "What if I have a small budget?",
-    a: "We love scrappy startups. We'll find influencers within your budget — and equity deals are an option for those who want to minimize cash spend.",
+    a: "We love working with businesses. We'll find influencers within your budget — and equity deals are an option for those who want to minimize cash spend.",
   },
   {
     q: "How do equity deals work?",
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     q: "How long does a campaign last?",
-    a: "Most campaigns run month-to-month with a minimum of 2–4 posts per month. Many startups continue for 3–6 months as they see results.",
+    a: "Most campaigns run month-to-month with a minimum of 2–4 posts per month. Many businesses continue for 3–6 months as they see results.",
   },
   {
     q: "I'm an influencer — what's the minimum follower count?",

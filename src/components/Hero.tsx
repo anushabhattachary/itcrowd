@@ -163,7 +163,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="mt-8 text-[48px] sm:text-7xl md:text-8xl lg:text-[100px] font-extrabold leading-[0.95] tracking-tight font-[family-name:var(--font-syne)]"
         >
-          Startups Meet
+          Businesses Meet
           <br />
           Their <span className="gradient-text">Match.</span>
         </motion.h1>
@@ -175,7 +175,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.35 }}
           className="mt-6 text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed"
         >
-          ItCrowd connects early-stage startups with influencers and athletes
+          ItCrowd connects established businesses with creators and athletes
           who don&apos;t just post — they invest. Cash deals or equity. You
           choose.
         </motion.p>
@@ -194,10 +194,10 @@ export default function Hero() {
             Get Matched — It&apos;s Free
           </a>
           <a
-            href="#for-influencers"
+            href="#for-creators"
             className="px-8 py-4 rounded-full border border-white/20 text-white text-lg font-medium hover:border-white/40 transition-all"
           >
-            I&apos;m an Influencer
+            I&apos;m a Creator
           </a>
         </motion.div>
 
@@ -208,7 +208,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="mt-8 text-sm text-muted"
         >
-          Founded at Georgia Tech · Trusted by founders &amp; creators
+          Founded at Georgia Tech · Trusted by business owners &amp; creators
         </motion.p>
       </div>
 

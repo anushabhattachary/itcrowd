@@ -6,7 +6,7 @@ import { Mail, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact | ItCrowd",
-  description: "Get in touch with ItCrowd — whether you're a startup or an influencer.",
+  description: "Get in touch with ItCrowd — whether you're a business or a creator.",
 };
 
 export default function ContactPage() {
@@ -25,7 +25,7 @@ export default function ContactPage() {
                 Let&apos;s Build Something Together.
               </h1>
               <p className="mt-4 text-muted leading-relaxed">
-                Whether you&apos;re a startup founder looking for marketing help or
+                Whether you&apos;re a business owner looking for marketing help or
                 a creator ready to level up, we&apos;d love to hear from you.
               </p>
 

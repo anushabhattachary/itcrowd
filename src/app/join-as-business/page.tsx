@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Loader2, CheckCircle2 } from "lucide-react";
 
-export default function JoinAsStartupPage() {
+export default function JoinAsBusinessPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -29,7 +29,7 @@ export default function JoinAsStartupPage() {
     setSubmitError("");
 
     try {
-      const res = await fetch("/api/submit-startup-interest", {
+      const res = await fetch("/api/submit-business-interest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -63,36 +63,36 @@ export default function JoinAsStartupPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#0D0D14] pt-24 pb-20 px-6 font-[family-name:var(--font-inter)]">
+      <main className="min-h-screen bg-[#0D0D14] pt-24 pb-20 px-6 font-[family-name:var(--font-inter)] text-white">
         {/* Hero Section */}
-        <div className="max-w-4xl mx-auto text-center mb-12">
+        <div className="max-w-4xl mx-auto text-center mb-12 animate-in fade-in duration-500">
           <div className="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light text-xs font-bold tracking-wider mb-6">
-            FOR STARTUPS
+            FOR BUSINESSES
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 font-[family-name:var(--font-syne)]">
-            Let's Build Your Campaign.
+            Let&apos;s Build Your Campaign.
           </h1>
           <p className="text-slate-300 text-lg max-w-2xl mx-auto">
-            Tell us about your company and what you're looking for — we'll take it from there. No commitment, just a conversation.
+            Tell us about your business and what you&apos;re looking for — we&apos;ll take it from there. No commitment, just a conversation.
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="max-w-[680px] mx-auto bg-[#1A1A27] rounded-2xl border border-white/10 p-8 md:p-12 shadow-2xl">
+        <div className="max-w-[680px] mx-auto bg-[#1A1A27] rounded-2xl border border-white/10 p-8 md:p-12 shadow-2xl relative overflow-hidden">
           {isSuccess ? (
             <div className="text-center py-12 flex flex-col items-center justify-center">
               <CheckCircle2 className="text-[#A3E635] w-20 h-20 mb-6" />
-              <h2 className="text-3xl font-bold text-white mb-4">You're in!</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">You&apos;re in!</h2>
               <p className="text-slate-300 text-lg">
-                We'll review your info and reach out within 24 hours. Talk soon. 🚀
+                We&apos;ll review your info and reach out within 24 hours. Talk soon. 🚀
               </p>
             </div>
           ) : (
             <>
               <div className="mb-8 border-b border-white/10 pb-8">
-                <h2 className="text-2xl font-bold text-white mb-2">Company Interest Form</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">Business Interest Form</h2>
                 <p className="text-slate-400 text-sm">
-                  This helps us understand your budget, target audience, and goals so we can match you with the right influencers.
+                  This helps us understand your budget, target audience, and goals so we can match you with the right creators.
                 </p>
               </div>
 
@@ -109,7 +109,7 @@ export default function JoinAsStartupPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">Company Name</label>
+                  <label className="text-sm font-medium text-white">Business Name</label>
                   <input
                     type="text"
                     required
@@ -120,7 +120,7 @@ export default function JoinAsStartupPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">When does your company hit the market? (or how long have you been live?)</label>
+                  <label className="text-sm font-medium text-white">When was your business established? (or how long have you been operating?)</label>
                   <input
                     type="text"
                     required
@@ -160,7 +160,7 @@ export default function JoinAsStartupPage() {
 
                 {hasWebsite === "Yes" && (
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white">Company website link</label>
+                    <label className="text-sm font-medium text-white">Business website link</label>
                     <input
                       type="url"
                       required={hasWebsite === "Yes"}
@@ -203,13 +203,13 @@ export default function JoinAsStartupPage() {
                       required
                       value={budget}
                       onChange={(e) => setBudget(e.target.value)}
-                      className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-8 pr-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+                      className="w-full bg-[#0D0D14] border border-[#1A1A27] rounded-xl pl-8 pr-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">What deliverable do you want from the influencer?</label>
+                  <label className="text-sm font-medium text-white">What deliverable do you want from the creator?</label>
                   <textarea
                     required
                     rows={4}
@@ -220,7 +220,7 @@ export default function JoinAsStartupPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">What is a goal your company has in the next 6 months?</label>
+                  <label className="text-sm font-medium text-white">What is a goal your business has in the next 6 months?</label>
                   <textarea
                     required
                     rows={4}

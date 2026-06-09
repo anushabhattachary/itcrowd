@@ -4,16 +4,16 @@ import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "For Startups | ItCrowd",
+  title: "For Businesses | ItCrowd",
   description:
-    "Discover how ItCrowd helps early-stage startups get authentic influencer marketing without bloated agency fees.",
+    "Discover how ItCrowd helps established businesses get authentic influencer marketing without bloated agency fees.",
 };
 
 const details = [
   {
     number: "01",
     title: "Discovery Call (15 min)",
-    desc: "We hop on a quick call to understand your startup — your product, target audience, marketing goals, and budget. No pitch deck required. Just a real conversation.",
+    desc: "We hop on a quick call to understand your business — your product, target audience, marketing goals, and budget. Just a real conversation.",
   },
   {
     number: "02",
@@ -32,12 +32,12 @@ const details = [
   },
   {
     number: "05",
-    title: "Optimize & Scale",
+    title: "Optimize & Grow",
     desc: "Based on results, we recommend which influencers to continue with, who to add, and how to adjust messaging. Month over month, your campaigns get sharper and your ROI grows.",
   },
 ];
 
-export default function ForStartupsPage() {
+export default function ForBusinessesPage() {
   return (
     <>
       <Navbar />
@@ -46,16 +46,16 @@ export default function ForStartupsPage() {
         <section className="pt-32 pb-16 md:pt-40 md:pb-24">
           <div className="max-w-[1200px] mx-auto px-6">
             <span className="text-sm uppercase tracking-[0.2em] text-brand-purple font-semibold">
-              For Startups
+              For Businesses
             </span>
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold font-[family-name:var(--font-syne)] leading-tight">
               Influencer Marketing That{" "}
               <span className="gradient-text">Actually Works</span> for
-              Early-Stage Companies.
+              Established Businesses.
             </h1>
             <p className="mt-6 text-lg text-muted max-w-2xl leading-relaxed">
               No retainers. No bloated agency fees. Just real creators promoting
-              your product to the right audience — for cash, equity, or both.
+              your business to the right audience — for cash, equity, or both.
             </p>
             <a
               href="#contact"

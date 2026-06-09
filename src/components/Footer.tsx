@@ -27,8 +27,8 @@ const XIcon = () => (
 
 const quickLinks = [
   { label: "How It Works", href: "#how-it-works" },
-  { label: "For Startups", href: "#for-startups" },
-  { label: "For Influencers", href: "#for-influencers" },
+  { label: "For Businesses", href: "#for-businesses" },
+  { label: "For Creators", href: "#for-creators" },
   { label: "FAQs", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
@@ -58,7 +58,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-3 text-sm text-muted">
-              Where Startups Find Their People.
+              Where Businesses Find Their Match.
             </p>
             <div className="flex gap-4 mt-5">
               <a

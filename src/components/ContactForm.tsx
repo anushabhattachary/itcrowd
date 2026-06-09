@@ -8,13 +8,13 @@ import { Send, CheckCircle } from "lucide-react";
 interface FormData {
   name: string;
   email: string;
-  role: "startup" | "influencer";
+  role: "business" | "influencer";
   company: string;
   challenge: string;
   budget: string;
 }
 
-const startupBudgets = ["Under $500", "$500–$1K", "$1K–$2K", "$2K+"];
+const businessBudgets = ["Under $500", "$500–$1K", "$1K–$2K", "$2K+"];
 const influencerFollowers = [
   "Under 10K",
   "10K–50K",
@@ -30,7 +30,7 @@ export default function ContactForm() {
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: { role: "startup" },
+    defaultValues: { role: "business" },
   });
 
   const role = watch("role");
@@ -58,7 +58,7 @@ export default function ContactForm() {
             Tell Us About Yourself
           </h2>
           <p className="mt-4 text-muted max-w-lg mx-auto">
-            Whether you&apos;re a startup looking to grow or an influencer ready
+            Whether you&apos;re a business looking to grow or an influencer ready
             to get matched — fill this out and we&apos;ll be in touch within 24
             hours.
           </p>
@@ -139,7 +139,7 @@ export default function ContactForm() {
               <div className="flex gap-3">
                 <label
                   className={`flex-1 text-center py-3 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
-                    role === "startup"
+                    role === "business"
                       ? "border-brand-purple bg-brand-purple/10 text-brand-purple-light"
                       : "border-white/10 text-muted hover:border-white/20"
                   }`}
@@ -147,10 +147,10 @@ export default function ContactForm() {
                   <input
                     {...register("role")}
                     type="radio"
-                    value="startup"
+                    value="business"
                     className="sr-only"
                   />
-                  Startup Founder
+                  Business Owner
                 </label>
                 <label
                   className={`flex-1 text-center py-3 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
@@ -173,13 +173,13 @@ export default function ContactForm() {
             {/* Company / Handle */}
             <div>
               <label className="block text-sm font-medium mb-2">
-                {role === "startup" ? "Company Name" : "Social Handle"}
+                {role === "business" ? "Business Name" : "Social Handle"}
               </label>
               <input
                 {...register("company", { required: "This field is required" })}
                 type="text"
                 placeholder={
-                  role === "startup" ? "Your startup name" : "@yourhandle"
+                  role === "business" ? "Your business name" : "@yourhandle"
                 }
                 className={`w-full px-4 py-3 rounded-xl bg-background border text-white placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-brand-purple/50 transition-all ${
                   errors.company ? "border-red-400" : "border-white/10"
@@ -208,7 +208,7 @@ export default function ContactForm() {
             {/* Budget / Follower count */}
             <div>
               <label className="block text-sm font-medium mb-2">
-                {role === "startup" ? "Monthly Budget" : "Follower Count"}
+                {role === "business" ? "Monthly Budget" : "Follower Count"}
               </label>
               <select
                 {...register("budget", {
@@ -221,7 +221,7 @@ export default function ContactForm() {
                 <option value="" className="bg-background">
                   Select...
                 </option>
-                {(role === "startup" ? startupBudgets : influencerFollowers).map(
+                {(role === "business" ? businessBudgets : influencerFollowers).map(
                   (opt) => (
                     <option key={opt} value={opt} className="bg-background">
                       {opt}

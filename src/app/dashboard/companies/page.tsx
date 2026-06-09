@@ -38,7 +38,6 @@ const INDUSTRIES = ["Tech", "Health & Wellness", "Fitness", "Consumer Goods", "G
 
 export default function CompaniesPage() {
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,29 +62,38 @@ export default function CompaniesPage() {
       toast.error("Failed to load companies");
     } else {
       setCompanies(data || []);
-      setFilteredCompanies(data || []);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
-    loadCompanies();
+    let active = true;
+    const init = async () => {
+      const { data, error } = await supabase
+        .from("companies")
+        .select("id, company_name, founder_name, contact_email, industry, monthly_budget, stage, date_added")
+        .order("created_at", { ascending: false });
+        
+      if (!active) return;
+      if (error) {
+        toast.error("Failed to load companies");
+      } else {
+        setCompanies(data || []);
+      }
+      setIsLoading(false);
+    };
+    init();
+    return () => { active = false; };
   }, []);
 
-  // Filter effect
-  useEffect(() => {
-    let result = companies;
-    if (searchTerm) {
-      result = result.filter(c => 
-        c.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.founder_name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (stageFilter !== "All") {
-      result = result.filter(c => c.stage === stageFilter);
-    }
-    setFilteredCompanies(result);
-  }, [searchTerm, stageFilter, companies]);
+  // Filter companies directly during render
+  const filteredCompanies = companies.filter((c) => {
+    const matchesSearch = !searchTerm || 
+      c.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.founder_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStage = stageFilter === "All" || c.stage === stageFilter;
+    return matchesSearch && matchesStage;
+  });
 
   const onSubmit = async (data: FormData) => {
     const { error } = await supabase.from("companies").insert([data]);
@@ -155,7 +163,7 @@ export default function CompaniesPage() {
             <thead className="bg-[#0D0D14] text-[#94A3B8] border-b border-white/5">
               <tr>
                 <th className="px-6 py-4 font-medium flex items-center gap-1 cursor-pointer hover:text-white">Company Name <ArrowUpDown size={14}/></th>
-                <th className="px-6 py-4 font-medium">Founder</th>
+                <th className="px-6 py-4 font-medium">Owner / Contact</th>
                 <th className="px-6 py-4 font-medium">Industry</th>
                 <th className="px-6 py-4 font-medium">Budget</th>
                 <th className="px-6 py-4 font-medium">Stage</th>
@@ -222,7 +230,7 @@ export default function CompaniesPage() {
           </div>
           
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Founder / Contact Name *</label>
+            <label className="text-sm font-medium text-[#94A3B8]">Contact Name *</label>
             <input required {...register("founder_name")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
           </div>
 

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 
 const cards = [
   {
-    title: "Get Matched With Startups",
-    body: "We send you startups that fit your niche and audience. No cold outreach. No spray and pray.",
+    title: "Get Matched With Businesses",
+    body: "We send you businesses that fit your niche and audience. No cold outreach. No spray and pray.",
   },
   {
     title: "Pick Your Deal Structure",
@@ -13,7 +13,7 @@ const cards = [
   },
   {
     title: "Create. Post. Grow Together.",
-    body: "2–4 posts per month. Clear deliverables. Fast payment. And if the startup blows up — so does your stake.",
+    body: "2–4 posts per month. Clear deliverables. Fast payment. And if the business blows up — so does your stake.",
   },
 ];
 

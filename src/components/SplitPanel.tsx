@@ -14,14 +14,14 @@ export default function SplitPanel() {
           transition={{ duration: 0.6 }}
           className="grid md:grid-cols-2 rounded-3xl overflow-hidden"
         >
-          {/* Left — Startups */}
+          {/* Left — Businesses */}
           <div className="relative p-8 md:p-12 bg-gradient-to-br from-brand-purple-dark/40 to-brand-purple/20 border border-brand-purple/15">
             <div className="relative z-10">
               <span className="text-xs uppercase tracking-[0.2em] text-brand-purple-light font-semibold">
-                I&apos;M A STARTUP
+                I&apos;M A BUSINESS
               </span>
               <h3 className="mt-4 text-2xl md:text-3xl font-extrabold font-[family-name:var(--font-syne)] leading-tight">
-                Get the exposure you need without burning your runway.
+                Get the exposure you need to grow your customer base.
               </h3>
               <p className="mt-4 text-muted leading-relaxed">
                 We work within your budget. Most campaigns run $500–$2,000/month

@@ -29,7 +29,7 @@ const rows = [
     diy: false,
   },
   {
-    feature: "Startup Focused",
+    feature: "Business Focused",
     itcrowd: true,
     agency: "Rarely",
     diy: null,
@@ -65,7 +65,7 @@ export default function ComparisonTable() {
             The Comparison
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl font-extrabold font-[family-name:var(--font-syne)] leading-tight">
-            Why Founders Choose ItCrowd
+            Why Business Owners Choose ItCrowd
             <br className="hidden sm:block" /> Over The Alternatives
           </h2>
         </motion.div>

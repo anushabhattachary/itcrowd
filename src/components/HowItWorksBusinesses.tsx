@@ -1,17 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion as framerMotion } from "framer-motion";
 
 const steps = [
   {
     number: "01",
-    title: "Tell Us About Your Startup",
+    title: "Tell Us About Your Business",
     desc: "Hop on a quick call or fill out our form. We learn your niche, budget, and goals — and tell you if we're a fit.",
   },
   {
     number: "02",
     title: "We Source Your Influencer Shortlist",
-    desc: "Our team handpicks 5–10 influencers in your space who align with your brand. You get follower counts, engagement rates, and proposed rates for each.",
+    desc: "Our team handpicks 5–10 creators in your space who align with your brand. You get follower counts, engagement rates, and proposed rates for each.",
   },
   {
     number: "03",
@@ -25,12 +25,12 @@ const steps = [
   },
 ];
 
-export default function HowItWorksStartups() {
+export default function HowItWorksBusinesses() {
   return (
     <section id="how-it-works" className="py-24 md:py-32">
       <div className="max-w-[1200px] mx-auto px-6">
         {/* Section header */}
-        <motion.div
+        <framerMotion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -38,22 +38,22 @@ export default function HowItWorksStartups() {
           className="mb-16"
         >
           <span className="text-sm uppercase tracking-[0.2em] text-brand-purple font-semibold">
-            For Startups
+            For Businesses
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl font-extrabold font-[family-name:var(--font-syne)] leading-tight">
             Go From &quot;We Need Marketing&quot;
             <br className="hidden sm:block" /> to Live Campaign — Fast.
           </h2>
-        </motion.div>
+        </framerMotion.div>
 
         {/* Steps */}
-        <div id="for-startups" className="relative">
+        <div id="for-businesses" className="relative">
           {/* Vertical line */}
           <div className="hidden md:block absolute left-[39px] top-0 bottom-0 w-px bg-gradient-to-b from-brand-purple/60 via-brand-purple/30 to-transparent" />
 
           <div className="space-y-12">
             {steps.map((step, i) => (
-              <motion.div
+              <framerMotion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -77,13 +77,13 @@ export default function HowItWorksStartups() {
                     {step.desc}
                   </p>
                 </div>
-              </motion.div>
+              </framerMotion.div>
             ))}
           </div>
         </div>
 
         {/* CTA card */}
-        <motion.div
+        <framerMotion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -99,7 +99,7 @@ export default function HowItWorksStartups() {
           >
             Book a Free Intro Call
           </a>
-        </motion.div>
+        </framerMotion.div>
       </div>
     </section>
   );

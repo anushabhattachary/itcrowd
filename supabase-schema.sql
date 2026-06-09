@@ -75,3 +75,21 @@ CREATE TABLE campaign_posts (
   completed boolean DEFAULT false,
   completed_at timestamptz
 );
+
+-- Create highlights table
+CREATE TABLE highlights (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at timestamptz DEFAULT now() NOT NULL,
+  type text NOT NULL CHECK (type IN ('influencer', 'startup')),
+  name text NOT NULL,
+  tagline text NOT NULL,
+  description text NOT NULL,
+  image_url text,
+  link_url text,
+  display_order integer,
+  published boolean DEFAULT true NOT NULL
+);
+
+-- Disable Row Level Security (RLS)
+ALTER TABLE highlights DISABLE ROW LEVEL SECURITY;
+

@@ -21,7 +21,7 @@ const features = [
   {
     icon: "🤝",
     title: "You Stay in Control",
-    body: "Startups pick their influencers. Influencers vet their startups. Every deal is a mutual yes.",
+    body: "Businesses pick their influencers. Influencers vet their businesses. Every deal is a mutual yes.",
   },
 ];
 
@@ -57,7 +57,7 @@ export default function WhyItCrowd() {
             <br className="hidden sm:block" /> Marketplaces Are a Mess.
           </h2>
           <p className="mt-4 text-lg text-muted max-w-2xl mx-auto">
-            We built ItCrowd so startups get real exposure and influencers get
+            We built ItCrowd so businesses get real exposure and influencers get
             real upside — without the BS.
           </p>
         </motion.div>

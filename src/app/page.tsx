@@ -1,8 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import InTheCrowd from "@/components/InTheCrowd";
 import StatsBar from "@/components/StatsBar";
 import WhyItCrowd from "@/components/WhyItCrowd";
-import HowItWorksStartups from "@/components/HowItWorksStartups";
+import HowItWorksBusinesses from "@/components/HowItWorksBusinesses";
 import HowItWorksInfluencers from "@/components/HowItWorksInfluencers";
 import ComparisonTable from "@/components/ComparisonTable";
 import SplitPanel from "@/components/SplitPanel";
@@ -16,9 +17,10 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <InTheCrowd />
         <StatsBar />
         <WhyItCrowd />
-        <HowItWorksStartups />
+        <HowItWorksBusinesses />
         <HowItWorksInfluencers />
         <ComparisonTable />
         <SplitPanel />

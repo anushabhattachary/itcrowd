@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     if (!redirectUrl) {
       // If no redirect, try reading the body directly
       const text = await firstRes.text();
-      console.log("[submit-startup-interest] Direct response:", text);
+      console.log("[submit-business-interest] Direct response:", text);
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
@@ -49,13 +49,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
-    console.error("[submit-startup-interest] Apps Script error:", result.error);
+    console.error("[submit-business-interest] Apps Script error:", result.error);
     return NextResponse.json(
       { success: false, error: result.error ?? "Unknown error from Apps Script" },
       { status: 500 }
     );
   } catch (error) {
-    console.error("[submit-startup-interest] Unhandled error:", error);
+    console.error("[submit-business-interest] Unhandled error:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }

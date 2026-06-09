@@ -41,7 +41,6 @@ const DEAL_TYPES = ["Cash", "Equity", "Both"];
 
 export default function InfluencersPage() {
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
-  const [filteredInfluencers, setFilteredInfluencers] = useState<Influencer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -68,28 +67,38 @@ export default function InfluencersPage() {
       toast.error("Failed to load influencers");
     } else {
       setInfluencers(data || []);
-      setFilteredInfluencers(data || []);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
-    loadInfluencers();
+    let active = true;
+    const init = async () => {
+      const { data, error } = await supabase
+        .from("influencers")
+        .select("id, full_name, handle, platform, follower_count, niche, deal_preference, status, date_added")
+        .order("created_at", { ascending: false });
+        
+      if (!active) return;
+      if (error) {
+        toast.error("Failed to load influencers");
+      } else {
+        setInfluencers(data || []);
+      }
+      setIsLoading(false);
+    };
+    init();
+    return () => { active = false; };
   }, []);
 
-  useEffect(() => {
-    let result = influencers;
-    if (searchTerm) {
-      result = result.filter(i => 
-        i.handle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        i.full_name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (statusFilter !== "All") {
-      result = result.filter(i => i.status === statusFilter);
-    }
-    setFilteredInfluencers(result);
-  }, [searchTerm, statusFilter, influencers]);
+  // Filter influencers directly during render
+  const filteredInfluencers = influencers.filter((i) => {
+    const matchesSearch = !searchTerm || 
+      i.handle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      i.full_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "All" || i.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   const onSubmit = async (data: FormData) => {
     const { error } = await supabase.from("influencers").insert([data]);

@@ -6,9 +6,9 @@ import { Menu, X, LogIn } from "lucide-react";
 
 const navLinks = [
   { label: "How It Works", href: "#how-it-works" },
-  { label: "For Startups", href: "#for-startups" },
-  { label: "For Influencers", href: "#for-influencers" },
-  { label: "Join as a Startup", href: "/join-as-startup" },
+  { label: "For Businesses", href: "#for-businesses" },
+  { label: "For Creators", href: "#for-creators" },
+  { label: "Join as a Business", href: "/join-as-business" },
   { label: "FAQs", href: "#faq" },
 ];
 

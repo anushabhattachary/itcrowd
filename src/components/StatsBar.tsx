@@ -10,7 +10,7 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { value: "50", suffix: "+", label: "Startups Served" },
+  { value: "50", suffix: "+", label: "Businesses Served" },
   { value: "200", suffix: "+", label: "Influencers in Network" },
   { value: "$0", suffix: "", label: "Agency Fees" },
   { value: "2–4", suffix: "", label: "Posts Per Month, Per Deal" },
@@ -27,8 +27,8 @@ function CountUp({ value, suffix }: { value: string; suffix: string }) {
     // Handle non-numeric values
     const numericMatch = value.match(/^(\$?)(\d+)/);
     if (!numericMatch) {
-      setDisplay(value);
-      return;
+      const timeoutId = setTimeout(() => setDisplay(value), 0);
+      return () => clearTimeout(timeoutId);
     }
 
     const prefix = numericMatch[1];
