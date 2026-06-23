@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* ============================
+   ItCrowd Custom Theme
+   ============================ */
+@theme inline {
+  --color-background: #F3EBE0;
+  --color-foreground: #2B2420;
+
+  /* Mediterranean palette - mapped onto existing brand-* names so every
+     existing className in the codebase (bg-brand-purple, text-brand-lime,
+     etc.) repaints automatically without per-component edits. */
+  --color-brand-purple: #B75C3A;       /* was #7C3AED - now Terracotta */
+  --color-brand-purple-light: #CC7A55; /* was #9F67FF */
+  --color-brand-purple-dark: #8F4528;  /* was #5B21B6 */
+  --color-brand-lime: #7C7B4D;         /* was #A3E635 - now Olive */
+  --color-brand-lime-dark: #65643E;    /* was #84CC16 */
+
+  /* Named Mediterranean tokens for new/updated components */
+  --color-terracotta: #B75C3A;
+  --color-terracotta-light: #CC7A55;
+  --color-terracotta-dark: #8F4528;
+  --color-sand: #E0C9A8;
+  --color-olive: #7C7B4D;
+  --color-olive-dark: #65643E;
+  --color-ochre: #C68C40;
+  --color-clay: #B66C3C;
+  --color-sea: #35575B;
+  --color-sea-light: #4A7176;
+
+  --color-surface: #FBF6EF;            /* was #111118 */
+  --color-surface-light: #FFFFFF;      /* was #1A1A24 */
+  --color-muted: #8A7F6E;              /* was #9CA3AF */
+  --color-muted-light: #6B5F4F;        /* was #D1D5DB */
+  --color-dashboard-bg: #F3EBE0;       /* was #0D0D14 */
+  --color-dashboard-card: #FFFFFF;     /* was #1A1A27 */
+  --color-dashboard-sidebar: #FBF6EF;  /* was #111118 */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Syne", system-ui, sans-serif;
+}
+
+/* ============================
+   Base Styles
+   ============================ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* ============================
+   Animated Gradient Background
+   ============================ */
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float 10s ease-in-out 2s infinite;
+}
+
+.animate-float-slow {
+  animation: float 14s ease-in-out 4s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* ============================
+   Glassmorphism Card
+   ============================ */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(43, 36, 32, 0.08);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(183, 92, 58, 0.5), transparent 50%, rgba(198, 140, 64, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.glass-card:hover {
+  box-shadow: 0 8px 30px rgba(43, 36, 32, 0.12);
+  transform: translateY(-2px);
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
+/* ============================
+   Custom Scrollbar
+   ============================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F3EBE0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D9C9B5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B75C3A;
+}
+
+/* ============================
+   Gradient Text
+   ============================ */
+.gradient-text {
+  background: linear-gradient(135deg, #B75C3A, #C68C40);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================
+   Button Glow & Interactions
+   ============================ */
+.btn-glow {
+  box-shadow: 0 4px 14px rgba(183, 92, 58, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 6px 20px rgba(183, 92, 58, 0.4);
+}
+
+/* Global Button Interactive States */
+a.rounded-full, button, input[type="submit"] {
+  transition: all 0.2s ease !important;
+}
+
+a.rounded-full:hover, button:hover:not(:disabled), input[type="submit"]:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(183, 92, 58, 0.3);
+}
+
+/* ============================
+   Section styles
+   ============================ */
+section {
+  position: relative;
+}
