@@ -53,7 +53,11 @@ export default function InTheCrowd() {
   }
 
   return (
+<<<<<<< HEAD
     <section id="in-the-crowd" className="py-24 md:py-32 bg-[#F3EBE0] overflow-hidden">
+=======
+    <section id="in-the-crowd" className="py-24 md:py-32 bg-[#0D0D14] overflow-hidden">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
       <div className="max-w-[1200px] mx-auto px-6">
         {/* Section Header */}
         <motion.div
@@ -69,7 +73,11 @@ export default function InTheCrowd() {
           <h2 className="mt-4 text-3xl md:text-5xl font-extrabold font-[family-name:var(--font-syne)] leading-tight text-white">
             In The Crowd
           </h2>
+<<<<<<< HEAD
           <p className="mt-4 text-lg text-[#8A7F6E] max-w-2xl mx-auto">
+=======
+          <p className="mt-4 text-lg text-[#94A3B8] max-w-2xl mx-auto">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             A few of the business owners and creators making moves with us.
           </p>
         </motion.div>
@@ -137,10 +145,17 @@ export default function InTheCrowd() {
                       />
                     )}
                   </h3>
+<<<<<<< HEAD
                   <p className="text-sm font-semibold text-[#7C7B4D] tracking-wide uppercase font-[family-name:var(--font-syne)] opacity-80">
                     {item.tagline}
                   </p>
                   <p className="text-sm text-[#8A7F6E] leading-relaxed line-clamp-3">
+=======
+                  <p className="text-sm font-semibold text-[#A3E635] tracking-wide uppercase font-[family-name:var(--font-syne)] opacity-80">
+                    {item.tagline}
+                  </p>
+                  <p className="text-sm text-[#94A3B8] leading-relaxed line-clamp-3">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     {item.description}
                   </p>
                 </div>

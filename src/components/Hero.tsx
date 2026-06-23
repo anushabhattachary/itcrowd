@@ -10,7 +10,11 @@ export default function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Animated background */}
+<<<<<<< HEAD
       <div className="absolute inset-0 bg-gradient-to-br from-[#F3EBE0] via-[#12101F] to-[#F3EBE0] animate-gradient" />
+=======
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0F] via-[#12101F] to-[#0A0A0F] animate-gradient" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
 
       {/* Floating glowing orbs — GPU accelerated */}
       {/* Large deep purple orb */}

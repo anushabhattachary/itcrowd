@@ -70,8 +70,13 @@ export default function BusinessSettingsPage() {
   const [newLocAddress, setNewLocAddress] = useState("");
 
   const [brandKit, setBrandKit] = useState({
+<<<<<<< HEAD
     primaryColor: "#B75C3A",
     secondaryColor: "#7C7B4D",
+=======
+    primaryColor: "#7C3AED",
+    secondaryColor: "#A3E635",
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
     fontFamily: "Inter, sans-serif",
     logoUploaded: true
   });
@@ -149,7 +154,11 @@ export default function BusinessSettingsPage() {
             className={`flex items-center gap-2 px-5 py-3 text-xs font-semibold rounded-xl border transition-all shrink-0 ${
               activeTab === tab.id
                 ? "bg-brand-purple/15 text-brand-purple-light border-brand-purple/30"
+<<<<<<< HEAD
                 : "bg-[#F3EBE0] text-[#8A7F6E] border-white/5 hover:border-white/10 hover:text-white"
+=======
+                : "bg-[#0D0D14] text-[#94A3B8] border-white/5 hover:border-white/10 hover:text-white"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             }`}
           >
             <tab.icon size={14} />
@@ -163,67 +172,113 @@ export default function BusinessSettingsPage() {
       {/* TAB 1: PROFILE & SOCIALS */}
       {activeTab === "profile" && (
         <form onSubmit={handleSaveProfile} className="space-y-6">
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Business Profile
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Business Name *</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Business Name *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   required
                   type="text"
                   value={businessInfo.name}
                   onChange={(e) => setBusinessInfo({...businessInfo, name: e.target.value})}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Industry *</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Industry *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   required
                   type="text"
                   value={businessInfo.industry}
                   onChange={(e) => setBusinessInfo({...businessInfo, industry: e.target.value})}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Website URL</label>
                 <div className="relative">
                   <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B5F4F]" size={14} />
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Website URL</label>
+                <div className="relative">
+                  <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#475569]" size={14} />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   <input
                     type="url"
                     value={businessInfo.website}
                     onChange={(e) => setBusinessInfo({...businessInfo, website: e.target.value})}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Primary Headquarters Address *</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Primary Headquarters Address *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   required
                   type="text"
                   value={businessInfo.address}
                   onChange={(e) => setBusinessInfo({...businessInfo, address: e.target.value})}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
             </div>
           </section>
 
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Social Media Connections
             </h2>
 
             <div className="space-y-4">
+<<<<<<< HEAD
               <div className="flex items-center justify-between gap-4 p-4 bg-[#F3EBE0] border border-white/5 rounded-xl">
+=======
+              <div className="flex items-center justify-between gap-4 p-4 bg-[#0D0D14] border border-white/5 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex items-center gap-3">
                   <InstagramIcon size={20} className="text-pink-500" />
                   <div>
@@ -240,7 +295,11 @@ export default function BusinessSettingsPage() {
                 </button>
               </div>
 
+<<<<<<< HEAD
               <div className="flex items-center justify-between gap-4 p-4 bg-[#F3EBE0] border border-white/5 rounded-xl">
+=======
+              <div className="flex items-center justify-between gap-4 p-4 bg-[#0D0D14] border border-white/5 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex items-center gap-3">
                   <Share2 size={20} className="text-blue-400" />
                   <div>
@@ -257,12 +316,20 @@ export default function BusinessSettingsPage() {
                 </button>
               </div>
 
+<<<<<<< HEAD
               <div className="flex items-center justify-between gap-4 p-4 bg-[#F3EBE0] border border-white/5 rounded-xl">
+=======
+              <div className="flex items-center justify-between gap-4 p-4 bg-[#0D0D14] border border-white/5 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex items-center gap-3">
                   <FacebookIcon size={20} className="text-[#1877F2]" />
                   <div>
                     <span className="text-xs font-bold text-white block">Facebook Business Manager</span>
+<<<<<<< HEAD
                     <span className="text-[10px] text-[#6B5F4F] block">Not connected</span>
+=======
+                    <span className="text-[10px] text-[#475569] block">Not connected</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   </div>
                 </div>
                 <button 
@@ -289,14 +356,22 @@ export default function BusinessSettingsPage() {
         <form onSubmit={handleSavePreferences} className="space-y-6">
           
           {/* Brand Guidelines */}
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Brand Guidelines & Identity
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider block">Primary Brand Color</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider block">Primary Brand Color</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex gap-2 items-center">
                   <input
                     type="color"
@@ -309,7 +384,11 @@ export default function BusinessSettingsPage() {
               </div>
 
               <div className="space-y-2">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider block">Secondary Accent Color</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider block">Secondary Accent Color</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex gap-2 items-center">
                   <input
                     type="color"
@@ -322,9 +401,15 @@ export default function BusinessSettingsPage() {
               </div>
 
               <div className="space-y-2">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider block">Brand Logo File</label>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-[#8A7F6E] bg-brand-purple/10 px-3 py-2 rounded-lg border border-brand-purple/20 text-brand-purple-light font-semibold">
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider block">Brand Logo File</label>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#94A3B8] bg-brand-purple/10 px-3 py-2 rounded-lg border border-brand-purple/20 text-brand-purple-light font-semibold">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     {brandKit.logoUploaded ? "Glow_Logo_Main.png" : "No logo uploaded"}
                   </span>
                   <button 
@@ -340,7 +425,11 @@ export default function BusinessSettingsPage() {
           </section>
 
           {/* Campaign Preferences */}
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Campaign & Creator Preferences
             </h2>
@@ -348,7 +437,11 @@ export default function BusinessSettingsPage() {
             <div className="space-y-5">
               {/* Creator Checklist */}
               <div className="space-y-2">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider block">Preferred Creator Types</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider block">Preferred Creator Types</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex flex-wrap gap-3">
                   {["Athlete", "Influencer", "Photographer", "Videographer"].map((type) => {
                     const isChecked = campaignPreferences.preferredCreators.includes(type);
@@ -360,7 +453,11 @@ export default function BusinessSettingsPage() {
                         className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
                           isChecked 
                             ? "bg-brand-purple/15 text-brand-purple-light border-brand-purple/30"
+<<<<<<< HEAD
                             : "bg-[#F3EBE0] text-[#8A7F6E] border-white/5 hover:border-white/10"
+=======
+                            : "bg-[#0D0D14] text-[#94A3B8] border-white/5 hover:border-white/10"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                         }`}
                       >
                         {isChecked && "✓ "} {type}s
@@ -372,22 +469,38 @@ export default function BusinessSettingsPage() {
 
               {/* Goals */}
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Content Tone / Aesthetic Guidelines</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Content Tone / Aesthetic Guidelines</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <textarea
                   rows={3}
                   value={campaignPreferences.contentStyle}
                   onChange={(e) => setCampaignPreferences({...campaignPreferences, contentStyle: e.target.value})}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#6B5F4F] focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Primary Marketing Goals</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Primary Marketing Goals</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   type="text"
                   value={campaignPreferences.marketingGoal}
                   onChange={(e) => setCampaignPreferences({...campaignPreferences, marketingGoal: e.target.value})}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
             </div>
@@ -404,6 +517,7 @@ export default function BusinessSettingsPage() {
       {/* TAB 3: LOCATIONS MANAGER */}
       {activeTab === "locations" && (
         <div className="space-y-6">
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Registered Locations
@@ -413,16 +527,35 @@ export default function BusinessSettingsPage() {
             <div className="space-y-3">
               {locations.map((loc) => (
                 <div key={loc.id} className="flex justify-between items-center bg-[#F3EBE0] border border-white/5 p-4 rounded-xl">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6">
+            <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
+              Registered Locations
+            </h2>
+            <p className="text-xs text-[#94A3B8]">List of locations where creators are permitted to visit and shoot materials.</p>
+
+            <div className="space-y-3">
+              {locations.map((loc) => (
+                <div key={loc.id} className="flex justify-between items-center bg-[#0D0D14] border border-white/5 p-4 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   <div className="flex items-center gap-3">
                     <MapPin size={16} className="text-brand-purple-light shrink-0" />
                     <div>
                       <span className="text-xs font-bold text-white block">{loc.name}</span>
+<<<<<<< HEAD
                       <span className="text-[10px] text-[#8A7F6E] block">{loc.address}</span>
+=======
+                      <span className="text-[10px] text-[#94A3B8] block">{loc.address}</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     </div>
                   </div>
                   <button 
                     onClick={() => handleRemoveLocation(loc.id)}
+<<<<<<< HEAD
                     className="p-2 bg-white/5 hover:bg-red-500/10 text-[#6B5F4F] hover:text-red-400 rounded-lg transition-colors border border-transparent hover:border-red-500/20"
+=======
+                    className="p-2 bg-white/5 hover:bg-red-500/10 text-[#475569] hover:text-red-400 rounded-lg transition-colors border border-transparent hover:border-red-500/20"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     title="Remove location"
                   >
                     <Trash2 size={14} />
@@ -433,30 +566,50 @@ export default function BusinessSettingsPage() {
           </section>
 
           {/* Add Location Form */}
+<<<<<<< HEAD
           <form onSubmit={handleAddLocation} className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
             <h3 className="text-sm font-bold text-white font-[family-name:var(--font-syne)]">Add New Location</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Location Name *</label>
+=======
+          <form onSubmit={handleAddLocation} className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
+            <h3 className="text-sm font-bold text-white font-[family-name:var(--font-syne)]">Add New Location</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Location Name *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   required
                   type="text"
                   placeholder="e.g. Downtown Studio"
                   value={newLocName}
                   onChange={(e) => setNewLocName(e.target.value)}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Address *</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Address *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   required
                   type="text"
                   placeholder="e.g. 50 Park Pl NE, Atlanta, GA 30303"
                   value={newLocAddress}
                   onChange={(e) => setNewLocAddress(e.target.value)}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-purple"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
             </div>
@@ -474,6 +627,7 @@ export default function BusinessSettingsPage() {
         <div className="space-y-6">
           
           {/* Plan Details */}
+<<<<<<< HEAD
           <section className="bg-gradient-to-r from-[#FFFFFF] to-[#FBF6EF] border border-brand-purple/20 rounded-2xl p-6 shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative overflow-hidden">
             <div className="space-y-1 relative z-10">
               <span className="text-[10px] text-brand-purple-light font-extrabold uppercase tracking-wider">Current Account Tier</span>
@@ -484,24 +638,48 @@ export default function BusinessSettingsPage() {
               <span className="text-[10px] text-[#6B5F4F] font-bold block uppercase tracking-wider">Monthly Retainer</span>
               <span className="text-xl font-bold text-white block">$1,500 / mo</span>
               <span className="text-[9px] text-[#6B5F4F] block mt-0.5">Next Renewal: July 1, 2026</span>
+=======
+          <section className="bg-gradient-to-r from-[#1A1A27] to-[#111118] border border-brand-purple/20 rounded-2xl p-6 shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative overflow-hidden">
+            <div className="space-y-1 relative z-10">
+              <span className="text-[10px] text-brand-purple-light font-extrabold uppercase tracking-wider">Current Account Tier</span>
+              <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Brand Growth Tier</h2>
+              <p className="text-xs text-[#94A3B8]">Custom plan: Up to 5 campaigns, NIL Athletes connection, and professional photo/video shoots.</p>
+            </div>
+            <div className="text-right shrink-0 relative z-10 bg-[#0D0D14] border border-white/10 p-4 rounded-xl">
+              <span className="text-[10px] text-[#475569] font-bold block uppercase tracking-wider">Monthly Retainer</span>
+              <span className="text-xl font-bold text-white block">$1,500 / mo</span>
+              <span className="text-[9px] text-[#475569] block mt-0.5">Next Renewal: July 1, 2026</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             </div>
             
             <div className="absolute right-0 bottom-0 w-48 h-48 bg-brand-purple/5 blur-3xl rounded-full" />
           </section>
 
           {/* Payment Method */}
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Payment Method
             </h2>
             <div className="flex items-center justify-between p-4 bg-[#F3EBE0] border border-white/5 rounded-xl">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
+            <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
+              Payment Method
+            </h2>
+            <div className="flex items-center justify-between p-4 bg-[#0D0D14] border border-white/5 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
                   <CreditCard size={18} className="text-brand-purple-light" />
                 </div>
                 <div>
                   <span className="text-xs font-bold text-white block">Visa Card ending in 4242</span>
+<<<<<<< HEAD
                   <span className="text-[10px] text-[#6B5F4F] block">Expires 12/2028</span>
+=======
+                  <span className="text-[10px] text-[#475569] block">Expires 12/2028</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 </div>
               </div>
               <button 
@@ -514,7 +692,11 @@ export default function BusinessSettingsPage() {
           </section>
 
           {/* Invoice History */}
+<<<<<<< HEAD
           <section className="bg-[#FFFFFF] border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
+=======
+          <section className="bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-4">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] border-b border-white/5 pb-4">
               Invoice History
             </h2>
@@ -523,10 +705,17 @@ export default function BusinessSettingsPage() {
               {invoices.map((inv) => (
                 <div key={inv.id} className="py-3 flex justify-between items-center text-xs">
                   <div className="flex items-center gap-3">
+<<<<<<< HEAD
                     <FileText size={16} className="text-[#6B5F4F]" />
                     <div>
                       <span className="font-semibold text-white block">{inv.id}</span>
                       <span className="text-[10px] text-[#6B5F4F] block">{inv.date}</span>
+=======
+                    <FileText size={16} className="text-[#475569]" />
+                    <div>
+                      <span className="font-semibold text-white block">{inv.id}</span>
+                      <span className="text-[10px] text-[#475569] block">{inv.date}</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     </div>
                   </div>
 
@@ -537,7 +726,11 @@ export default function BusinessSettingsPage() {
                     </span>
                     <button 
                       onClick={() => handleDownloadInvoice(inv.id)}
+<<<<<<< HEAD
                       className="p-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-[#8A7F6E] transition-colors"
+=======
+                      className="p-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-[#94A3B8] transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       title="Download Invoice"
                     >
                       <Download size={14} />
@@ -552,9 +745,15 @@ export default function BusinessSettingsPage() {
       )}
 
       {/* Footer support prompt */}
+<<<<<<< HEAD
       <div className="bg-[#FFFFFF]/50 border border-white/5 p-4 rounded-xl flex items-center gap-3">
         <Info size={16} className="text-brand-purple-light shrink-0" />
         <p className="text-xs text-[#8A7F6E]">
+=======
+      <div className="bg-[#1A1A27]/50 border border-white/5 p-4 rounded-xl flex items-center gap-3">
+        <Info size={16} className="text-brand-purple-light shrink-0" />
+        <p className="text-xs text-[#94A3B8]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           Need help changing your billing plan or modifying settings? Get in touch with our team via the 
           <a href="/dashboard/messages" className="text-brand-purple-light hover:underline ml-1 font-semibold">Messaging Center</a>.
         </p>

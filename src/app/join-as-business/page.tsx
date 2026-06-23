@@ -63,7 +63,11 @@ export default function JoinAsBusinessPage() {
   return (
     <>
       <Navbar />
+<<<<<<< HEAD
       <main className="min-h-screen bg-[#F3EBE0] pt-24 pb-20 px-6 font-[family-name:var(--font-inter)] text-white">
+=======
+      <main className="min-h-screen bg-[#0D0D14] pt-24 pb-20 px-6 font-[family-name:var(--font-inter)] text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-12 animate-in fade-in duration-500">
           <div className="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light text-xs font-bold tracking-wider mb-6">
@@ -78,10 +82,17 @@ export default function JoinAsBusinessPage() {
         </div>
 
         {/* Form Card */}
+<<<<<<< HEAD
         <div className="max-w-[680px] mx-auto bg-[#FFFFFF] rounded-2xl border border-white/10 p-8 md:p-12 shadow-2xl relative overflow-hidden">
           {isSuccess ? (
             <div className="text-center py-12 flex flex-col items-center justify-center">
               <CheckCircle2 className="text-[#7C7B4D] w-20 h-20 mb-6" />
+=======
+        <div className="max-w-[680px] mx-auto bg-[#1A1A27] rounded-2xl border border-white/10 p-8 md:p-12 shadow-2xl relative overflow-hidden">
+          {isSuccess ? (
+            <div className="text-center py-12 flex flex-col items-center justify-center">
+              <CheckCircle2 className="text-[#A3E635] w-20 h-20 mb-6" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <h2 className="text-3xl font-bold text-white mb-4">You&apos;re in!</h2>
               <p className="text-slate-300 text-lg">
                 We&apos;ll review your info and reach out within 24 hours. Talk soon. 🚀
@@ -104,7 +115,11 @@ export default function JoinAsBusinessPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -115,7 +130,11 @@ export default function JoinAsBusinessPage() {
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -126,7 +145,11 @@ export default function JoinAsBusinessPage() {
                     required
                     value={timeToMarket}
                     onChange={(e) => setTimeToMarket(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -166,7 +189,11 @@ export default function JoinAsBusinessPage() {
                       required={hasWebsite === "Yes"}
                       value={websiteLink}
                       onChange={(e) => setWebsiteLink(e.target.value)}
+<<<<<<< HEAD
                       className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                      className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     />
                   </div>
                 )}
@@ -178,7 +205,11 @@ export default function JoinAsBusinessPage() {
                     required
                     value={targetNiche}
                     onChange={(e) => setTargetNiche(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -189,7 +220,11 @@ export default function JoinAsBusinessPage() {
                     required
                     value={brandRep}
                     onChange={(e) => setBrandRep(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -203,7 +238,11 @@ export default function JoinAsBusinessPage() {
                       required
                       value={budget}
                       onChange={(e) => setBudget(e.target.value)}
+<<<<<<< HEAD
                       className="w-full bg-[#F3EBE0] border border-[#FFFFFF] rounded-xl pl-8 pr-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                      className="w-full bg-[#0D0D14] border border-[#1A1A27] rounded-xl pl-8 pr-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     />
                   </div>
                 </div>
@@ -215,7 +254,11 @@ export default function JoinAsBusinessPage() {
                     rows={4}
                     value={deliverable}
                     onChange={(e) => setDeliverable(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors resize-y"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors resize-y"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -226,7 +269,11 @@ export default function JoinAsBusinessPage() {
                     rows={4}
                     value={goal}
                     onChange={(e) => setGoal(e.target.value)}
+<<<<<<< HEAD
                     className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors resize-y"
+=======
+                    className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors resize-y"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   />
                 </div>
 
@@ -237,7 +284,11 @@ export default function JoinAsBusinessPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
+<<<<<<< HEAD
                     className="w-full bg-[#B75C3A] text-white py-4 px-6 rounded-xl text-lg font-bold hover:bg-[#6D28D9] active:scale-[0.98] transition-all disabled:opacity-70 flex justify-center items-center shadow-lg shadow-brand-purple/20"
+=======
+                    className="w-full bg-[#7C3AED] text-white py-4 px-6 rounded-xl text-lg font-bold hover:bg-[#6D28D9] active:scale-[0.98] transition-all disabled:opacity-70 flex justify-center items-center shadow-lg shadow-brand-purple/20"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   >
                     {isSubmitting ? <Loader2 className="animate-spin" size={24} /> : "Submit My Interest →"}
                   </button>

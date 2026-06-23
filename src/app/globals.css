@@ -4,6 +4,7 @@
    ItCrowd Custom Theme
    ============================ */
 @theme inline {
+<<<<<<< HEAD
   --color-background: #F3EBE0;
   --color-foreground: #2B2420;
 
@@ -35,6 +36,28 @@
   --color-dashboard-bg: #F3EBE0;       /* was #0D0D14 */
   --color-dashboard-card: #FFFFFF;     /* was #1A1A27 */
   --color-dashboard-sidebar: #FBF6EF;  /* was #111118 */
+=======
+  --color-background: #0A0A0F;
+  --color-foreground: #EDEDED;
+  --color-brand-purple: #7C3AED;
+  --color-brand-purple-light: #9F67FF;
+  --color-brand-purple-dark: #5B21B6;
+  --color-brand-lime: #A3E635;
+  --color-brand-lime-dark: #84CC16;
+  --color-surface: #111118;
+  --color-surface-light: #1A1A24;
+  --color-muted: #9CA3AF;
+  --color-muted-light: #D1D5DB;
+  --color-dashboard-bg: #0D0D14;
+  --color-dashboard-card: #1A1A27;
+  --color-dashboard-sidebar: #111118;
+  --color-dashboard-bg: #0D0D14;
+  --color-dashboard-card: #1A1A27;
+  --color-dashboard-sidebar: #111118;
+  --color-dashboard-bg: #0D0D14;
+  --color-dashboard-card: #1A1A27;
+  --color-dashboard-sidebar: #111118;
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Syne", system-ui, sans-serif;
 }
@@ -125,10 +148,17 @@ body {
    Glassmorphism Card
    ============================ */
 .glass-card {
+<<<<<<< HEAD
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(43, 36, 32, 0.08);
+=======
+  background: rgba(17, 17, 24, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   border-radius: 16px;
   transition: all 0.3s ease;
   position: relative;
@@ -141,7 +171,11 @@ body {
   inset: 0;
   border-radius: 16px;
   padding: 1px;
+<<<<<<< HEAD
   background: linear-gradient(135deg, rgba(183, 92, 58, 0.5), transparent 50%, rgba(198, 140, 64, 0.4));
+=======
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.6), transparent 50%, rgba(163, 230, 53, 0.4));
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -151,7 +185,11 @@ body {
 }
 
 .glass-card:hover {
+<<<<<<< HEAD
   box-shadow: 0 8px 30px rgba(43, 36, 32, 0.12);
+=======
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   transform: translateY(-2px);
 }
 
@@ -167,23 +205,39 @@ body {
 }
 
 ::-webkit-scrollbar-track {
+<<<<<<< HEAD
   background: #F3EBE0;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #D9C9B5;
+=======
+  background: #0A0A0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2D2D3A;
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+<<<<<<< HEAD
   background: #B75C3A;
+=======
+  background: #7C3AED;
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
 }
 
 /* ============================
    Gradient Text
    ============================ */
 .gradient-text {
+<<<<<<< HEAD
   background: linear-gradient(135deg, #B75C3A, #C68C40);
+=======
+  background: linear-gradient(135deg, #7C3AED, #A3E635);
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -193,12 +247,20 @@ body {
    Button Glow & Interactions
    ============================ */
 .btn-glow {
+<<<<<<< HEAD
   box-shadow: 0 4px 14px rgba(183, 92, 58, 0.25);
+=======
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
   transition: all 0.2s ease;
 }
 
 .btn-glow:hover {
+<<<<<<< HEAD
   box-shadow: 0 6px 20px rgba(183, 92, 58, 0.4);
+=======
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
 }
 
 /* Global Button Interactive States */
@@ -208,7 +270,11 @@ a.rounded-full, button, input[type="submit"] {
 
 a.rounded-full:hover, button:hover:not(:disabled), input[type="submit"]:hover {
   transform: scale(1.03);
+<<<<<<< HEAD
   box-shadow: 0 4px 16px rgba(183, 92, 58, 0.3);
+=======
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
 }
 
 /* ============================

@@ -352,6 +352,7 @@ export default function MessagingPage() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="h-[calc(100vh-140px)] flex flex-col md:flex-row bg-[#FFFFFF] border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative">
       
       {/* Left Panel: Threads list */}
@@ -359,6 +360,15 @@ export default function MessagingPage() {
         
         {/* List Header */}
         <div className="p-4 border-b border-white/5 flex justify-between items-center bg-[#FFFFFF]">
+=======
+    <div className="h-[calc(100vh-140px)] flex flex-col md:flex-row bg-[#1A1A27] border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative">
+      
+      {/* Left Panel: Threads list */}
+      <div className="w-full md:w-[320px] bg-[#111118] border-r border-white/5 flex flex-col shrink-0">
+        
+        {/* List Header */}
+        <div className="p-4 border-b border-white/5 flex justify-between items-center bg-[#1A1A27]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           <span className="text-sm font-bold text-white font-[family-name:var(--font-syne)] flex items-center gap-1.5">
             <MessageSquare size={16} className="text-brand-purple-light" /> Messaging Inbox
           </span>
@@ -380,7 +390,11 @@ export default function MessagingPage() {
               className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all ${
                 activeThreadId === t.id 
                   ? "bg-brand-purple/15 border border-brand-purple/20 text-white" 
+<<<<<<< HEAD
                   : "text-[#8A7F6E] hover:bg-white/5 hover:text-white border border-transparent"
+=======
+                  : "text-[#94A3B8] hover:bg-white/5 hover:text-white border border-transparent"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               }`}
             >
               {/* Thread Avatar initials */}
@@ -396,8 +410,13 @@ export default function MessagingPage() {
                     <span className="w-2 h-2 rounded-full bg-brand-purple animate-pulse shrink-0 mt-1" />
                   )}
                 </div>
+<<<<<<< HEAD
                 <span className="text-[10px] text-[#6B5F4F] block mt-0.5 font-bold uppercase tracking-wider">{t.subtitle}</span>
                 <p className="text-xs text-[#8A7F6E]/80 truncate mt-1">
+=======
+                <span className="text-[10px] text-[#475569] block mt-0.5 font-bold uppercase tracking-wider">{t.subtitle}</span>
+                <p className="text-xs text-[#94A3B8]/80 truncate mt-1">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   {t.messages[t.messages.length - 1]?.text}
                 </p>
               </div>
@@ -408,10 +427,17 @@ export default function MessagingPage() {
       </div>
 
       {/* Right Panel: Chat view */}
+<<<<<<< HEAD
       <div className="flex-1 flex flex-col justify-between bg-[#F3EBE0]/80">
         
         {/* Chat Header */}
         <div className="p-4 border-b border-white/5 bg-[#FBF6EF] flex justify-between items-center">
+=======
+      <div className="flex-1 flex flex-col justify-between bg-[#0D0D14]/80">
+        
+        {/* Chat Header */}
+        <div className="p-4 border-b border-white/5 bg-[#111118] flex justify-between items-center">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           <div>
             <span className="text-sm font-bold text-white block">{activeThread.title}</span>
             <span className="text-[10px] text-brand-purple-light uppercase font-bold tracking-wider">{activeThread.subtitle}</span>
@@ -433,7 +459,11 @@ export default function MessagingPage() {
             if (isSys) {
               return (
                 <div key={m.id} className="flex justify-center">
+<<<<<<< HEAD
                   <div className="bg-[#FFFFFF] border border-white/5 text-xs text-brand-purple-light px-4 py-2 rounded-full font-medium shadow flex items-center gap-1.5">
+=======
+                  <div className="bg-[#1A1A27] border border-white/5 text-xs text-brand-purple-light px-4 py-2 rounded-full font-medium shadow flex items-center gap-1.5">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     {m.text}
                   </div>
                 </div>
@@ -453,7 +483,11 @@ export default function MessagingPage() {
                 </div>
 
                 <div className="space-y-1">
+<<<<<<< HEAD
                   <span className={`text-[10px] text-[#6B5F4F] block font-bold uppercase tracking-wider ${isMe ? "text-right" : ""}`}>
+=======
+                  <span className={`text-[10px] text-[#475569] block font-bold uppercase tracking-wider ${isMe ? "text-right" : ""}`}>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     {m.senderName} · {m.timestamp}
                   </span>
                   
@@ -461,17 +495,29 @@ export default function MessagingPage() {
                   <div className={`p-4 rounded-2xl text-sm leading-relaxed border ${
                     isMe 
                       ? "bg-brand-purple/10 border-brand-purple/20 text-[#EDEDED] rounded-tr-none" 
+<<<<<<< HEAD
                       : "bg-[#FFFFFF] border-white/5 text-[#EDEDED] rounded-tl-none"
+=======
+                      : "bg-[#1A1A27] border-white/5 text-[#EDEDED] rounded-tl-none"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   }`}>
                     {m.text}
 
                     {/* Attachment preview if exists */}
                     {m.attachment && (
+<<<<<<< HEAD
                       <div className="mt-3 bg-[#F3EBE0] border border-white/10 rounded-xl overflow-hidden p-2 flex gap-3 items-center max-w-sm">
                         <ImageIcon size={32} className="text-brand-purple-light shrink-0" />
                         <div className="min-w-0">
                           <span className="text-xs font-semibold text-white block truncate">{m.attachment.name}</span>
                           <span className="text-[10px] text-[#6B5F4F] block uppercase tracking-wider">Preview Sent</span>
+=======
+                      <div className="mt-3 bg-[#0D0D14] border border-white/10 rounded-xl overflow-hidden p-2 flex gap-3 items-center max-w-sm">
+                        <ImageIcon size={32} className="text-brand-purple-light shrink-0" />
+                        <div className="min-w-0">
+                          <span className="text-xs font-semibold text-white block truncate">{m.attachment.name}</span>
+                          <span className="text-[10px] text-[#475569] block uppercase tracking-wider">Preview Sent</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                         </div>
                       </div>
                     )}
@@ -479,12 +525,20 @@ export default function MessagingPage() {
 
                   {/* Interactive Approval Card */}
                   {m.approvalCard && (
+<<<<<<< HEAD
                     <div className="mt-3 bg-gradient-to-r from-[#FFFFFF] to-[#FBF6EF] border border-brand-purple/20 rounded-2xl p-5 shadow-lg max-w-md space-y-4">
+=======
+                    <div className="mt-3 bg-gradient-to-r from-[#1A1A27] to-[#111118] border border-brand-purple/20 rounded-2xl p-5 shadow-lg max-w-md space-y-4">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       <div className="flex items-start gap-2">
                         <AlertCircle className="text-brand-purple-light shrink-0 mt-0.5" size={16} />
                         <div>
                           <span className="text-xs font-bold text-white block">Approval Needed: Creator Asset Draft</span>
+<<<<<<< HEAD
                           <p className="text-xs text-[#8A7F6E] mt-1">{m.approvalCard.assetTitle}</p>
+=======
+                          <p className="text-xs text-[#94A3B8] mt-1">{m.approvalCard.assetTitle}</p>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                         </div>
                       </div>
 
@@ -516,7 +570,11 @@ export default function MessagingPage() {
                             <div className="text-xs text-yellow-400 font-semibold flex items-center gap-1.5">
                               <Clock size={14} /> Revision requested
                             </div>
+<<<<<<< HEAD
                             <p className="text-xs text-[#8A7F6E] italic bg-[#F3EBE0] p-2 rounded-lg border border-white/5 mt-1">
+=======
+                            <p className="text-xs text-[#94A3B8] italic bg-[#0D0D14] p-2 rounded-lg border border-white/5 mt-1">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                               &quot;{m.approvalCard.notes}&quot;
                             </p>
                           </div>
@@ -533,12 +591,20 @@ export default function MessagingPage() {
 
         {/* Revision Input Overlay (Modal-like) */}
         {pendingRevisionId && (
+<<<<<<< HEAD
           <div className="bg-[#FBF6EF] border-t border-white/10 p-4 space-y-3">
+=======
+          <div className="bg-[#111118] border-t border-white/10 p-4 space-y-3">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <div className="flex justify-between items-center">
               <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">Describe Revision Requests</span>
               <button 
                 onClick={() => setPendingRevisionId(null)}
+<<<<<<< HEAD
                 className="text-[#6B5F4F] hover:text-white"
+=======
+                className="text-[#475569] hover:text-white"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               >
                 <X size={16} />
               </button>
@@ -548,7 +614,11 @@ export default function MessagingPage() {
               onChange={(e) => setRevisionNotesInput(e.target.value)}
               placeholder="e.g. Please change the caption CTA link, and shorten the workout clip by 3 seconds..."
               rows={2}
+<<<<<<< HEAD
               className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#6B5F4F] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+=======
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             />
             <div className="flex justify-end gap-2">
               <button 
@@ -568,10 +638,17 @@ export default function MessagingPage() {
         )}
 
         {/* Chat Input Bar */}
+<<<<<<< HEAD
         <div className="p-4 border-t border-white/5 bg-[#FBF6EF] flex items-center gap-3">
           <button 
             onClick={handleAttachMock}
             className="p-2.5 bg-white/5 border border-white/5 text-[#8A7F6E] hover:text-white rounded-xl hover:bg-white/10 transition-colors"
+=======
+        <div className="p-4 border-t border-white/5 bg-[#111118] flex items-center gap-3">
+          <button 
+            onClick={handleAttachMock}
+            className="p-2.5 bg-white/5 border border-white/5 text-[#94A3B8] hover:text-white rounded-xl hover:bg-white/10 transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             title="Attach a file"
           >
             <Paperclip size={18} />
@@ -583,7 +660,11 @@ export default function MessagingPage() {
             value={typedMessage}
             onChange={(e) => setTypedMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+<<<<<<< HEAD
             className="flex-1 bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#6B5F4F] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+=======
+            className="flex-1 bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           />
 
           <button 
@@ -599,35 +680,59 @@ export default function MessagingPage() {
       {/* Support Ticket Modal / Dialog */}
       {isNewTicketOpen && (
         <div className="fixed inset-0 z-[250] bg-black/70 backdrop-blur-sm flex justify-center items-center p-6 animate-in fade-in duration-200">
+<<<<<<< HEAD
           <div className="w-full max-w-md bg-[#FFFFFF] border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 space-y-6">
+=======
+          <div className="w-full max-w-md bg-[#1A1A27] border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 space-y-6">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] flex items-center gap-1.5">
                 <HelpCircle className="text-brand-purple-light" size={18} /> Open Support Ticket
               </h3>
+<<<<<<< HEAD
               <button onClick={() => setIsNewTicketOpen(false)} className="text-[#6B5F4F] hover:text-white">
+=======
+              <button onClick={() => setIsNewTicketOpen(false)} className="text-[#475569] hover:text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleCreateNewTicket} className="space-y-4">
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Subject / Campaign Title *</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Subject / Campaign Title *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <input
                   required
                   type="text"
                   placeholder="e.g. Autumn photoshoot scheduling issues"
                   value={ticketSubject}
                   onChange={(e) => setTicketSubject(e.target.value)}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#6B5F4F] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Topic Category *</label>
                 <select 
                   value={ticketType}
                   onChange={(e) => setTicketType(e.target.value as "campaign" | "support")}
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white cursor-pointer focus:outline-none focus:border-brand-purple"
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Topic Category *</label>
+                <select 
+                  value={ticketType}
+                  onChange={(e) => setTicketType(e.target.value as "campaign" | "support")}
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white cursor-pointer focus:outline-none focus:border-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 >
                   <option value="campaign">New Campaign Request</option>
                   <option value="support">General Support / Billing Help</option>
@@ -635,14 +740,22 @@ export default function MessagingPage() {
               </div>
 
               <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-xs font-bold text-[#8A7F6E] uppercase tracking-wider">Description of Request *</label>
+=======
+                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Description of Request *</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <textarea
                   required
                   rows={4}
                   placeholder="Please describe what you need help with. A representative will get back to you directly in this thread."
                   value={ticketDescription}
                   onChange={(e) => setTicketDescription(e.target.value)}
+<<<<<<< HEAD
                   className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#6B5F4F] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+=======
+                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 />
               </div>
 

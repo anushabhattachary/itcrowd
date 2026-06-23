@@ -220,13 +220,21 @@ export default function ContentLibraryPage() {
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">Content Library</h1>
+<<<<<<< HEAD
           <p className="text-sm text-[#8A7F6E] mt-1">Access, preview, and download custom visual assets generated for your brand.</p>
+=======
+          <p className="text-sm text-[#94A3B8] mt-1">Access, preview, and download custom visual assets generated for your brand.</p>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         </div>
 
         <button 
           onClick={handleUploadClick}
           disabled={isUploading}
+<<<<<<< HEAD
           className="flex items-center justify-center gap-2 bg-[#FFFFFF] border border-white/10 hover:border-brand-purple/50 text-white px-4 py-2.5 rounded-xl font-medium transition-all hover:bg-brand-purple/5 text-sm"
+=======
+          className="flex items-center justify-center gap-2 bg-[#1A1A27] border border-white/10 hover:border-brand-purple/50 text-white px-4 py-2.5 rounded-xl font-medium transition-all hover:bg-brand-purple/5 text-sm"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         >
           <Upload size={16} className={isUploading ? "animate-bounce" : ""} />
           {isUploading ? "Uploading..." : "Upload Brand Guidelines"}
@@ -242,7 +250,11 @@ export default function ContentLibraryPage() {
             className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full border transition-all shrink-0 ${
               activeCategory === cat.id
                 ? "bg-brand-purple/15 text-brand-purple-light border-brand-purple/30"
+<<<<<<< HEAD
                 : "bg-[#F3EBE0] text-[#8A7F6E] border-white/5 hover:border-white/10 hover:text-white"
+=======
+                : "bg-[#0D0D14] text-[#94A3B8] border-white/5 hover:border-white/10 hover:text-white"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             }`}
           >
             {cat.icon && <cat.icon size={12} />}
@@ -252,31 +264,54 @@ export default function ContentLibraryPage() {
       </div>
 
       {/* Filter and Search Bar */}
+<<<<<<< HEAD
       <div className="flex flex-col md:flex-row gap-4 bg-[#FFFFFF] border border-white/5 p-4 rounded-2xl shadow-md">
         
         {/* Search */}
         <div className="flex-1 relative">
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B5F4F]" />
+=======
+      <div className="flex flex-col md:flex-row gap-4 bg-[#1A1A27] border border-white/5 p-4 rounded-2xl shadow-md">
+        
+        {/* Search */}
+        <div className="flex-1 relative">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#475569]" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           <input
             type="text"
             placeholder="Search by asset name or creator..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+<<<<<<< HEAD
             className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-[#6B5F4F] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+=======
+            className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           />
         </div>
 
         {/* Campaign Filter */}
+<<<<<<< HEAD
         <div className="w-full md:w-[260px] flex items-center gap-2 bg-[#F3EBE0] border border-white/10 rounded-xl px-3 py-2">
           <Filter size={14} className="text-[#6B5F4F]" />
+=======
+        <div className="w-full md:w-[260px] flex items-center gap-2 bg-[#0D0D14] border border-white/10 rounded-xl px-3 py-2">
+          <Filter size={14} className="text-[#475569]" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           <select
             value={selectedCampaign}
             onChange={(e) => setSelectedCampaign(e.target.value)}
             className="flex-1 bg-transparent border-0 text-xs text-white focus:outline-none focus:ring-0 cursor-pointer"
           >
+<<<<<<< HEAD
             <option value="" disabled className="text-[#6B5F4F]">Filter by Campaign</option>
             {campaignsList.map((camp) => (
               <option key={camp} value={camp} className="bg-[#F3EBE0] text-white">
+=======
+            <option value="" disabled className="text-[#475569]">Filter by Campaign</option>
+            {campaignsList.map((camp) => (
+              <option key={camp} value={camp} className="bg-[#0D0D14] text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 {camp === "All" ? "All Campaigns" : camp}
               </option>
             ))}
@@ -287,10 +322,17 @@ export default function ContentLibraryPage() {
 
       {/* Content Asset Grid */}
       {filteredAssets.length === 0 ? (
+<<<<<<< HEAD
         <div className="bg-[#FFFFFF]/30 border border-white/5 rounded-3xl p-16 text-center">
           <ImageIcon size={48} className="mx-auto text-[#6B5F4F] mb-4" />
           <h3 className="text-white font-bold text-lg font-[family-name:var(--font-syne)]">No assets found</h3>
           <p className="text-xs text-[#8A7F6E] mt-1 max-w-sm mx-auto">
+=======
+        <div className="bg-[#1A1A27]/30 border border-white/5 rounded-3xl p-16 text-center">
+          <ImageIcon size={48} className="mx-auto text-[#475569] mb-4" />
+          <h3 className="text-white font-bold text-lg font-[family-name:var(--font-syne)]">No assets found</h3>
+          <p className="text-xs text-[#94A3B8] mt-1 max-w-sm mx-auto">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             Try adjusting your category tabs or campaign filters, or make sure your keywords are spelled correctly.
           </p>
         </div>
@@ -299,10 +341,17 @@ export default function ContentLibraryPage() {
           {filteredAssets.map((asset) => (
             <div 
               key={asset.id} 
+<<<<<<< HEAD
               className="group bg-[#FFFFFF] border border-white/5 rounded-2xl overflow-hidden shadow-lg hover:border-brand-purple/20 transition-all flex flex-col justify-between"
             >
               {/* Media Preview Box */}
               <div className="relative aspect-video bg-[#F3EBE0] overflow-hidden flex items-center justify-center">
+=======
+              className="group bg-[#1A1A27] border border-white/5 rounded-2xl overflow-hidden shadow-lg hover:border-brand-purple/20 transition-all flex flex-col justify-between"
+            >
+              {/* Media Preview Box */}
+              <div className="relative aspect-video bg-[#0D0D14] overflow-hidden flex items-center justify-center">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 {asset.fileType === "Document" ? (
                   <div className="w-full h-full flex flex-col justify-center items-center bg-brand-purple/5 p-6 space-y-3">
                     <FileText size={40} className="text-brand-purple-light" />
@@ -318,7 +367,11 @@ export default function ContentLibraryPage() {
                 
                 {/* Media Type Icon Badge */}
                 <span 
+<<<<<<< HEAD
                   className="absolute top-2 left-2 p-1.5 bg-[#F3EBE0]/80 backdrop-blur rounded-lg text-white border border-white/10"
+=======
+                  className="absolute top-2 left-2 p-1.5 bg-[#0D0D14]/80 backdrop-blur rounded-lg text-white border border-white/10"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   title={`${asset.fileType} Asset`}
                 >
                   {asset.fileType === "Video" ? (
@@ -341,7 +394,11 @@ export default function ContentLibraryPage() {
                   </button>
                   <button 
                     onClick={() => handleDownload(asset)}
+<<<<<<< HEAD
                     className="p-3 bg-[#FFFFFF] text-white hover:bg-brand-lime hover:text-black rounded-full transition-all hover:scale-110 shadow-lg border border-white/10"
+=======
+                    className="p-3 bg-[#1A1A27] text-white hover:bg-brand-lime hover:text-black rounded-full transition-all hover:scale-110 shadow-lg border border-white/10"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     title="Download Asset"
                   >
                     <Download size={16} />
@@ -360,7 +417,11 @@ export default function ContentLibraryPage() {
                   </span>
                 </div>
 
+<<<<<<< HEAD
                 <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[9px] text-[#6B5F4F]">
+=======
+                <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[9px] text-[#475569]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   <span className="font-semibold uppercase tracking-wider">{asset.campaignName}</span>
                   <span>{asset.date}</span>
                 </div>
@@ -384,14 +445,22 @@ export default function ContentLibraryPage() {
           </button>
 
           {/* Lightbox Modal Content Box */}
+<<<<<<< HEAD
           <div className="w-full max-w-4xl bg-[#FBF6EF] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[85vh]">
+=======
+          <div className="w-full max-w-4xl bg-[#111118] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[85vh]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             
             {/* Visual Media Pane */}
             <div className="flex-1 bg-black flex items-center justify-center relative min-h-[300px]">
               {lightboxAsset.fileType === "Document" ? (
                 <div className="flex flex-col items-center justify-center text-center p-8 space-y-4">
                   <FileText size={64} className="text-brand-purple-light animate-pulse" />
+<<<<<<< HEAD
                   <span className="text-xs font-bold text-[#8A7F6E] tracking-widest uppercase">Glow Fitness Guidelines Outlines</span>
+=======
+                  <span className="text-xs font-bold text-[#94A3B8] tracking-widest uppercase">Glow Fitness Guidelines Outlines</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 </div>
               ) : (
                 <img 
@@ -403,7 +472,11 @@ export default function ContentLibraryPage() {
             </div>
 
             {/* Context Sidebar Pane */}
+<<<<<<< HEAD
             <div className="w-full md:w-[320px] bg-[#FBF6EF] border-t md:border-t-0 md:border-l border-white/10 p-6 flex flex-col justify-between shrink-0">
+=======
+            <div className="w-full md:w-[320px] bg-[#111118] border-t md:border-t-0 md:border-l border-white/10 p-6 flex flex-col justify-between shrink-0">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <div className="space-y-6">
                 
                 {/* Title and Badge */}
@@ -417,17 +490,30 @@ export default function ContentLibraryPage() {
                 </div>
 
                 {/* Creator Details */}
+<<<<<<< HEAD
                 <div className="space-y-1 bg-[#FFFFFF] p-3 border border-white/5 rounded-xl">
                   <span className="text-[10px] text-[#6B5F4F] font-bold uppercase tracking-wider block">Created By</span>
                   <span className="text-sm font-semibold text-white block">{lightboxAsset.creatorName}</span>
                   <span className="text-xs text-[#8A7F6E] block">{lightboxAsset.creatorType} Creator</span>
+=======
+                <div className="space-y-1 bg-[#1A1A27] p-3 border border-white/5 rounded-xl">
+                  <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Created By</span>
+                  <span className="text-sm font-semibold text-white block">{lightboxAsset.creatorName}</span>
+                  <span className="text-xs text-[#94A3B8] block">{lightboxAsset.creatorType} Creator</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 </div>
 
                 {/* Campaign context */}
                 <div className="space-y-1">
+<<<<<<< HEAD
                   <span className="text-[10px] text-[#6B5F4F] font-bold uppercase tracking-wider block">Campaign Context</span>
                   <span className="text-xs font-bold text-[#8A7F6E] block">{lightboxAsset.campaignName}</span>
                   <span className="text-[10px] text-[#6B5F4F] block">Delivered on {lightboxAsset.date}</span>
+=======
+                  <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Campaign Context</span>
+                  <span className="text-xs font-bold text-[#94A3B8] block">{lightboxAsset.campaignName}</span>
+                  <span className="text-[10px] text-[#475569] block">Delivered on {lightboxAsset.date}</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 </div>
 
               </div>
@@ -445,7 +531,11 @@ export default function ContentLibraryPage() {
                 </button>
                 <button 
                   onClick={() => setLightboxAsset(null)}
+<<<<<<< HEAD
                   className="w-full py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-[#8A7F6E] hover:text-white rounded-xl text-xs font-bold transition-all"
+=======
+                  className="w-full py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-[#94A3B8] hover:text-white rounded-xl text-xs font-bold transition-all"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 >
                   Close Preview
                 </button>

@@ -121,26 +121,46 @@ export default function CompaniesPage() {
     <div className="space-y-6">
       
       {/* Action Bar */}
+<<<<<<< HEAD
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-[#FFFFFF] p-4 rounded-2xl border border-white/5 shadow-xl">
         <div className="flex flex-1 gap-2 w-full sm:w-auto">
           {/* Search */}
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A7F6E]" size={18} />
+=======
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-[#1A1A27] p-4 rounded-2xl border border-white/5 shadow-xl">
+        <div className="flex flex-1 gap-2 w-full sm:w-auto">
+          {/* Search */}
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <input 
               type="text" 
               placeholder="Search companies..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
+<<<<<<< HEAD
               className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+=======
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             />
           </div>
           {/* Filter */}
           <div className="relative">
+<<<<<<< HEAD
             <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A7F6E]" size={18} />
             <select 
               value={stageFilter}
               onChange={e => setStageFilter(e.target.value)}
               className="appearance-none bg-[#F3EBE0] border border-white/10 rounded-xl pl-10 pr-8 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+=======
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+            <select 
+              value={stageFilter}
+              onChange={e => setStageFilter(e.target.value)}
+              className="appearance-none bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-8 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             >
               <option value="All">All Stages</option>
               {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -157,10 +177,17 @@ export default function CompaniesPage() {
       </div>
 
       {/* Table */}
+<<<<<<< HEAD
       <div className="bg-[#FFFFFF] rounded-2xl border border-white/5 shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="bg-[#F3EBE0] text-[#8A7F6E] border-b border-white/5">
+=======
+      <div className="bg-[#1A1A27] rounded-2xl border border-white/5 shadow-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-[#0D0D14] text-[#94A3B8] border-b border-white/5">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <tr>
                 <th className="px-6 py-4 font-medium flex items-center gap-1 cursor-pointer hover:text-white">Company Name <ArrowUpDown size={14}/></th>
                 <th className="px-6 py-4 font-medium">Owner / Contact</th>
@@ -174,14 +201,22 @@ export default function CompaniesPage() {
             <tbody className="divide-y divide-white/5">
               {isLoading ? (
                 <tr>
+<<<<<<< HEAD
                   <td colSpan={7} className="px-6 py-12 text-center text-[#8A7F6E]">
+=======
+                  <td colSpan={7} className="px-6 py-12 text-center text-[#94A3B8]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <Loader2 className="animate-spin mx-auto mb-2" size={24} />
                     Loading companies...
                   </td>
                 </tr>
               ) : filteredCompanies.length === 0 ? (
                  <tr>
+<<<<<<< HEAD
                   <td colSpan={7} className="px-6 py-12 text-center text-[#8A7F6E]">
+=======
+                  <td colSpan={7} className="px-6 py-12 text-center text-[#94A3B8]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     No companies found matching your criteria.
                   </td>
                 </tr>
@@ -191,21 +226,37 @@ export default function CompaniesPage() {
                     <td className="px-6 py-4 font-bold text-white hover:text-brand-purple cursor-pointer transition-colors" onClick={() => alert('Detail page to be built!')}>
                       {c.company_name}
                     </td>
+<<<<<<< HEAD
                     <td className="px-6 py-4 text-[#8A7F6E]">{c.founder_name}</td>
                     <td className="px-6 py-4">
                       <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-[#8A7F6E]">{c.industry}</span>
                     </td>
                     <td className="px-6 py-4 text-[#8A7F6E]">${c.monthly_budget?.toLocaleString()}</td>
+=======
+                    <td className="px-6 py-4 text-[#94A3B8]">{c.founder_name}</td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-[#94A3B8]">{c.industry}</span>
+                    </td>
+                    <td className="px-6 py-4 text-[#94A3B8]">${c.monthly_budget?.toLocaleString()}</td>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full border text-xs font-semibold ${getStageColor(c.stage)}`}>
                         {c.stage}
                       </span>
                     </td>
+<<<<<<< HEAD
                     <td className="px-6 py-4 text-[#6B5F4F]">{c.date_added}</td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button className="p-1.5 text-[#8A7F6E] hover:text-white rounded hover:bg-white/10"><Edit2 size={16} /></button>
                         <button className="p-1.5 text-[#8A7F6E] hover:text-red-400 rounded hover:bg-red-400/10"><Archive size={16} /></button>
+=======
+                    <td className="px-6 py-4 text-[#475569]">{c.date_added}</td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button className="p-1.5 text-[#94A3B8] hover:text-white rounded hover:bg-white/10"><Edit2 size={16} /></button>
+                        <button className="p-1.5 text-[#94A3B8] hover:text-red-400 rounded hover:bg-red-400/10"><Archive size={16} /></button>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       </div>
                     </td>
                   </tr>
@@ -225,6 +276,7 @@ export default function CompaniesPage() {
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="space-y-1">
+<<<<<<< HEAD
             <label className="text-sm font-medium text-[#8A7F6E]">Company Name *</label>
             <input required {...register("company_name")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
           </div>
@@ -237,31 +289,65 @@ export default function CompaniesPage() {
           <div className="space-y-1">
             <label className="text-sm font-medium text-[#8A7F6E]">Contact Email *</label>
             <input required type="email" {...register("contact_email")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+=======
+            <label className="text-sm font-medium text-[#94A3B8]">Company Name *</label>
+            <input required {...register("company_name")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+          </div>
+          
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Contact Name *</label>
+            <input required {...register("founder_name")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Contact Email *</label>
+            <input required type="email" {...register("contact_email")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           </div>
 
           <div className="grid grid-cols-2 gap-4">
              <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-[#8A7F6E]">Industry *</label>
                 <select required {...register("industry")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+=======
+                <label className="text-sm font-medium text-[#94A3B8]">Industry *</label>
+                <select required {...register("industry")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   {INDUSTRIES.map(i => <option key={i} value={i}>{i}</option>)}
                 </select>
              </div>
              <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-[#8A7F6E]">Monthly Budget ($) *</label>
                 <input required type="number" min="0" {...register("monthly_budget", { valueAsNumber: true })} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+=======
+                <label className="text-sm font-medium text-[#94A3B8]">Monthly Budget ($) *</label>
+                <input required type="number" min="0" {...register("monthly_budget", { valueAsNumber: true })} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
              </div>
           </div>
 
           <div className="space-y-1">
+<<<<<<< HEAD
               <label className="text-sm font-medium text-[#8A7F6E]">Current Stage *</label>
               <select required {...register("stage")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+=======
+              <label className="text-sm font-medium text-[#94A3B8]">Current Stage *</label>
+              <select required {...register("stage")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 {STAGES.map(i => <option key={i} value={i}>{i}</option>)}
               </select>
           </div>
           
           <div className="space-y-1">
+<<<<<<< HEAD
             <label className="text-sm font-medium text-[#8A7F6E]">Notes (Optional)</label>
             <textarea {...register("notes")} rows={4} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+=======
+            <label className="text-sm font-medium text-[#94A3B8]">Notes (Optional)</label>
+            <textarea {...register("notes")} rows={4} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           </div>
 
           <div className="pt-6 flex gap-3">

@@ -51,16 +51,27 @@ export default function SlideDrawer({
 
       {/* Drawer */}
       <div
+<<<<<<< HEAD
         className={`fixed top-0 right-0 bottom-0 z-[110] w-full ${width} bg-[#F3EBE0] border-l border-white/10 shadow-2xl flex flex-col transform transition-transform duration-300 animate-in slide-in-from-right`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 bg-[#FFFFFF]">
+=======
+        className={`fixed top-0 right-0 bottom-0 z-[110] w-full ${width} bg-[#0D0D14] border-l border-white/10 shadow-2xl flex flex-col transform transition-transform duration-300 animate-in slide-in-from-right`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 bg-[#1A1A27]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           <h2 className="text-xl font-bold font-[family-name:var(--font-syne)] text-white">
             {title}
           </h2>
           <button
             onClick={onClose}
+<<<<<<< HEAD
             className="p-2 text-[#8A7F6E] hover:text-white rounded-full hover:bg-white/5 transition-colors"
+=======
+            className="p-2 text-[#94A3B8] hover:text-white rounded-full hover:bg-white/5 transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           >
             <X size={20} />
           </button>

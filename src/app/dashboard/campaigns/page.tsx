@@ -142,7 +142,11 @@ export default function ClientCampaignsPage() {
       case "Active":
         return <span className="flex items-center gap-1.5 px-3 py-1 bg-brand-lime/10 border border-brand-lime/30 text-brand-lime text-xs font-semibold rounded-full"><CheckCircle2 size={12} /> Active</span>;
       case "Completed":
+<<<<<<< HEAD
         return <span className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 text-[#8A7F6E] text-xs font-semibold rounded-full"><Award size={12} /> Completed</span>;
+=======
+        return <span className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 text-[#94A3B8] text-xs font-semibold rounded-full"><Award size={12} /> Completed</span>;
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
       case "Pending":
         return <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-semibold rounded-full"><Clock size={12} /> Pending</span>;
       case "Paused":
@@ -175,7 +179,11 @@ export default function ClientCampaignsPage() {
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">Marketing Campaigns</h1>
+<<<<<<< HEAD
           <p className="text-sm text-[#8A7F6E] mt-1">Manage, approve, and track creator activations for your business.</p>
+=======
+          <p className="text-sm text-[#94A3B8] mt-1">Manage, approve, and track creator activations for your business.</p>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         </div>
 
         {/* Quick action for support */}
@@ -195,13 +203,21 @@ export default function ClientCampaignsPage() {
             <div 
               key={c.id}
               onClick={() => openCampaignDetail(c)}
+<<<<<<< HEAD
               className="bg-[#FFFFFF] border border-white/5 hover:border-brand-purple/20 rounded-2xl p-6 shadow-xl flex flex-col justify-between cursor-pointer group transition-all hover:-translate-y-0.5 hover:shadow-brand-purple/5 relative"
+=======
+              className="bg-[#1A1A27] border border-white/5 hover:border-brand-purple/20 rounded-2xl p-6 shadow-xl flex flex-col justify-between cursor-pointer group transition-all hover:-translate-y-0.5 hover:shadow-brand-purple/5 relative"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             >
               {/* Top Row */}
               <div className="space-y-3">
                 <div className="flex justify-between items-start">
                   {getStatusBadge(c.status)}
+<<<<<<< HEAD
                   <div className="flex items-center gap-1.5 text-xs text-[#6B5F4F]">
+=======
+                  <div className="flex items-center gap-1.5 text-xs text-[#475569]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <Calendar size={12} />
                     <span>{c.timeline.start} - {c.timeline.end}</span>
                   </div>
@@ -211,7 +227,11 @@ export default function ClientCampaignsPage() {
                   <h3 className="text-lg font-bold text-white group-hover:text-brand-purple-light transition-colors font-[family-name:var(--font-syne)]">
                     {c.name}
                   </h3>
+<<<<<<< HEAD
                   <p className="text-xs text-[#8A7F6E] line-clamp-2 leading-relaxed">
+=======
+                  <p className="text-xs text-[#94A3B8] line-clamp-2 leading-relaxed">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     {c.brief}
                   </p>
                 </div>
@@ -222,10 +242,17 @@ export default function ClientCampaignsPage() {
                 {/* Deliverables Progress */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs font-semibold">
+<<<<<<< HEAD
                     <span className="text-[#8A7F6E]">Deliverables Progress</span>
                     <span className="text-white">{c.deliverablesProgress.completed}/{c.deliverablesProgress.total}</span>
                   </div>
                   <div className="h-1.5 w-full bg-[#F3EBE0] rounded-full overflow-hidden">
+=======
+                    <span className="text-[#94A3B8]">Deliverables Progress</span>
+                    <span className="text-white">{c.deliverablesProgress.completed}/{c.deliverablesProgress.total}</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-[#0D0D14] rounded-full overflow-hidden">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <div 
                       className={`h-full rounded-full transition-all duration-500 ${c.status === 'Completed' ? 'bg-brand-lime' : 'bg-brand-purple'}`} 
                       style={{ width: `${progressPercent}%` }} 
@@ -236,13 +263,21 @@ export default function ClientCampaignsPage() {
                 {/* Assigned Creators with avatar group */}
                 <div className="flex justify-between items-center pt-2">
                   <div className="flex items-center">
+<<<<<<< HEAD
                     <span className="text-xs text-[#6B5F4F] font-bold mr-2 uppercase tracking-wider">Creators</span>
+=======
+                    <span className="text-xs text-[#475569] font-bold mr-2 uppercase tracking-wider">Creators</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <div className="flex -space-x-2">
                       {c.assignedCreators.map((cr, idx) => (
                         <div 
                           key={idx} 
                           title={`${cr.name} (${cr.role})`}
+<<<<<<< HEAD
                           className="w-7 h-7 rounded-full bg-brand-purple/90 border-2 border-[#FFFFFF] flex items-center justify-center text-[10px] font-bold text-white shadow-md shadow-black/30"
+=======
+                          className="w-7 h-7 rounded-full bg-brand-purple/90 border-2 border-[#1A1A27] flex items-center justify-center text-[10px] font-bold text-white shadow-md shadow-black/30"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                         >
                           {cr.initials}
                         </div>
@@ -255,7 +290,11 @@ export default function ClientCampaignsPage() {
                     {c.creatorTypes.map((type, idx) => (
                       <span 
                         key={idx}
+<<<<<<< HEAD
                         className="p-1 bg-[#F3EBE0] border border-white/5 rounded text-[#8A7F6E] flex items-center justify-center hover:text-white transition-colors"
+=======
+                        className="p-1 bg-[#0D0D14] border border-white/5 rounded text-[#94A3B8] flex items-center justify-center hover:text-white transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       >
                         {getCreatorTypeIcon(type)}
                       </span>
@@ -269,20 +308,32 @@ export default function ClientCampaignsPage() {
                 {c.status !== "Pending" ? (
                   <div className="flex gap-4">
                     <div>
+<<<<<<< HEAD
                       <span className="text-[10px] text-[#6B5F4F] font-bold uppercase block tracking-wider">Est. Reach</span>
+=======
+                      <span className="text-[10px] text-[#475569] font-bold uppercase block tracking-wider">Est. Reach</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       <span className="text-sm font-bold text-white flex items-center gap-1">
                         <TrendingUp size={12} className="text-brand-lime" /> {c.performance.reach}
                       </span>
                     </div>
                     <div>
+<<<<<<< HEAD
                       <span className="text-[10px] text-[#6B5F4F] font-bold uppercase block tracking-wider">Engagement</span>
+=======
+                      <span className="text-[10px] text-[#475569] font-bold uppercase block tracking-wider">Engagement</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       <span className="text-sm font-bold text-white">
                         {c.performance.engagement}
                       </span>
                     </div>
                   </div>
                 ) : (
+<<<<<<< HEAD
                   <span className="text-xs text-[#6B5F4F] font-medium italic">Pending kickoff approval</span>
+=======
+                  <span className="text-xs text-[#475569] font-medium italic">Pending kickoff approval</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 )}
                 
                 <span className="text-xs font-semibold text-brand-purple-light flex items-center gap-1 group-hover:translate-x-1 transition-transform">
@@ -305,6 +356,7 @@ export default function ClientCampaignsPage() {
           <div className="space-y-8">
             
             {/* Quick Badges */}
+<<<<<<< HEAD
             <div className="flex justify-between items-center bg-[#FFFFFF] border border-white/5 p-4 rounded-xl">
               <div>
                 <span className="text-[10px] text-[#6B5F4F] font-bold uppercase tracking-wider block">Campaign Status</span>
@@ -312,14 +364,28 @@ export default function ClientCampaignsPage() {
               </div>
               <div className="text-right">
                 <span className="text-[10px] text-[#6B5F4F] font-bold uppercase tracking-wider block">Active Dates</span>
+=======
+            <div className="flex justify-between items-center bg-[#1A1A27] border border-white/5 p-4 rounded-xl">
+              <div>
+                <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Campaign Status</span>
+                <div className="mt-1">{getStatusBadge(selectedCampaign.status)}</div>
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Active Dates</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <span className="text-sm font-semibold text-white block mt-1">{selectedCampaign.timeline.start} - {selectedCampaign.timeline.end}</span>
               </div>
             </div>
 
             {/* Campaign Brief */}
             <div className="space-y-2">
+<<<<<<< HEAD
               <h3 className="text-xs font-bold text-[#6B5F4F] uppercase tracking-wider">Campaign Brief</h3>
               <p className="text-sm text-[#8A7F6E] leading-relaxed bg-[#F3EBE0]/80 p-4 border border-white/5 rounded-xl">
+=======
+              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Campaign Brief</h3>
+              <p className="text-sm text-[#94A3B8] leading-relaxed bg-[#0D0D14]/80 p-4 border border-white/5 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 {selectedCampaign.brief}
               </p>
             </div>
@@ -327,6 +393,7 @@ export default function ClientCampaignsPage() {
             {/* Campaign Analytics */}
             {selectedCampaign.status !== "Pending" && (
               <div className="space-y-3">
+<<<<<<< HEAD
                 <h3 className="text-xs font-bold text-[#6B5F4F] uppercase tracking-wider">Campaign Analytics Summary</h3>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="bg-[#FFFFFF] border border-white/5 p-4 rounded-xl text-center">
@@ -339,6 +406,20 @@ export default function ClientCampaignsPage() {
                   </div>
                   <div className="bg-[#FFFFFF] border border-white/5 p-4 rounded-xl text-center">
                     <span className="text-[10px] text-[#8A7F6E] block">Engagement</span>
+=======
+                <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Campaign Analytics Summary</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-[#1A1A27] border border-white/5 p-4 rounded-xl text-center">
+                    <span className="text-[10px] text-[#94A3B8] block">Est. Reach</span>
+                    <span className="text-lg font-bold text-white mt-1 block font-[family-name:var(--font-syne)]">{selectedCampaign.performance.reach}</span>
+                  </div>
+                  <div className="bg-[#1A1A27] border border-white/5 p-4 rounded-xl text-center">
+                    <span className="text-[10px] text-[#94A3B8] block">Impressions</span>
+                    <span className="text-lg font-bold text-white mt-1 block font-[family-name:var(--font-syne)]">{selectedCampaign.performance.impressions}</span>
+                  </div>
+                  <div className="bg-[#1A1A27] border border-white/5 p-4 rounded-xl text-center">
+                    <span className="text-[10px] text-[#94A3B8] block">Engagement</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <span className="text-lg font-bold text-white mt-1 block font-[family-name:var(--font-syne)]">{selectedCampaign.performance.engagement}</span>
                   </div>
                 </div>
@@ -347,22 +428,37 @@ export default function ClientCampaignsPage() {
 
             {/* Assigned Creators Detail */}
             <div className="space-y-3">
+<<<<<<< HEAD
               <h3 className="text-xs font-bold text-[#6B5F4F] uppercase tracking-wider">Deployed Creators</h3>
               <div className="space-y-2">
                 {selectedCampaign.assignedCreators.map((cr, idx) => (
                   <div key={idx} className="flex justify-between items-center bg-[#FFFFFF] border border-white/5 p-3 rounded-xl">
+=======
+              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Deployed Creators</h3>
+              <div className="space-y-2">
+                {selectedCampaign.assignedCreators.map((cr, idx) => (
+                  <div key={idx} className="flex justify-between items-center bg-[#1A1A27] border border-white/5 p-3 rounded-xl">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-brand-purple flex items-center justify-center text-xs font-bold text-white">
                         {cr.initials}
                       </div>
                       <div>
                         <span className="text-sm font-semibold text-white block">{cr.name}</span>
+<<<<<<< HEAD
                         <span className="text-xs text-[#8A7F6E] block">{cr.role}</span>
+=======
+                        <span className="text-xs text-[#94A3B8] block">{cr.role}</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       </div>
                     </div>
                     
                     {/* Visual filter categories indicator */}
+<<<<<<< HEAD
                     <span className="text-[10px] px-2 py-0.5 bg-[#F3EBE0] border border-white/5 rounded text-[#8A7F6E] font-medium">
+=======
+                    <span className="text-[10px] px-2 py-0.5 bg-[#0D0D14] border border-white/5 rounded text-[#94A3B8] font-medium">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       Active Creator
                     </span>
                   </div>
@@ -372,7 +468,11 @@ export default function ClientCampaignsPage() {
 
             {/* Deliverables List / Schedule */}
             <div className="space-y-3">
+<<<<<<< HEAD
               <h3 className="text-xs font-bold text-[#6B5F4F] uppercase tracking-wider">Content Deliverables & Schedule</h3>
+=======
+              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Content Deliverables & Schedule</h3>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <div className="space-y-3">
                 {selectedCampaign.deliverables.map((del, idx) => {
                   const getStatusStyle = (status: CreatorDeliverable["status"]) => {
@@ -384,7 +484,11 @@ export default function ClientCampaignsPage() {
                       case "In Production":
                         return "bg-blue-500/10 text-blue-400 border-blue-500/20";
                       case "Not Started":
+<<<<<<< HEAD
                         return "bg-white/5 text-[#6B5F4F] border-white/10";
+=======
+                        return "bg-white/5 text-[#475569] border-white/10";
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     }
                   };
 
@@ -393,9 +497,15 @@ export default function ClientCampaignsPage() {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-white">{del.deliverableType}</span>
+<<<<<<< HEAD
                           <span className="text-[10px] text-[#6B5F4F]">by {del.creatorName}</span>
                         </div>
                         <div className="flex items-center gap-1 text-[10px] text-[#8A7F6E]">
+=======
+                          <span className="text-[10px] text-[#475569]">by {del.creatorName}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[10px] text-[#94A3B8]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                           <Calendar size={10} />
                           <span>Post Target Date: {del.date}</span>
                         </div>
@@ -412,12 +522,20 @@ export default function ClientCampaignsPage() {
 
             {/* Quick approval action if any deliverables are pending */}
             {selectedCampaign.deliverables.some(d => d.status === "Pending Approval") && (
+<<<<<<< HEAD
               <div className="bg-[#B75C3A]/10 border border-[#B75C3A]/20 p-4 rounded-2xl flex flex-col gap-3">
+=======
+              <div className="bg-[#7C3AED]/10 border border-[#7C3AED]/20 p-4 rounded-2xl flex flex-col gap-3">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 <div className="flex items-start gap-2 text-sm text-[#EDEDED]">
                   <AlertCircle size={16} className="text-brand-purple-light shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold block text-brand-purple-light">Creative Assets Awaiting Review</span>
+<<<<<<< HEAD
                     <span className="text-xs text-[#8A7F6E] block mt-0.5">
+=======
+                    <span className="text-xs text-[#94A3B8] block mt-0.5">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       You have 1 deliverable awaiting review in this campaign. Go to messages to review drafts and give feedback.
                     </span>
                   </div>

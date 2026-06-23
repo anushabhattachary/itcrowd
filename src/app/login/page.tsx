@@ -42,7 +42,11 @@ export default function LoginPage() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-[#F3EBE0] flex flex-col items-center justify-center font-[family-name:var(--font-inter)] text-white p-6 selection:bg-brand-purple/30">
+=======
+    <div className="min-h-screen bg-[#0D0D14] flex flex-col items-center justify-center font-[family-name:var(--font-inter)] text-white p-6 selection:bg-brand-purple/30">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
       <Toaster position="top-center" />
       
       {/* Wordmark */}
@@ -53,43 +57,71 @@ export default function LoginPage() {
       </div>
 
       {/* Login Card */}
+<<<<<<< HEAD
       <div className="w-full max-w-[420px] bg-[#FFFFFF] border border-white/10 rounded-[24px] p-8 md:p-10 shadow-2xl shadow-black/50 relative overflow-hidden">
+=======
+      <div className="w-full max-w-[420px] bg-[#1A1A27] border border-white/10 rounded-[24px] p-8 md:p-10 shadow-2xl shadow-black/50 relative overflow-hidden">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         {/* Subtle purple gradient at top of card */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50" />
         
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-2">Welcome back 👋</h1>
+<<<<<<< HEAD
           <p className="text-[#8A7F6E] text-sm">ItCrowd Internal Dashboard</p>
+=======
+          <p className="text-[#94A3B8] text-sm">ItCrowd Internal Dashboard</p>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
+<<<<<<< HEAD
             <label className="text-sm font-medium text-[#8A7F6E]">Email address</label>
+=======
+            <label className="text-sm font-medium text-[#94A3B8]">Email address</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+<<<<<<< HEAD
               className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               placeholder="admin@itcrowd.io"
               required
             />
           </div>
 
           <div className="space-y-2">
+<<<<<<< HEAD
             <label className="text-sm font-medium text-[#8A7F6E]">Password</label>
+=======
+            <label className="text-sm font-medium text-[#94A3B8]">Password</label>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+<<<<<<< HEAD
                 className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+=======
+                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 placeholder="••••••••"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+<<<<<<< HEAD
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A7F6E] hover:text-white transition-colors p-1"
+=======
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-white transition-colors p-1"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -111,7 +143,11 @@ export default function LoginPage() {
         </form>
       </div>
 
+<<<<<<< HEAD
       <p className="mt-8 text-xs text-[#6B5F4F]">
+=======
+      <p className="mt-8 text-xs text-[#475569]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         ItCrowd LLC · Internal Use Only
       </p>
     </div>

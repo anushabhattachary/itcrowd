@@ -122,26 +122,46 @@ export default function InfluencersPage() {
     <div className="space-y-6">
       
       {/* Action Bar */}
+<<<<<<< HEAD
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-[#FFFFFF] p-4 rounded-2xl border border-white/5 shadow-xl">
         <div className="flex flex-1 gap-2 w-full sm:w-auto">
           {/* Search */}
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A7F6E]" size={18} />
+=======
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-[#1A1A27] p-4 rounded-2xl border border-white/5 shadow-xl">
+        <div className="flex flex-1 gap-2 w-full sm:w-auto">
+          {/* Search */}
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             <input 
               type="text" 
               placeholder="Search handle or name..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
+<<<<<<< HEAD
               className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+=======
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             />
           </div>
           {/* Filter */}
           <div className="relative">
+<<<<<<< HEAD
             <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A7F6E]" size={18} />
             <select 
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
               className="appearance-none bg-[#F3EBE0] border border-white/10 rounded-xl pl-10 pr-8 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+=======
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+            <select 
+              value={statusFilter}
+              onChange={e => setStatusFilter(e.target.value)}
+              className="appearance-none bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-8 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             >
               <option value="All">All Statuses</option>
               {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -158,10 +178,17 @@ export default function InfluencersPage() {
       </div>
 
       {/* Table */}
+<<<<<<< HEAD
       <div className="bg-[#FFFFFF] rounded-2xl border border-white/5 shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="bg-[#F3EBE0] text-[#8A7F6E] border-b border-white/5">
+=======
+      <div className="bg-[#1A1A27] rounded-2xl border border-white/5 shadow-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-[#0D0D14] text-[#94A3B8] border-b border-white/5">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <tr>
                 <th className="px-6 py-4 font-medium flex items-center gap-1 cursor-pointer hover:text-white">Handle / Name <ArrowUpDown size={14}/></th>
                 <th className="px-6 py-4 font-medium">Platform</th>
@@ -175,14 +202,22 @@ export default function InfluencersPage() {
             <tbody className="divide-y divide-white/5">
               {isLoading ? (
                 <tr>
+<<<<<<< HEAD
                   <td colSpan={7} className="px-6 py-12 text-center text-[#8A7F6E]">
+=======
+                  <td colSpan={7} className="px-6 py-12 text-center text-[#94A3B8]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <Loader2 className="animate-spin mx-auto mb-2" size={24} />
                     Loading influencers...
                   </td>
                 </tr>
               ) : filteredInfluencers.length === 0 ? (
                  <tr>
+<<<<<<< HEAD
                   <td colSpan={7} className="px-6 py-12 text-center text-[#8A7F6E]">
+=======
+                  <td colSpan={7} className="px-6 py-12 text-center text-[#94A3B8]">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     No influencers found.
                   </td>
                 </tr>
@@ -191,7 +226,11 @@ export default function InfluencersPage() {
                   <tr key={i.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-4 cursor-pointer" onClick={() => alert('Detail page to be built!')}>
                       <div className="font-bold text-white hover:text-brand-purple transition-colors">{i.handle}</div>
+<<<<<<< HEAD
                       <div className="text-xs text-[#8A7F6E]">{i.full_name}</div>
+=======
+                      <div className="text-xs text-[#94A3B8]">{i.full_name}</div>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     </td>
                     <td className="px-6 py-4">
                       <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-white">{i.platform}</span>
@@ -200,9 +239,15 @@ export default function InfluencersPage() {
                       {formatFollowers(i.follower_count)}
                     </td>
                     <td className="px-6 py-4">
+<<<<<<< HEAD
                       <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-[#8A7F6E]">{i.niche}</span>
                     </td>
                     <td className="px-6 py-4 text-[#8A7F6E]">{i.deal_preference}</td>
+=======
+                      <span className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-[#94A3B8]">{i.niche}</span>
+                    </td>
+                    <td className="px-6 py-4 text-[#94A3B8]">{i.deal_preference}</td>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full border text-xs font-semibold ${
                         i.status === 'Active in Network' ? 'bg-brand-lime/20 border-brand-lime/30 text-brand-lime' :
@@ -214,8 +259,13 @@ export default function InfluencersPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<<<<<<< HEAD
                         <button className="p-1.5 text-[#8A7F6E] hover:text-white rounded hover:bg-white/10"><Edit2 size={16} /></button>
                         <button className="p-1.5 text-[#8A7F6E] hover:text-red-400 rounded hover:bg-red-400/10"><Archive size={16} /></button>
+=======
+                        <button className="p-1.5 text-[#94A3B8] hover:text-white rounded hover:bg-white/10"><Edit2 size={16} /></button>
+                        <button className="p-1.5 text-[#94A3B8] hover:text-red-400 rounded hover:bg-red-400/10"><Archive size={16} /></button>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                       </div>
                     </td>
                   </tr>
@@ -236,59 +286,103 @@ export default function InfluencersPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pb-10">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
+<<<<<<< HEAD
               <label className="text-sm font-medium text-[#8A7F6E]">Full Name *</label>
               <input required {...register("full_name")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
             </div>
             <div className="space-y-1">
               <label className="text-sm font-medium text-[#8A7F6E]">Handle *</label>
               <input required placeholder="@username" {...register("handle")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+=======
+              <label className="text-sm font-medium text-[#94A3B8]">Full Name *</label>
+              <input required {...register("full_name")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-[#94A3B8]">Handle *</label>
+              <input required placeholder="@username" {...register("handle")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
              <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-[#8A7F6E]">Platform *</label>
                 <select required {...register("platform")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white">
+=======
+                <label className="text-sm font-medium text-[#94A3B8]">Platform *</label>
+                <select required {...register("platform")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   {PLATFORMS.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
              </div>
              <div className="space-y-1">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-[#8A7F6E]">Followers *</label>
                 <input required type="number" min="0" {...register("follower_count", { valueAsNumber: true })} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+=======
+                <label className="text-sm font-medium text-[#94A3B8]">Followers *</label>
+                <input required type="number" min="0" {...register("follower_count", { valueAsNumber: true })} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
              </div>
           </div>
 
           <div className="space-y-1">
+<<<<<<< HEAD
             <label className="text-sm font-medium text-[#8A7F6E]">Content Niche *</label>
             <select required {...register("niche")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white">
+=======
+            <label className="text-sm font-medium text-[#94A3B8]">Content Niche *</label>
+            <select required {...register("niche")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               {NICHES.map(n => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
 
           <div className="space-y-1">
+<<<<<<< HEAD
             <label className="text-sm font-medium text-[#8A7F6E]">Contact Email *</label>
             <input required type="email" {...register("contact_email")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+=======
+            <label className="text-sm font-medium text-[#94A3B8]">Contact Email *</label>
+            <input required type="email" {...register("contact_email")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           </div>
 
           <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-4">
             <h4 className="font-semibold text-white">Deal Structuring</h4>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
+<<<<<<< HEAD
                   <label className="text-sm text-[#8A7F6E]">Preference *</label>
                   <select required {...register("deal_preference")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-3 py-2 text-white">
+=======
+                  <label className="text-sm text-[#94A3B8]">Preference *</label>
+                  <select required {...register("deal_preference")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-3 py-2 text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                     {DEAL_TYPES.map(d => <option key={d} value={d}>{d}</option>)}
                   </select>
               </div>
               <div className="space-y-1">
+<<<<<<< HEAD
                   <label className="text-sm text-[#8A7F6E]">Expected Rate (Optional)</label>
                   <input type="number" placeholder="$ / post" {...register("monthly_rate", { valueAsNumber: true })} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-3 py-2 text-white" />
+=======
+                  <label className="text-sm text-[#94A3B8]">Expected Rate (Optional)</label>
+                  <input type="number" placeholder="$ / post" {...register("monthly_rate", { valueAsNumber: true })} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-3 py-2 text-white" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               </div>
             </div>
           </div>
 
           <div className="space-y-1">
+<<<<<<< HEAD
               <label className="text-sm font-medium text-[#8A7F6E]">Status *</label>
               <select required {...register("status")} className="w-full bg-[#F3EBE0] border border-white/10 rounded-xl px-4 py-2.5 text-white">
+=======
+              <label className="text-sm font-medium text-[#94A3B8]">Status *</label>
+              <select required {...register("status")} className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
           </div>

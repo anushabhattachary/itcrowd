@@ -67,11 +67,19 @@ export default function DashboardLayout({
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex bg-[#F3EBE0] min-h-screen text-white font-[family-name:var(--font-inter)] selection:bg-brand-purple/30">
       <Toaster position="top-right" />
 
       {/* Sidebar - Fixed 240px */}
       <aside className="w-[240px] fixed top-0 bottom-0 left-0 bg-[#FBF6EF] border-r border-white/5 flex flex-col z-20">
+=======
+    <div className="flex bg-[#0D0D14] min-h-screen text-white font-[family-name:var(--font-inter)] selection:bg-brand-purple/30">
+      <Toaster position="top-right" />
+
+      {/* Sidebar - Fixed 240px */}
+      <aside className="w-[240px] fixed top-0 bottom-0 left-0 bg-[#111118] border-r border-white/5 flex flex-col z-20">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
         <div className="p-6">
           <Link href="/dashboard" className="flex items-center gap-1 group">
              <span className="text-xl font-extrabold tracking-tight font-[family-name:var(--font-syne)] flex items-center">
@@ -82,7 +90,11 @@ export default function DashboardLayout({
 
         <nav className="flex-1 mt-4 space-y-6 overflow-y-auto px-4 pb-4">
           <div className="space-y-1">
+<<<<<<< HEAD
             <span className="px-2 text-[10px] font-semibold tracking-wider text-[#6B5F4F] uppercase">Manage</span>
+=======
+            <span className="px-2 text-[10px] font-semibold tracking-wider text-[#475569] uppercase">Manage</span>
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               return (
@@ -92,7 +104,11 @@ export default function DashboardLayout({
                   className={`flex items-center px-3 py-2 text-sm font-medium rounded-xl transition-all ${
                     isActive
                       ? "bg-brand-purple/15 text-brand-purple-light border-l-2 border-brand-purple"
+<<<<<<< HEAD
                       : "text-[#8A7F6E] hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+=======
+                      : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
                   }`}
                 >
                   <item.icon size={16} className="mr-3" />
@@ -103,6 +119,7 @@ export default function DashboardLayout({
           </div>
 
           <div className="space-y-1">
+<<<<<<< HEAD
             <span className="px-2 text-[10px] font-semibold tracking-wider text-[#6B5F4F] uppercase">Coming Soon</span>
             {comingSoonItems.map((item, idx) => (
               <div
@@ -114,6 +131,19 @@ export default function DashboardLayout({
                   <span>{item.label}</span>
                 </div>
                 <Lock size={12} className="text-[#6B5F4F]" />
+=======
+            <span className="px-2 text-[10px] font-semibold tracking-wider text-[#475569] uppercase">Coming Soon</span>
+            {comingSoonItems.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between px-3 py-2 text-sm font-medium text-[#475569] cursor-not-allowed opacity-60"
+              >
+                <div className="flex items-center">
+                  <item.icon size={16} className="mr-3 text-[#475569]" />
+                  <span>{item.label}</span>
+                </div>
+                <Lock size={12} className="text-[#475569]" />
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               </div>
             ))}
           </div>
@@ -128,7 +158,11 @@ export default function DashboardLayout({
               <span className="text-sm font-medium">Anusha</span>
               <button 
                 onClick={handleSignOut}
+<<<<<<< HEAD
                 className="text-xs text-[#6B5F4F] hover:text-red-400 text-left flex items-center mt-0.5 transition-colors"
+=======
+                className="text-xs text-[#475569] hover:text-red-400 text-left flex items-center mt-0.5 transition-colors"
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               >
                 Sign Out <LogOut size={10} className="ml-1" />
               </button>
@@ -140,12 +174,20 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <div className="flex-1 ml-[240px] flex flex-col min-h-screen">
         {/* Top Bar */}
+<<<<<<< HEAD
         <header className="h-[72px] sticky top-0 z-10 bg-[#F3EBE0]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8">
+=======
+        <header className="h-[72px] sticky top-0 z-10 bg-[#0D0D14]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
           <h1 className="text-xl font-bold font-[family-name:var(--font-syne)]">
             {getPageTitle()}
           </h1>
           <div className="flex items-center gap-4">
+<<<<<<< HEAD
             <button className="relative text-[#8A7F6E] hover:text-white transition-colors p-2 rounded-full hover:bg-white/5">
+=======
+            <button className="relative text-[#94A3B8] hover:text-white transition-colors p-2 rounded-full hover:bg-white/5">
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
               <Bell size={20} />
               {/* Fake notification dot */}
               <span className="absolute top-2 right-2 w-2 h-2 bg-brand-purple rounded-full"></span>

@@ -12,7 +12,10 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+<<<<<<< HEAD
     "@supabase/server": "^1.1.0",
+=======
+>>>>>>> 912562a6778607aa6923283aa91c00a69a41cb32
     "@supabase/supabase-js": "^2.101.1",
     "@vercel/analytics": "^2.0.1",
     "date-fns": "^4.1.0",
