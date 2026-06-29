@@ -111,8 +111,14 @@ export default function LoginPage() {
         </form>
       </div>
 
-      <p className="mt-8 text-xs text-[#475569]">
-        ItCrowd LLC · Internal Use Only
+      <p className="mt-6 text-sm text-[#94A3B8]">
+        New to ItCrowd?{" "}
+        <a href="/signup" className="text-brand-purple hover:text-brand-purple-light font-semibold transition-colors">
+          Create an account
+        </a>
+      </p>
+      <p className="mt-3 text-xs text-[#475569]">
+        ItCrowd LLC · Businesses & Creators
       </p>
     </div>
   );

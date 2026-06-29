@@ -1,453 +1,700 @@
 "use client";
 
-import { useState } from "react";
-import { 
-  Calendar, 
-  Users, 
-  Sparkles, 
-  CheckCircle2, 
-  Clock, 
-  PauseCircle, 
-  AlertCircle,
-  ChevronRight,
-  TrendingUp,
+import { useEffect, useState } from "react";
+import {
+  Plus,
+  Loader2,
+  Users,
+  Megaphone,
+  Building2,
+  CheckCircle2,
   Award,
-  Video,
-  Camera,
-  Layers,
-  ArrowRight,
-  Plus
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useAccount } from "@/lib/account-context";
 import SlideDrawer from "@/components/ui/SlideDrawer";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
-// Mock Campaign Type
-interface CreatorDeliverable {
-  creatorName: string;
-  creatorType: "Athlete" | "Influencer" | "Photographer" | "Videographer";
-  deliverableType: string;
-  status: "Completed" | "Pending Approval" | "In Production" | "Not Started";
-  date: string;
-}
+type CampaignStatus =
+  | "Matching"
+  | "Outreach Sent"
+  | "Negotiating"
+  | "Campaign Live"
+  | "Completed";
 
-interface Campaign {
+type DealType = "Cash" | "Equity" | "Both" | null;
+
+const STATUSES: CampaignStatus[] = [
+  "Matching",
+  "Outreach Sent",
+  "Negotiating",
+  "Campaign Live",
+  "Completed",
+];
+
+const DEAL_TYPES: Exclude<DealType, null>[] = ["Cash", "Equity", "Both"];
+
+// ----- Row shapes returned by the Supabase queries -----
+type CompanyOption = {
   id: string;
-  name: string;
-  status: "Active" | "Completed" | "Pending" | "Paused";
-  brief: string;
-  creatorTypes: ("Athlete" | "Influencer" | "Photographer" | "Videographer")[];
-  assignedCreators: { name: string; initials: string; role: string }[];
-  deliverablesProgress: { completed: number; total: number };
-  timeline: { start: string; end: string };
-  performance: { reach: string; engagement: string; impressions: string };
-  deliverables: CreatorDeliverable[];
+  company_name: string;
+};
+
+type AdminCampaign = {
+  id: string;
+  campaign_name: string;
+  deal_type: DealType;
+  status: CampaignStatus;
+  start_date: string | null;
+  end_date: string | null;
+  companies: { company_name: string } | null;
+};
+
+type AttachedInfluencer = {
+  influencer_id: string;
+  influencers: { full_name: string; handle: string } | null;
+};
+
+type BusinessCampaign = {
+  id: string;
+  campaign_name: string;
+  status: CampaignStatus;
+  posts_per_month_target: number;
+  campaign_influencers: AttachedInfluencer[];
+};
+
+type InfluencerCampaignRow = {
+  campaign_id: string;
+  campaigns:
+    | {
+        id: string;
+        campaign_name: string;
+        status: CampaignStatus;
+        companies: { company_name: string } | null;
+      }
+    | null;
+};
+
+type CampaignFormData = {
+  campaign_name: string;
+  company_id: string;
+  deal_type: "" | Exclude<DealType, null>;
+  status: CampaignStatus;
+  posts_per_month_target: number;
+  notes?: string;
+};
+
+// ----- Shared helpers -----
+function statusBadgeClasses(status: CampaignStatus): string {
+  switch (status) {
+    case "Campaign Live":
+      return "bg-brand-lime/20 border-brand-lime/30 text-brand-lime";
+    case "Completed":
+      return "bg-brand-purple/20 border-brand-purple/30 text-brand-purple-light";
+    case "Matching":
+      return "bg-gray-500/20 border-gray-500/30 text-gray-300";
+    default:
+      return "bg-blue-500/20 border-blue-500/30 text-blue-300";
+  }
 }
 
-export default function ClientCampaignsPage() {
-  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
+function StatusBadge({ status }: { status: CampaignStatus }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-semibold ${statusBadgeClasses(
+        status
+      )}`}
+    >
+      {status === "Campaign Live" ? (
+        <CheckCircle2 size={12} />
+      ) : status === "Completed" ? (
+        <Award size={12} />
+      ) : null}
+      {status}
+    </span>
+  );
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+function formatDate(value: string | null): string {
+  if (!value) return "—";
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? value : d.toLocaleDateString();
+}
+
+function PageHeader({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+      <div>
+        <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">
+          {title}
+        </h1>
+        <p className="text-sm text-[#94A3B8] mt-1">{subtitle}</p>
+      </div>
+      {action}
+    </div>
+  );
+}
+
+function LoadingState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-24 text-[#94A3B8]">
+      <Loader2 className="animate-spin mb-3" size={28} />
+      <span className="text-sm">Loading campaigns…</span>
+    </div>
+  );
+}
+
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl py-20 px-6 text-center">
+      <Megaphone className="mx-auto mb-3 text-[#475569]" size={32} />
+      <p className="text-sm text-[#94A3B8]">{message}</p>
+    </div>
+  );
+}
+
+// =====================================================================
+// ADMIN VIEW
+// =====================================================================
+function AdminCampaigns() {
+  const [campaigns, setCampaigns] = useState<AdminCampaign[]>([]);
+  const [companies, setCompanies] = useState<CompanyOption[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // Mock campaigns data
-  const campaigns: Campaign[] = [
-    {
-      id: "c1",
-      name: "Summer Sweat Challenge",
-      status: "Active",
-      brief: "Promoting Glow Fitness Midtown's summer memberships by highlighting high-intensity interval workouts, creator visits, and refreshing post-workout routines. Goal is local brand familiarity and lead generation.",
-      creatorTypes: ["Athlete", "Influencer", "Videographer"],
-      assignedCreators: [
-        { name: "Jordan Carter", initials: "JC", role: "NIL Athlete" },
-        { name: "Sophia Martinez", initials: "SM", role: "Influencer" },
-        { name: "Zach Miller", initials: "ZM", role: "Videographer" }
-      ],
-      deliverablesProgress: { completed: 4, total: 6 },
-      timeline: { start: "Jun 1, 2026", end: "Jul 15, 2026" },
-      performance: { reach: "45.2K", engagement: "9.2%", impressions: "72.4K" },
-      deliverables: [
-        { creatorName: "Jordan Carter", creatorType: "Athlete", deliverableType: "Instagram Reel", status: "Completed", date: "Jun 8, 2026" },
-        { creatorName: "Jordan Carter", creatorType: "Athlete", deliverableType: "Instagram Reel", status: "Pending Approval", date: "Jun 29, 2026" },
-        { creatorName: "Sophia Martinez", creatorType: "Influencer", deliverableType: "Instagram Carousel", status: "Completed", date: "Jun 3, 2026" },
-        { creatorName: "Sophia Martinez", creatorType: "Influencer", deliverableType: "Instagram Stories (Set of 3)", status: "Completed", date: "Jun 15, 2026" },
-        { creatorName: "Zach Miller", creatorType: "Videographer", deliverableType: "TikTok Promo Video", status: "Completed", date: "Jun 22, 2026" },
-        { creatorName: "Zach Miller", creatorType: "Videographer", deliverableType: "Summer sweat compilation", status: "In Production", date: "Jul 5, 2026" }
-      ]
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<CampaignFormData>({
+    defaultValues: {
+      campaign_name: "",
+      company_id: "",
+      deal_type: "",
+      status: "Matching",
+      posts_per_month_target: 2,
+      notes: "",
     },
-    {
-      id: "c2",
-      name: "Midtown Studio Grand Opening",
-      status: "Completed",
-      brief: "Celebrating the launch of the new Midtown boutique studio location. Deployed local lifestyle influencers and professional photographers to showcase the physical space, amenities, and grand opening launch party.",
-      creatorTypes: ["Influencer", "Photographer"],
-      assignedCreators: [
-        { name: "Emma Watson", initials: "EW", role: "Influencer" },
-        { name: "Liam Davis", initials: "LD", role: "Photographer" }
-      ],
-      deliverablesProgress: { completed: 8, total: 8 },
-      timeline: { start: "May 1, 2026", end: "May 28, 2026" },
-      performance: { reach: "68.5K", engagement: "8.7%", impressions: "112.9K" },
-      deliverables: [
-        { creatorName: "Emma Watson", creatorType: "Influencer", deliverableType: "Grand Opening Reel", status: "Completed", date: "May 15, 2026" },
-        { creatorName: "Emma Watson", creatorType: "Influencer", deliverableType: "Post-workout routine Carousel", status: "Completed", date: "May 20, 2026" },
-        { creatorName: "Emma Watson", creatorType: "Influencer", deliverableType: "Studio Tour Video", status: "Completed", date: "May 22, 2026" },
-        { creatorName: "Liam Davis", creatorType: "Photographer", deliverableType: "Grand Opening event photos (25 assets)", status: "Completed", date: "May 15, 2026" },
-        { creatorName: "Liam Davis", creatorType: "Photographer", deliverableType: "Studio interior photography (15 assets)", status: "Completed", date: "May 10, 2026" },
-        { creatorName: "Liam Davis", creatorType: "Photographer", deliverableType: "Trainer profile portraits (10 assets)", status: "Completed", date: "May 12, 2026" },
-        { creatorName: "Emma Watson", creatorType: "Influencer", deliverableType: "Stories Q&A on membership promo", status: "Completed", date: "May 25, 2026" },
-        { creatorName: "Liam Davis", creatorType: "Photographer", deliverableType: "Action workout shots", status: "Completed", date: "May 28, 2026" }
-      ]
-    },
-    {
-      id: "c3",
-      name: "Athlete Fall Kickoff Campaign",
-      status: "Pending",
-      brief: "Connecting local college student-athletes to Glow Fitness for the upcoming fall semester. Focus on students returning to campus, student discount memberships, and athlete training routines at our facilities.",
-      creatorTypes: ["Athlete", "Videographer"],
-      assignedCreators: [
-        { name: "Marcus Harris", initials: "MH", role: "NIL Athlete" },
-        { name: "Chloe Bennett", initials: "CB", role: "Videographer" }
-      ],
-      deliverablesProgress: { completed: 0, total: 4 },
-      timeline: { start: "Aug 15, 2026", end: "Sep 30, 2026" },
-      performance: { reach: "0", engagement: "0%", impressions: "0" },
-      deliverables: [
-        { creatorName: "Marcus Harris", creatorType: "Athlete", deliverableType: "Instagram Reel: Workout prep", status: "Not Started", date: "Aug 20, 2026" },
-        { creatorName: "Marcus Harris", creatorType: "Athlete", deliverableType: "Instagram Reel: Back-to-class routine", status: "Not Started", date: "Sep 5, 2026" },
-        { creatorName: "Chloe Bennett", creatorType: "Videographer", deliverableType: "Promo video: Gym facilities tour", status: "Not Started", date: "Aug 15, 2026" },
-        { creatorName: "Chloe Bennett", creatorType: "Videographer", deliverableType: "Instagram Reel compilation", status: "Not Started", date: "Sep 20, 2026" }
-      ]
-    },
-    {
-      id: "c4",
-      name: "Winter Chill Recovery Program",
-      status: "Paused",
-      brief: "Focusing on physical recovery, mindfulness, cold plunges, and recovery routines during the colder months. Designed to retain members post-New Years resolutions peak.",
-      creatorTypes: ["Influencer", "Photographer"],
-      assignedCreators: [
-        { name: "Sophia Martinez", initials: "SM", role: "Influencer" },
-        { name: "Liam Davis", initials: "LD", role: "Photographer" }
-      ],
-      deliverablesProgress: { completed: 1, total: 4 },
-      timeline: { start: "Jan 5, 2026", end: "Feb 15, 2026" },
-      performance: { reach: "11.1K", engagement: "6.5%", impressions: "18.3K" },
-      deliverables: [
-        { creatorName: "Sophia Martinez", creatorType: "Influencer", deliverableType: "Recovery routine Vlog", status: "Completed", date: "Jan 10, 2026" },
-        { creatorName: "Sophia Martinez", creatorType: "Influencer", deliverableType: "Cold plunge challenge Stories", status: "In Production", date: "Jan 25, 2026" },
-        { creatorName: "Liam Davis", creatorType: "Photographer", deliverableType: "Yoga class photoshoot (15 assets)", status: "Not Started", date: "Jan 30, 2026" },
-        { creatorName: "Liam Davis", creatorType: "Photographer", deliverableType: "Sauna session photography (10 assets)", status: "Not Started", date: "Feb 5, 2026" }
-      ]
-    }
-  ];
+  });
 
-  const getStatusBadge = (status: Campaign["status"]) => {
-    switch (status) {
-      case "Active":
-        return <span className="flex items-center gap-1.5 px-3 py-1 bg-brand-lime/10 border border-brand-lime/30 text-brand-lime text-xs font-semibold rounded-full"><CheckCircle2 size={12} /> Active</span>;
-      case "Completed":
-        return <span className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 text-[#94A3B8] text-xs font-semibold rounded-full"><Award size={12} /> Completed</span>;
-      case "Pending":
-        return <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-semibold rounded-full"><Clock size={12} /> Pending</span>;
-      case "Paused":
-        return <span className="flex items-center gap-1.5 px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold rounded-full"><PauseCircle size={12} /> Paused</span>;
+  const loadCampaigns = async () => {
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from("campaigns")
+      .select("*, companies(company_name)")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast.error("Failed to load campaigns");
+    } else {
+      setCampaigns((data ?? []) as AdminCampaign[]);
     }
+    setIsLoading(false);
   };
 
-  const getCreatorTypeIcon = (type: "Athlete" | "Influencer" | "Photographer" | "Videographer") => {
-    switch (type) {
-      case "Athlete":
-        return <span title="NIL Athlete"><Users size={12} /></span>;
-      case "Influencer":
-        return <span title="Influencer"><Sparkles size={12} /></span>;
-      case "Photographer":
-        return <span title="Photographer"><Camera size={12} /></span>;
-      case "Videographer":
-        return <span title="Videographer"><Video size={12} /></span>;
-    }
-  };
+  useEffect(() => {
+    let active = true;
+    const init = async () => {
+      const [campaignRes, companyRes] = await Promise.all([
+        supabase
+          .from("campaigns")
+          .select("*, companies(company_name)")
+          .order("created_at", { ascending: false }),
+        supabase.from("companies").select("id, company_name"),
+      ]);
+      if (!active) return;
+      if (campaignRes.error) {
+        toast.error("Failed to load campaigns");
+      } else {
+        setCampaigns((campaignRes.data ?? []) as AdminCampaign[]);
+      }
+      if (!companyRes.error) {
+        setCompanies((companyRes.data ?? []) as CompanyOption[]);
+      }
+      setIsLoading(false);
+    };
+    init();
+    return () => {
+      active = false;
+    };
+  }, []);
 
-  const openCampaignDetail = (campaign: Campaign) => {
-    setSelectedCampaign(campaign);
-    setIsDrawerOpen(true);
+  const onSubmit = async (form: CampaignFormData) => {
+    const payload = {
+      campaign_name: form.campaign_name,
+      company_id: form.company_id,
+      deal_type: form.deal_type === "" ? null : form.deal_type,
+      status: form.status,
+      posts_per_month_target: form.posts_per_month_target,
+      notes: form.notes || null,
+    };
+    const { error } = await supabase.from("campaigns").insert([payload]);
+    if (error) {
+      toast.error(`Error: ${error.message}`);
+      return;
+    }
+    toast.success("Campaign created!");
+    setIsDrawerOpen(false);
+    reset();
+    loadCampaigns();
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Header and Filter */}
-      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">Marketing Campaigns</h1>
-          <p className="text-sm text-[#94A3B8] mt-1">Manage, approve, and track creator activations for your business.</p>
-        </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Campaigns"
+        subtitle="Every campaign across all businesses."
+        action={
+          <button
+            onClick={() => setIsDrawerOpen(true)}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-purple hover:bg-brand-purple-light text-white px-5 py-2.5 rounded-xl font-medium btn-glow"
+          >
+            <Plus size={18} /> Add Campaign
+          </button>
+        }
+      />
 
-        {/* Quick action for support */}
-        <button 
-          onClick={() => window.location.href = "/dashboard/messages"} 
-          className="flex items-center justify-center gap-2 bg-brand-purple text-white px-4 py-2.5 rounded-xl font-medium btn-glow text-sm"
-        >
-          <Plus size={16} /> Request New Campaign
-        </button>
+      <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-[#0D0D14] text-[#94A3B8] border-b border-white/5">
+              <tr>
+                <th className="px-6 py-4 font-medium">Campaign</th>
+                <th className="px-6 py-4 font-medium">Company</th>
+                <th className="px-6 py-4 font-medium">Deal Type</th>
+                <th className="px-6 py-4 font-medium">Status</th>
+                <th className="px-6 py-4 font-medium">Start</th>
+                <th className="px-6 py-4 font-medium">End</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-16 text-center text-[#94A3B8]">
+                    <Loader2 className="animate-spin mx-auto mb-2" size={24} />
+                    Loading campaigns…
+                  </td>
+                </tr>
+              ) : campaigns.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-16 text-center text-[#94A3B8]">
+                    No campaigns yet. Create your first one.
+                  </td>
+                </tr>
+              ) : (
+                campaigns.map((c) => (
+                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-4 font-bold text-white">
+                      {c.campaign_name}
+                    </td>
+                    <td className="px-6 py-4 text-[#94A3B8]">
+                      {c.companies?.company_name ?? "—"}
+                    </td>
+                    <td className="px-6 py-4 text-[#94A3B8]">
+                      {c.deal_type ?? "—"}
+                    </td>
+                    <td className="px-6 py-4">
+                      <StatusBadge status={c.status} />
+                    </td>
+                    <td className="px-6 py-4 text-[#475569]">
+                      {formatDate(c.start_date)}
+                    </td>
+                    <td className="px-6 py-4 text-[#475569]">
+                      {formatDate(c.end_date)}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Campaigns List Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {campaigns.map((c) => {
-          const progressPercent = Math.round((c.deliverablesProgress.completed / c.deliverablesProgress.total) * 100) || 0;
-          return (
-            <div 
-              key={c.id}
-              onClick={() => openCampaignDetail(c)}
-              className="bg-[#1A1A27] border border-white/5 hover:border-brand-purple/20 rounded-2xl p-6 shadow-xl flex flex-col justify-between cursor-pointer group transition-all hover:-translate-y-0.5 hover:shadow-brand-purple/5 relative"
+      <SlideDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title="Add New Campaign"
+        width="w-[85vw] sm:w-[480px]"
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">
+              Campaign Name *
+            </label>
+            <input
+              required
+              {...register("campaign_name")}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Company *</label>
+            <select
+              required
+              {...register("company_id")}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
             >
-              {/* Top Row */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-start">
-                  {getStatusBadge(c.status)}
-                  <div className="flex items-center gap-1.5 text-xs text-[#475569]">
-                    <Calendar size={12} />
-                    <span>{c.timeline.start} - {c.timeline.end}</span>
-                  </div>
-                </div>
+              <option value="">Select a company…</option>
+              {companies.map((co) => (
+                <option key={co.id} value={co.id}>
+                  {co.company_name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-white group-hover:text-brand-purple-light transition-colors font-[family-name:var(--font-syne)]">
-                    {c.name}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-[#94A3B8]">
+                Deal Type
+              </label>
+              <select
+                {...register("deal_type")}
+                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              >
+                <option value="">None</option>
+                {DEAL_TYPES.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-[#94A3B8]">
+                Posts / Month
+              </label>
+              <input
+                type="number"
+                min="0"
+                {...register("posts_per_month_target", { valueAsNumber: true })}
+                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Status *</label>
+            <select
+              required
+              {...register("status")}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+            >
+              {STATUSES.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">
+              Notes (Optional)
+            </label>
+            <textarea
+              {...register("notes")}
+              rows={4}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+            />
+          </div>
+
+          <div className="pt-6 flex gap-3">
+            <button
+              type="button"
+              onClick={() => setIsDrawerOpen(false)}
+              className="flex-1 px-4 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-medium transition-colors text-white"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl font-medium btn-glow flex justify-center items-center py-3"
+            >
+              {isSubmitting ? (
+                <Loader2 className="animate-spin" size={18} />
+              ) : (
+                "Save Campaign"
+              )}
+            </button>
+          </div>
+        </form>
+      </SlideDrawer>
+    </div>
+  );
+}
+
+// =====================================================================
+// BUSINESS VIEW
+// =====================================================================
+function BusinessCampaigns({ companyId }: { companyId: string | null }) {
+  const [campaigns, setCampaigns] = useState<BusinessCampaign[]>([]);
+  const [contentCounts, setContentCounts] = useState<Record<string, number>>({});
+  const [isLoading, setIsLoading] = useState(companyId !== null);
+
+  useEffect(() => {
+    if (!companyId) return;
+    let active = true;
+    const load = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("campaigns")
+        .select(
+          "*, campaign_influencers(influencer_id, influencers(full_name, handle))"
+        )
+        .eq("company_id", companyId)
+        .order("created_at", { ascending: false });
+
+      if (!active) return;
+      if (error) {
+        toast.error("Failed to load campaigns");
+        setIsLoading(false);
+        return;
+      }
+
+      const rows = (data ?? []) as BusinessCampaign[];
+      setCampaigns(rows);
+
+      const ids = rows.map((r) => r.id);
+      if (ids.length > 0) {
+        const { data: contentRows } = await supabase
+          .from("content")
+          .select("campaign_id")
+          .in("campaign_id", ids);
+        if (active && contentRows) {
+          const counts: Record<string, number> = {};
+          for (const row of contentRows as { campaign_id: string }[]) {
+            counts[row.campaign_id] = (counts[row.campaign_id] ?? 0) + 1;
+          }
+          setContentCounts(counts);
+        }
+      }
+      setIsLoading(false);
+    };
+    load();
+    return () => {
+      active = false;
+    };
+  }, [companyId]);
+
+  if (!companyId) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="My Campaigns"
+          subtitle="Track your creator activations."
+        />
+        <EmptyState message="No company is linked to your account yet." />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="My Campaigns"
+        subtitle="Track your creator activations and deliverables."
+      />
+
+      {isLoading ? (
+        <LoadingState />
+      ) : campaigns.length === 0 ? (
+        <EmptyState message="You don't have any campaigns yet." />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {campaigns.map((c) => {
+            const creators = c.campaign_influencers ?? [];
+            const target = c.posts_per_month_target || 0;
+            const done = contentCounts[c.id] ?? 0;
+            const percent =
+              target > 0 ? Math.min(100, Math.round((done / target) * 100)) : 0;
+            return (
+              <div
+                key={c.id}
+                className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col gap-5"
+              >
+                <div className="flex justify-between items-start gap-3">
+                  <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+                    {c.campaign_name}
                   </h3>
-                  <p className="text-xs text-[#94A3B8] line-clamp-2 leading-relaxed">
-                    {c.brief}
-                  </p>
+                  <StatusBadge status={c.status} />
                 </div>
-              </div>
 
-              {/* Middle Section: Progress and Creators */}
-              <div className="my-6 space-y-4">
-                {/* Deliverables Progress */}
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <div className="flex justify-between text-xs font-semibold">
-                    <span className="text-[#94A3B8]">Deliverables Progress</span>
-                    <span className="text-white">{c.deliverablesProgress.completed}/{c.deliverablesProgress.total}</span>
+                    <span className="text-[#94A3B8]">Deliverables</span>
+                    <span className="text-white">
+                      {done}/{target}
+                    </span>
                   </div>
                   <div className="h-1.5 w-full bg-[#0D0D14] rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full rounded-full transition-all duration-500 ${c.status === 'Completed' ? 'bg-brand-lime' : 'bg-brand-purple'}`} 
-                      style={{ width: `${progressPercent}%` }} 
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        c.status === "Completed"
+                          ? "bg-brand-lime"
+                          : "bg-brand-purple"
+                      }`}
+                      style={{ width: `${percent}%` }}
                     />
                   </div>
                 </div>
 
-                {/* Assigned Creators with avatar group */}
-                <div className="flex justify-between items-center pt-2">
-                  <div className="flex items-center">
-                    <span className="text-xs text-[#475569] font-bold mr-2 uppercase tracking-wider">Creators</span>
-                    <div className="flex -space-x-2">
-                      {c.assignedCreators.map((cr, idx) => (
-                        <div 
-                          key={idx} 
-                          title={`${cr.name} (${cr.role})`}
-                          className="w-7 h-7 rounded-full bg-brand-purple/90 border-2 border-[#1A1A27] flex items-center justify-center text-[10px] font-bold text-white shadow-md shadow-black/30"
-                        >
-                          {cr.initials}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Creator Types Involved */}
-                  <div className="flex items-center gap-1.5">
-                    {c.creatorTypes.map((type, idx) => (
-                      <span 
-                        key={idx}
-                        className="p-1 bg-[#0D0D14] border border-white/5 rounded text-[#94A3B8] flex items-center justify-center hover:text-white transition-colors"
-                      >
-                        {getCreatorTypeIcon(type)}
+                <div className="flex items-center justify-between pt-1">
+                  <div className="flex items-center gap-2">
+                    <Users size={14} className="text-[#475569]" />
+                    {creators.length === 0 ? (
+                      <span className="text-xs text-[#475569]">
+                        No creators attached
                       </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Row: Performance Summary & Chevron */}
-              <div className="pt-4 border-t border-white/5 flex justify-between items-center">
-                {c.status !== "Pending" ? (
-                  <div className="flex gap-4">
-                    <div>
-                      <span className="text-[10px] text-[#475569] font-bold uppercase block tracking-wider">Est. Reach</span>
-                      <span className="text-sm font-bold text-white flex items-center gap-1">
-                        <TrendingUp size={12} className="text-brand-lime" /> {c.performance.reach}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-[#475569] font-bold uppercase block tracking-wider">Engagement</span>
-                      <span className="text-sm font-bold text-white">
-                        {c.performance.engagement}
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <span className="text-xs text-[#475569] font-medium italic">Pending kickoff approval</span>
-                )}
-                
-                <span className="text-xs font-semibold text-brand-purple-light flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                  View Detail <ChevronRight size={14} />
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Campaign Detail SlideDrawer */}
-      <SlideDrawer 
-        isOpen={isDrawerOpen} 
-        onClose={() => setIsDrawerOpen(false)} 
-        title={selectedCampaign?.name || "Campaign Details"}
-        width="max-w-xl"
-      >
-        {selectedCampaign && (
-          <div className="space-y-8">
-            
-            {/* Quick Badges */}
-            <div className="flex justify-between items-center bg-[#1A1A27] border border-white/5 p-4 rounded-xl">
-              <div>
-                <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Campaign Status</span>
-                <div className="mt-1">{getStatusBadge(selectedCampaign.status)}</div>
-              </div>
-              <div className="text-right">
-                <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Active Dates</span>
-                <span className="text-sm font-semibold text-white block mt-1">{selectedCampaign.timeline.start} - {selectedCampaign.timeline.end}</span>
-              </div>
-            </div>
-
-            {/* Campaign Brief */}
-            <div className="space-y-2">
-              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Campaign Brief</h3>
-              <p className="text-sm text-[#94A3B8] leading-relaxed bg-[#0D0D14]/80 p-4 border border-white/5 rounded-xl">
-                {selectedCampaign.brief}
-              </p>
-            </div>
-
-            {/* Campaign Analytics */}
-            {selectedCampaign.status !== "Pending" && (
-              <div className="space-y-3">
-                <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Campaign Analytics Summary</h3>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-[#1A1A27] border border-white/5 p-4 rounded-xl text-center">
-                    <span className="text-[10px] text-[#94A3B8] block">Est. Reach</span>
-                    <span className="text-lg font-bold text-white mt-1 block font-[family-name:var(--font-syne)]">{selectedCampaign.performance.reach}</span>
-                  </div>
-                  <div className="bg-[#1A1A27] border border-white/5 p-4 rounded-xl text-center">
-                    <span className="text-[10px] text-[#94A3B8] block">Impressions</span>
-                    <span className="text-lg font-bold text-white mt-1 block font-[family-name:var(--font-syne)]">{selectedCampaign.performance.impressions}</span>
-                  </div>
-                  <div className="bg-[#1A1A27] border border-white/5 p-4 rounded-xl text-center">
-                    <span className="text-[10px] text-[#94A3B8] block">Engagement</span>
-                    <span className="text-lg font-bold text-white mt-1 block font-[family-name:var(--font-syne)]">{selectedCampaign.performance.engagement}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Assigned Creators Detail */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Deployed Creators</h3>
-              <div className="space-y-2">
-                {selectedCampaign.assignedCreators.map((cr, idx) => (
-                  <div key={idx} className="flex justify-between items-center bg-[#1A1A27] border border-white/5 p-3 rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-brand-purple flex items-center justify-center text-xs font-bold text-white">
-                        {cr.initials}
+                    ) : (
+                      <div className="flex -space-x-2">
+                        {creators.slice(0, 5).map((ci) => {
+                          const name = ci.influencers?.full_name ?? "Creator";
+                          const handle = ci.influencers?.handle ?? "";
+                          return (
+                            <div
+                              key={ci.influencer_id}
+                              title={handle ? `${name} (${handle})` : name}
+                              className="w-7 h-7 rounded-full bg-brand-purple/90 border-2 border-[#1A1A27] flex items-center justify-center text-[10px] font-bold text-white"
+                            >
+                              {initialsOf(name)}
+                            </div>
+                          );
+                        })}
                       </div>
-                      <div>
-                        <span className="text-sm font-semibold text-white block">{cr.name}</span>
-                        <span className="text-xs text-[#94A3B8] block">{cr.role}</span>
-                      </div>
-                    </div>
-                    
-                    {/* Visual filter categories indicator */}
-                    <span className="text-[10px] px-2 py-0.5 bg-[#0D0D14] border border-white/5 rounded text-[#94A3B8] font-medium">
-                      Active Creator
+                    )}
+                  </div>
+                  {creators.length > 0 && (
+                    <span className="text-xs text-[#94A3B8]">
+                      {creators.length} creator
+                      {creators.length === 1 ? "" : "s"}
                     </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Deliverables List / Schedule */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-wider">Content Deliverables & Schedule</h3>
-              <div className="space-y-3">
-                {selectedCampaign.deliverables.map((del, idx) => {
-                  const getStatusStyle = (status: CreatorDeliverable["status"]) => {
-                    switch (status) {
-                      case "Completed":
-                        return "bg-brand-lime/10 text-brand-lime border-brand-lime/20";
-                      case "Pending Approval":
-                        return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
-                      case "In Production":
-                        return "bg-blue-500/10 text-blue-400 border-blue-500/20";
-                      case "Not Started":
-                        return "bg-white/5 text-[#475569] border-white/10";
-                    }
-                  };
-
-                  return (
-                    <div key={idx} className="border-b border-white/5 pb-3 last:border-b-0 flex justify-between items-start gap-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-white">{del.deliverableType}</span>
-                          <span className="text-[10px] text-[#475569]">by {del.creatorName}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-[10px] text-[#94A3B8]">
-                          <Calendar size={10} />
-                          <span>Post Target Date: {del.date}</span>
-                        </div>
-                      </div>
-
-                      <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded border ${getStatusStyle(del.status)}`}>
-                        {del.status}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Quick approval action if any deliverables are pending */}
-            {selectedCampaign.deliverables.some(d => d.status === "Pending Approval") && (
-              <div className="bg-[#7C3AED]/10 border border-[#7C3AED]/20 p-4 rounded-2xl flex flex-col gap-3">
-                <div className="flex items-start gap-2 text-sm text-[#EDEDED]">
-                  <AlertCircle size={16} className="text-brand-purple-light shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-semibold block text-brand-purple-light">Creative Assets Awaiting Review</span>
-                    <span className="text-xs text-[#94A3B8] block mt-0.5">
-                      You have 1 deliverable awaiting review in this campaign. Go to messages to review drafts and give feedback.
-                    </span>
-                  </div>
+                  )}
                 </div>
-                <button 
-                  onClick={() => {
-                    setIsDrawerOpen(false);
-                    window.location.href = "/dashboard/messages";
-                  }} 
-                  className="bg-brand-purple text-white py-2 px-3 rounded-lg text-xs font-semibold hover:bg-brand-purple-light transition-all flex items-center justify-center gap-1.5 self-end"
-                >
-                  Open Messaging Center <ArrowRight size={12} />
-                </button>
               </div>
-            )}
-
-            {/* Drawer close button */}
-            <div className="pt-4 flex gap-3">
-              <button 
-                onClick={() => setIsDrawerOpen(false)} 
-                className="w-full py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl text-xs font-bold transition-all"
-              >
-                Close Details
-              </button>
-            </div>
-            
-          </div>
-        )}
-      </SlideDrawer>
-
+            );
+          })}
+        </div>
+      )}
     </div>
   );
+}
+
+// =====================================================================
+// INFLUENCER VIEW
+// =====================================================================
+function InfluencerCampaigns({
+  influencerId,
+}: {
+  influencerId: string | null;
+}) {
+  const [rows, setRows] = useState<InfluencerCampaignRow[]>([]);
+  const [isLoading, setIsLoading] = useState(influencerId !== null);
+
+  useEffect(() => {
+    if (!influencerId) return;
+    let active = true;
+    const load = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("campaign_influencers")
+        .select("campaign_id, campaigns(*, companies(company_name))")
+        .eq("influencer_id", influencerId);
+
+      if (!active) return;
+      if (error) {
+        toast.error("Failed to load campaigns");
+      } else {
+        setRows((data ?? []) as unknown as InfluencerCampaignRow[]);
+      }
+      setIsLoading(false);
+    };
+    load();
+    return () => {
+      active = false;
+    };
+  }, [influencerId]);
+
+  if (!influencerId) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="My Campaigns"
+          subtitle="Campaigns you're part of."
+        />
+        <EmptyState message="No creator profile is linked to your account yet." />
+      </div>
+    );
+  }
+
+  const campaigns = rows
+    .map((r) => r.campaigns)
+    .filter((c): c is NonNullable<InfluencerCampaignRow["campaigns"]> => !!c);
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="My Campaigns"
+        subtitle="Campaigns you're attached to."
+      />
+
+      {isLoading ? (
+        <LoadingState />
+      ) : campaigns.length === 0 ? (
+        <EmptyState message="You're not attached to any campaigns yet." />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {campaigns.map((c) => (
+            <div
+              key={c.id}
+              className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col gap-4"
+            >
+              <div className="flex justify-between items-start gap-3">
+                <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+                  {c.campaign_name}
+                </h3>
+                <StatusBadge status={c.status} />
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                <Building2 size={14} className="text-[#475569]" />
+                {c.companies?.company_name ?? "—"}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// =====================================================================
+// ROOT
+// =====================================================================
+export default function CampaignsPage() {
+  const { role, companyId, influencerId } = useAccount();
+
+  if (role === "admin") return <AdminCampaigns />;
+  if (role === "business") return <BusinessCampaigns companyId={companyId} />;
+  return <InfluencerCampaigns influencerId={influencerId} />;
 }

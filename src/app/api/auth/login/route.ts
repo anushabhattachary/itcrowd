@@ -1,50 +1,29 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { email, password } = body;
-
-    const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-
-    if (!adminEmail || !adminPassword) {
-      console.error('Server missing auth environment variables');
-      return NextResponse.json(
-        { error: 'Server misconfiguration' },
-        { status: 500 }
-      );
+    const { email, password } = await request.json();
+    if (!email || !password) {
+      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
-    if (email.toLowerCase() === adminEmail.toLowerCase() && password === adminPassword) {
-      // Create response indicating success
-      const response = NextResponse.json(
-        { success: true, message: 'Logged in successfully' },
-        { status: 200 }
-      );
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-      // Set auth cookie (httpOnly, secure, lasts 7 days)
-      response.cookies.set({
-        name: 'itcrowd_session',
-        value: 'authenticated',
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        path: '/',
-      });
-
-      return response;
+    if (error) {
+      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 
-    return NextResponse.json(
-      { error: 'Invalid email or password' },
-      { status: 401 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    // Return role so the client can route to the right place.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", data.user.id)
+      .single();
+
+    return NextResponse.json({ success: true, role: profile?.role ?? "influencer" });
+  } catch {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

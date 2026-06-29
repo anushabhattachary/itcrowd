@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 // Google Apps Script Web App URL — writes directly to the Google Sheet
 const APPS_SCRIPT_URL =
@@ -20,6 +21,26 @@ export async function POST(req: NextRequest) {
       deliverable:  body.deliverable  ?? "",
       goal:         body.goal         ?? "",
     };
+
+    // Dual-write into Supabase intake (admins review + convert into accounts).
+    // Non-fatal: a failure here must not break the existing Sheets flow.
+    try {
+      const supabase = await createClient();
+      await supabase.from("business_interest_submissions").insert({
+        name: payload.name,
+        company_name: payload.companyName,
+        time_to_market: payload.timeToMarket,
+        has_website: payload.hasWebsite,
+        website_link: payload.websiteLink,
+        target_niche: payload.targetNiche,
+        brand_rep: payload.brandRep,
+        budget: payload.budget,
+        deliverable: payload.deliverable,
+        goal: payload.goal,
+      });
+    } catch (dbErr) {
+      console.error("[submit-business-interest] Supabase insert failed:", dbErr);
+    }
 
     // Apps Script returns a 302 redirect to the actual response.
     // We must NOT auto-follow redirects — instead we follow manually
