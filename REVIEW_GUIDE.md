@@ -33,10 +33,13 @@ it on the PR, and it appears under the PR's "Checks"/"Deployments"). Open that U
    ```
    (If you already have the repo: `git fetch && git checkout supabase-connection-accounts`)
 
-2. **Create the env file** — copy the template (the keys in it are the public client keys,
-   safe to use):
-   ```bash
-   cp .env.local.example .env.local
+2. **Create the env file** — make a file named `.env.local` in the project root containing
+   these two lines. These are the **public** Supabase client keys (the same ones shipped to
+   the browser on the live site); the database is protected by row-level security, not by
+   hiding them.
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://xqewcqhbnrndxqthkgqf.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxZXdjcWhibnJuZHhxdGhrZ3FmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzExOTgsImV4cCI6MjA5NzgwNzE5OH0.Np8MGIJm70X_0f-PD3XOIoo5f_Fqxk5PjG9dT1uty9Y
    ```
    *(Or just drop in the `.env.local` file Rayan sends you.)*
 
