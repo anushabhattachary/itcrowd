@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CheckCircle, Send } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 interface ApplyData {
   name: string;
@@ -28,8 +29,22 @@ export default function ApplyPage() {
     formState: { errors },
   } = useForm<ApplyData>();
 
-  const onSubmit = (data: ApplyData) => {
-    console.log("Application submitted:", data);
+  const onSubmit = async (data: ApplyData) => {
+    // Persist into the Supabase intake table so admins can review + convert
+    // the application into a creator account.
+    const { error } = await supabase.from("influencer_applications").insert({
+      full_name: data.name,
+      email: data.email,
+      handle: data.handle,
+      platform: data.platform,
+      follower_range: data.followers,
+      niche: data.niche,
+      why_join: data.why,
+      equity_interest: data.equityInterest,
+    });
+    if (error) {
+      console.error("Application submit failed:", error.message);
+    }
     setSubmitted(true);
   };
 

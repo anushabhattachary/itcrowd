@@ -1,463 +1,504 @@
 "use client";
 
-import { useState } from "react";
-import { 
-  Download, 
-  Eye, 
-  Search, 
-  Filter, 
-  Upload, 
-  Image as ImageIcon, 
-  Video as VideoIcon, 
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Upload,
+  Search,
+  Image as ImageIcon,
+  Video as VideoIcon,
   FileText,
-  X,
-  Plus,
-  Sparkles,
-  Camera,
-  Users,
-  Film,
-  Check
+  Check,
+  RefreshCw,
+  Loader2,
+  Download,
+  Clock,
+  AlertCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { supabase } from "@/lib/supabase";
+import { useAccount } from "@/lib/account-context";
+import SlideDrawer from "@/components/ui/SlideDrawer";
 
-interface MediaAsset {
+type FileType = "Photo" | "Video" | "Document";
+type Status = "Pending" | "Approved" | "Revision Requested";
+
+interface ContentRow {
   id: string;
+  campaign_id: string;
+  company_id: string;
+  influencer_id: string;
   title: string;
-  creatorName: string;
-  creatorType: "Athlete" | "Influencer" | "Photographer" | "Videographer" | "Brand";
-  campaignName: string;
-  fileType: "Photo" | "Video" | "Document";
-  url: string;
-  date: string;
+  description: string | null;
+  file_url: string | null;
+  file_type: FileType;
+  category: string | null;
+  status: Status;
+  revision_notes: string | null;
+  created_at: string;
+  campaigns?: { campaign_name: string } | null;
+  influencers?: { full_name: string; handle: string } | null;
 }
 
-export default function ContentLibraryPage() {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [selectedCampaign, setSelectedCampaign] = useState<string>("All");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [lightboxAsset, setLightboxAsset] = useState<MediaAsset | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+interface CampaignOption {
+  campaignId: string;
+  companyId: string;
+  name: string;
+}
 
-  // Initial mock assets
-  const [assets, setAssets] = useState<MediaAsset[]>([
-    {
-      id: "a1",
-      title: "Jordan Carter - Dumbbell Curl Form",
-      creatorName: "Jordan Carter",
-      creatorType: "Athlete",
-      campaignName: "Summer Sweat Challenge",
-      fileType: "Video",
-      url: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
-      date: "2026-06-08"
-    },
-    {
-      id: "a2",
-      title: "Sophia Martinez - Summer HIIT Routine",
-      creatorName: "Sophia Martinez",
-      creatorType: "Influencer",
-      campaignName: "Summer Sweat Challenge",
-      fileType: "Photo",
-      url: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80",
-      date: "2026-06-03"
-    },
-    {
-      id: "a3",
-      title: "Liam Davis - Studio Front Desk Interior",
-      creatorName: "Liam Davis",
-      creatorType: "Photographer",
-      campaignName: "Midtown Studio Grand Opening",
-      fileType: "Photo",
-      url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80",
-      date: "2026-05-10"
-    },
-    {
-      id: "a4",
-      title: "Liam Davis - Treadmill Rows Action Shot",
-      creatorName: "Liam Davis",
-      creatorType: "Photographer",
-      campaignName: "Midtown Studio Grand Opening",
-      fileType: "Photo",
-      url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80",
-      date: "2026-05-12"
-    },
-    {
-      id: "a5",
-      title: "Zach Miller - Summer Sweat Campaign Promo Video",
-      creatorName: "Zach Miller",
-      creatorType: "Videographer",
-      campaignName: "Summer Sweat Challenge",
-      fileType: "Video",
-      url: "https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=800&q=80",
-      date: "2026-06-05"
-    },
-    {
-      id: "a6",
-      title: "Emma Watson - Grand Opening Vlog Draft",
-      creatorName: "Emma Watson",
-      creatorType: "Influencer",
-      campaignName: "Midtown Studio Grand Opening",
-      fileType: "Video",
-      url: "https://images.unsplash.com/photo-1522898467493-49726bf28798?auto=format&fit=crop&w=800&q=80",
-      date: "2026-05-15"
-    },
-    {
-      id: "a7",
-      title: "Liam Davis - Yoga Class Stretch Action",
-      creatorName: "Liam Davis",
-      creatorType: "Photographer",
-      campaignName: "Midtown Studio Grand Opening",
-      fileType: "Photo",
-      url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
-      date: "2026-05-20"
-    },
-    {
-      id: "a8",
-      title: "Sophia Martinez - Post-Workout Cold Plunge Vlog",
-      creatorName: "Sophia Martinez",
-      creatorType: "Influencer",
-      campaignName: "Winter Chill Recovery Program",
-      fileType: "Video",
-      url: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=800&q=80",
-      date: "2026-01-10"
-    },
-    // Brand Assets
-    {
-      id: "brand-logo",
-      title: "Glow Fitness Primary Logo (PNG)",
-      creatorName: "Glow Fitness",
-      creatorType: "Brand",
-      campaignName: "Brand Kit",
-      fileType: "Document",
-      url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-      date: "2026-01-01"
-    },
-    {
-      id: "brand-guidelines",
-      title: "Summer Sweat Campaign Typography & Logo Guidelines",
-      creatorName: "ItCrowd Team",
-      creatorType: "Brand",
-      campaignName: "Brand Kit",
-      fileType: "Document",
-      url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
-      date: "2026-05-01"
+const STATUS_STYLES: Record<Status, string> = {
+  Approved: "bg-brand-lime/15 border-brand-lime/30 text-brand-lime",
+  Pending: "bg-amber-400/10 border-amber-400/20 text-amber-300",
+  "Revision Requested": "bg-red-500/10 border-red-500/20 text-red-400",
+};
+
+const STATUS_ICON: Record<Status, React.ComponentType<{ size?: number; className?: string }>> = {
+  Approved: Check,
+  Pending: Clock,
+  "Revision Requested": AlertCircle,
+};
+
+const TYPE_ICON: Record<FileType, React.ComponentType<{ size?: number; className?: string }>> = {
+  Photo: ImageIcon,
+  Video: VideoIcon,
+  Document: FileText,
+};
+
+export default function ContentPage() {
+  const account = useAccount();
+  const isCreator = account.role === "influencer";
+  const isBusiness = account.role === "business";
+
+  const [items, setItems] = useState<ContentRow[]>([]);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"All" | Status>("All");
+
+  // Upload drawer (creators)
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [campaignOptions, setCampaignOptions] = useState<CampaignOption[]>([]);
+  const [uCampaign, setUCampaign] = useState("");
+  const [uTitle, setUTitle] = useState("");
+  const [uType, setUType] = useState<FileType>("Photo");
+  const [uFile, setUFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  // Revision modal (businesses)
+  const [revisionFor, setRevisionFor] = useState<ContentRow | null>(null);
+  const [revisionNotes, setRevisionNotes] = useState("");
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    let query = supabase
+      .from("content")
+      .select("*, campaigns(campaign_name), influencers(full_name, handle)")
+      .order("created_at", { ascending: false });
+
+    if (isCreator) {
+      if (!account.influencerId) {
+        setItems([]);
+        setLoading(false);
+        return;
+      }
+      query = query.eq("influencer_id", account.influencerId);
+    } else if (isBusiness) {
+      if (!account.companyId) {
+        setItems([]);
+        setLoading(false);
+        return;
+      }
+      query = query.eq("company_id", account.companyId);
     }
-  ]);
 
-  // Categories mapping
-  const categories = [
-    { id: "All", label: "All Assets", icon: null },
-    { id: "Athlete", label: "Athlete Content", icon: Users },
-    { id: "Influencer", label: "Influencer Content", icon: Sparkles },
-    { id: "Photographer", label: "Photography", icon: Camera },
-    { id: "Videographer", label: "Video Production", icon: Film },
-    { id: "Brand", label: "Brand Assets", icon: FileText }
-  ];
-
-  // Campaigns list for dropdown
-  const campaignsList = [
-    "All",
-    "Summer Sweat Challenge",
-    "Midtown Studio Grand Opening",
-    "Winter Chill Recovery Program",
-    "Brand Kit"
-  ];
-
-  // Filtered Assets
-  const filteredAssets = assets.filter((asset) => {
-    // Category check
-    if (activeCategory !== "All" && asset.creatorType !== activeCategory) {
-      return false;
+    const { data, error } = await query;
+    if (error) {
+      toast.error("Failed to load content");
+      setLoading(false);
+      return;
     }
-    // Campaign check
-    if (selectedCampaign !== "All" && asset.campaignName !== selectedCampaign) {
-      return false;
-    }
-    // Search check
-    if (searchQuery.trim() !== "") {
-      const query = searchQuery.toLowerCase();
-      const matchesTitle = asset.title.toLowerCase().includes(query);
-      const matchesCreator = asset.creatorName.toLowerCase().includes(query);
-      if (!matchesTitle && !matchesCreator) {
-        return false;
+    const rows = (data as ContentRow[]) || [];
+    setItems(rows);
+
+    // Generate signed URLs for previews/downloads (private bucket).
+    const paths = rows.map((r) => r.file_url).filter((p): p is string => !!p);
+    if (paths.length) {
+      const { data: signed } = await supabase.storage
+        .from("content")
+        .createSignedUrls(paths, 3600);
+      if (signed) {
+        const map: Record<string, string> = {};
+        signed.forEach((s) => {
+          if (s.path && s.signedUrl) map[s.path] = s.signedUrl;
+        });
+        setSignedUrls(map);
       }
     }
-    return true;
-  });
+    setLoading(false);
+  }, [account.companyId, account.influencerId, isBusiness, isCreator]);
 
-  const handleDownload = (asset: MediaAsset) => {
-    const toastId = toast.loading(`Downloading ${asset.title}...`);
-    setTimeout(() => {
-      toast.success("Download complete!", { id: toastId });
-    }, 1200);
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  // Load the creator's attachable campaigns for the upload form.
+  useEffect(() => {
+    if (!isCreator || !account.influencerId) return;
+    (async () => {
+      const { data } = await supabase
+        .from("campaign_influencers")
+        .select("campaign_id, campaigns(id, campaign_name, company_id)")
+        .eq("influencer_id", account.influencerId);
+      if (data) {
+        const opts: CampaignOption[] = [];
+        for (const row of data as unknown as Array<{
+          campaign_id: string;
+          campaigns: { id: string; campaign_name: string; company_id: string } | null;
+        }>) {
+          if (row.campaigns) {
+            opts.push({
+              campaignId: row.campaigns.id,
+              companyId: row.campaigns.company_id,
+              name: row.campaigns.campaign_name,
+            });
+          }
+        }
+        setCampaignOptions(opts);
+      }
+    })();
+  }, [isCreator, account.influencerId]);
+
+  const filtered = useMemo(() => {
+    return items.filter((r) => {
+      if (statusFilter !== "All" && r.status !== statusFilter) return false;
+      if (search.trim()) {
+        const q = search.toLowerCase();
+        const hay = `${r.title} ${r.influencers?.full_name ?? ""} ${r.campaigns?.campaign_name ?? ""}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [items, statusFilter, search]);
+
+  const handleUpload = async () => {
+    if (!account.influencerId) return;
+    if (!uCampaign || !uTitle.trim() || !uFile) {
+      toast.error("Pick a campaign, add a title, and choose a file");
+      return;
+    }
+    const opt = campaignOptions.find((o) => o.campaignId === uCampaign);
+    if (!opt) {
+      toast.error("Invalid campaign");
+      return;
+    }
+    setUploading(true);
+    const toastId = toast.loading("Uploading content…");
+    try {
+      const safeName = uFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${opt.campaignId}/${account.influencerId}-${new Date().getTime()}-${safeName}`;
+      const { error: upErr } = await supabase.storage.from("content").upload(path, uFile);
+      if (upErr) throw upErr;
+
+      const { error: insErr } = await supabase.from("content").insert({
+        campaign_id: opt.campaignId,
+        company_id: opt.companyId,
+        influencer_id: account.influencerId,
+        title: uTitle.trim(),
+        file_url: path,
+        file_type: uType,
+        status: "Pending",
+      });
+      if (insErr) throw insErr;
+
+      toast.success("Uploaded! The business can now see it.", { id: toastId });
+      setUploadOpen(false);
+      setUTitle("");
+      setUFile(null);
+      setUCampaign("");
+      setUType("Photo");
+      load();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Upload failed";
+      toast.error(msg, { id: toastId });
+    } finally {
+      setUploading(false);
+    }
   };
 
-  const handleUploadClick = () => {
-    setIsUploading(true);
-    const toastId = toast.loading("Uploading brand asset...");
-    
-    // Mock upload after 2 seconds
-    setTimeout(() => {
-      const newAsset: MediaAsset = {
-        id: `uploaded-${Date.now()}`,
-        title: "Glow Fitness Midtown Interior Shoot Outline.pdf",
-        creatorName: "Glow Fitness (You)",
-        creatorType: "Brand",
-        campaignName: "Brand Kit",
-        fileType: "Document",
-        url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
-        date: new Date().toISOString().split("T")[0]
-      };
-      setAssets((prev) => [newAsset, ...prev]);
-      setIsUploading(false);
-      toast.success("Brand asset uploaded successfully!", { id: toastId });
-    }, 2000);
+  const setStatus = async (row: ContentRow, status: Status, notes?: string) => {
+    const { error } = await supabase
+      .from("content")
+      .update({ status, revision_notes: notes ?? null })
+      .eq("id", row.id);
+    if (error) {
+      toast.error("Update failed");
+      return;
+    }
+    toast.success(status === "Approved" ? "Approved" : "Revision requested");
+    setItems((prev) =>
+      prev.map((r) => (r.id === row.id ? { ...r, status, revision_notes: notes ?? null } : r))
+    );
+  };
+
+  const openFile = (row: ContentRow) => {
+    const url = row.file_url ? signedUrls[row.file_url] : undefined;
+    if (url) window.open(url, "_blank");
+    else toast.error("File link unavailable");
+  };
+
+  const submitRevision = async () => {
+    if (!revisionFor) return;
+    await setStatus(revisionFor, "Revision Requested", revisionNotes.trim() || undefined);
+    setRevisionFor(null);
+    setRevisionNotes("");
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Top Banner and Upload Brand Assets */}
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">Content Library</h1>
-          <p className="text-sm text-[#94A3B8] mt-1">Access, preview, and download custom visual assets generated for your brand.</p>
+          <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">
+            {isCreator ? "My Content" : "Content Library"}
+          </h1>
+          <p className="text-sm text-[#94A3B8] mt-1">
+            {isCreator
+              ? "Upload deliverables — they appear instantly in the business's library."
+              : isBusiness
+              ? "Every asset your creators produce, in one place. Approve or request changes."
+              : "All content across campaigns (oversight)."}
+          </p>
         </div>
+        {isCreator && (
+          <button
+            onClick={() => setUploadOpen(true)}
+            className="flex items-center justify-center gap-2 bg-brand-purple hover:bg-brand-purple-light text-white px-5 py-2.5 rounded-xl font-medium transition-colors"
+          >
+            <Upload size={18} /> Upload Content
+          </button>
+        )}
+      </div>
 
-        <button 
-          onClick={handleUploadClick}
-          disabled={isUploading}
-          className="flex items-center justify-center gap-2 bg-[#1A1A27] border border-white/10 hover:border-brand-purple/50 text-white px-4 py-2.5 rounded-xl font-medium transition-all hover:bg-brand-purple/5 text-sm"
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3 bg-[#1A1A27] p-4 rounded-2xl border border-white/5">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search title, creator, campaign…"
+            className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple"
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as "All" | Status)}
+          className="bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple"
         >
-          <Upload size={16} className={isUploading ? "animate-bounce" : ""} />
-          {isUploading ? "Uploading..." : "Upload Brand Guidelines"}
+          <option value="All">All statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Revision Requested">Revision Requested</option>
+        </select>
+        <button
+          onClick={load}
+          className="flex items-center gap-2 px-4 py-2 text-sm text-[#94A3B8] hover:text-white border border-white/10 rounded-xl hover:bg-white/5 transition-colors"
+        >
+          <RefreshCw size={15} /> Refresh
         </button>
       </div>
 
-      {/* Categories Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 border-b border-white/5 scrollbar-thin">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
-            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full border transition-all shrink-0 ${
-              activeCategory === cat.id
-                ? "bg-brand-purple/15 text-brand-purple-light border-brand-purple/30"
-                : "bg-[#0D0D14] text-[#94A3B8] border-white/5 hover:border-white/10 hover:text-white"
-            }`}
-          >
-            {cat.icon && <cat.icon size={12} />}
-            {cat.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row gap-4 bg-[#1A1A27] border border-white/5 p-4 rounded-2xl shadow-md">
-        
-        {/* Search */}
-        <div className="flex-1 relative">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#475569]" />
-          <input
-            type="text"
-            placeholder="Search by asset name or creator..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
-          />
+      {/* Grid */}
+      {loading ? (
+        <div className="py-20 text-center text-[#94A3B8]">
+          <Loader2 className="animate-spin mx-auto mb-3" size={26} /> Loading content…
         </div>
-
-        {/* Campaign Filter */}
-        <div className="w-full md:w-[260px] flex items-center gap-2 bg-[#0D0D14] border border-white/10 rounded-xl px-3 py-2">
-          <Filter size={14} className="text-[#475569]" />
-          <select
-            value={selectedCampaign}
-            onChange={(e) => setSelectedCampaign(e.target.value)}
-            className="flex-1 bg-transparent border-0 text-xs text-white focus:outline-none focus:ring-0 cursor-pointer"
-          >
-            <option value="" disabled className="text-[#475569]">Filter by Campaign</option>
-            {campaignsList.map((camp) => (
-              <option key={camp} value={camp} className="bg-[#0D0D14] text-white">
-                {camp === "All" ? "All Campaigns" : camp}
-              </option>
-            ))}
-          </select>
-        </div>
-
-      </div>
-
-      {/* Content Asset Grid */}
-      {filteredAssets.length === 0 ? (
-        <div className="bg-[#1A1A27]/30 border border-white/5 rounded-3xl p-16 text-center">
-          <ImageIcon size={48} className="mx-auto text-[#475569] mb-4" />
-          <h3 className="text-white font-bold text-lg font-[family-name:var(--font-syne)]">No assets found</h3>
-          <p className="text-xs text-[#94A3B8] mt-1 max-w-sm mx-auto">
-            Try adjusting your category tabs or campaign filters, or make sure your keywords are spelled correctly.
-          </p>
+      ) : filtered.length === 0 ? (
+        <div className="py-20 text-center text-[#94A3B8] bg-[#1A1A27] rounded-2xl border border-white/5">
+          {isCreator
+            ? "No uploads yet. Hit “Upload Content” to add your first deliverable."
+            : "No content yet. Once your creators upload, it shows up here automatically."}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredAssets.map((asset) => (
-            <div 
-              key={asset.id} 
-              className="group bg-[#1A1A27] border border-white/5 rounded-2xl overflow-hidden shadow-lg hover:border-brand-purple/20 transition-all flex flex-col justify-between"
-            >
-              {/* Media Preview Box */}
-              <div className="relative aspect-video bg-[#0D0D14] overflow-hidden flex items-center justify-center">
-                {asset.fileType === "Document" ? (
-                  <div className="w-full h-full flex flex-col justify-center items-center bg-brand-purple/5 p-6 space-y-3">
-                    <FileText size={40} className="text-brand-purple-light" />
-                    <span className="text-[10px] text-brand-purple-light font-bold uppercase tracking-widest">Document / PDF</span>
-                  </div>
-                ) : (
-                  <img 
-                    src={asset.url} 
-                    alt={asset.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                )}
-                
-                {/* Media Type Icon Badge */}
-                <span 
-                  className="absolute top-2 left-2 p-1.5 bg-[#0D0D14]/80 backdrop-blur rounded-lg text-white border border-white/10"
-                  title={`${asset.fileType} Asset`}
-                >
-                  {asset.fileType === "Video" ? (
-                    <VideoIcon size={12} />
-                  ) : asset.fileType === "Photo" ? (
-                    <ImageIcon size={12} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filtered.map((row) => {
+            const TypeIcon = TYPE_ICON[row.file_type];
+            const StatusIcon = STATUS_ICON[row.status];
+            const thumb = row.file_url ? signedUrls[row.file_url] : undefined;
+            return (
+              <div
+                key={row.id}
+                className="bg-[#1A1A27] border border-white/5 rounded-2xl overflow-hidden shadow-xl flex flex-col"
+              >
+                <div className="relative h-40 bg-[#0D0D14] flex items-center justify-center">
+                  {row.file_type === "Photo" && thumb ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={thumb} alt={row.title} className="w-full h-full object-cover" />
                   ) : (
-                    <FileText size={12} />
+                    <TypeIcon size={36} className="text-[#475569]" />
                   )}
-                </span>
-
-                {/* Hover overlay actions */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
-                  <button 
-                    onClick={() => setLightboxAsset(asset)}
-                    className="p-3 bg-white text-black hover:bg-brand-purple-light hover:text-white rounded-full transition-all hover:scale-110 shadow-lg"
-                    title="Quick Preview"
+                  <span
+                    className={`absolute top-2 right-2 px-2 py-1 rounded-full border text-[10px] font-semibold flex items-center gap-1 ${STATUS_STYLES[row.status]}`}
                   >
-                    <Eye size={16} />
-                  </button>
-                  <button 
-                    onClick={() => handleDownload(asset)}
-                    className="p-3 bg-[#1A1A27] text-white hover:bg-brand-lime hover:text-black rounded-full transition-all hover:scale-110 shadow-lg border border-white/10"
-                    title="Download Asset"
-                  >
-                    <Download size={16} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Media Detail Info Box */}
-              <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
-                <div>
-                  <h4 className="text-xs font-bold text-white line-clamp-1 leading-snug" title={asset.title}>
-                    {asset.title}
-                  </h4>
-                  <span className="text-[10px] text-brand-purple-light block mt-0.5 font-medium">
-                    Creator: {asset.creatorName}
+                    <StatusIcon size={11} /> {row.status}
                   </span>
                 </div>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-semibold text-white text-sm leading-snug">{row.title}</h3>
+                  <p className="text-xs text-[#94A3B8] mt-1">
+                    {row.influencers?.full_name ?? "Creator"}
+                    {row.influencers?.handle ? ` · ${row.influencers.handle}` : ""}
+                  </p>
+                  <p className="text-xs text-[#475569] mt-0.5">
+                    {row.campaigns?.campaign_name ?? "Campaign"} ·{" "}
+                    {new Date(row.created_at).toLocaleDateString()}
+                  </p>
 
-                <div className="pt-2 border-t border-white/5 flex justify-between items-center text-[9px] text-[#475569]">
-                  <span className="font-semibold uppercase tracking-wider">{asset.campaignName}</span>
-                  <span>{asset.date}</span>
+                  {row.status === "Revision Requested" && row.revision_notes && (
+                    <p className="text-xs text-red-400 mt-2 bg-red-500/5 border border-red-500/10 rounded-lg p-2">
+                      “{row.revision_notes}”
+                    </p>
+                  )}
+
+                  <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-2">
+                    <button
+                      onClick={() => openFile(row)}
+                      className="flex items-center gap-1 text-xs text-[#94A3B8] hover:text-white transition-colors"
+                    >
+                      <Download size={14} /> View
+                    </button>
+                    {isBusiness && row.status !== "Approved" && (
+                      <button
+                        onClick={() => setStatus(row, "Approved")}
+                        className="ml-auto flex items-center gap-1 text-xs text-brand-lime hover:opacity-80 transition-opacity"
+                      >
+                        <Check size={14} /> Approve
+                      </button>
+                    )}
+                    {isBusiness && row.status !== "Revision Requested" && (
+                      <button
+                        onClick={() => {
+                          setRevisionFor(row);
+                          setRevisionNotes("");
+                        }}
+                        className={`${row.status === "Approved" ? "ml-auto" : ""} flex items-center gap-1 text-xs text-amber-300 hover:opacity-80 transition-opacity`}
+                      >
+                        <AlertCircle size={14} /> Revise
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
-      {/* Lightbox / Modal Preview */}
-      {lightboxAsset && (
-        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex flex-col justify-center items-center p-6 animate-in fade-in duration-300">
-          
-          {/* Close button */}
-          <button 
-            onClick={() => setLightboxAsset(null)}
-            className="absolute top-6 right-6 p-2 bg-white/5 text-white hover:bg-white/10 rounded-full transition-colors border border-white/10"
-          >
-            <X size={20} />
-          </button>
-
-          {/* Lightbox Modal Content Box */}
-          <div className="w-full max-w-4xl bg-[#111118] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[85vh]">
-            
-            {/* Visual Media Pane */}
-            <div className="flex-1 bg-black flex items-center justify-center relative min-h-[300px]">
-              {lightboxAsset.fileType === "Document" ? (
-                <div className="flex flex-col items-center justify-center text-center p-8 space-y-4">
-                  <FileText size={64} className="text-brand-purple-light animate-pulse" />
-                  <span className="text-xs font-bold text-[#94A3B8] tracking-widest uppercase">Glow Fitness Guidelines Outlines</span>
-                </div>
-              ) : (
-                <img 
-                  src={lightboxAsset.url} 
-                  alt={lightboxAsset.title} 
-                  className="max-w-full max-h-[50vh] md:max-h-[80vh] object-contain"
-                />
-              )}
-            </div>
-
-            {/* Context Sidebar Pane */}
-            <div className="w-full md:w-[320px] bg-[#111118] border-t md:border-t-0 md:border-l border-white/10 p-6 flex flex-col justify-between shrink-0">
-              <div className="space-y-6">
-                
-                {/* Title and Badge */}
-                <div className="space-y-2">
-                  <span className="text-[10px] px-2 py-0.5 bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light font-extrabold uppercase rounded inline-block">
-                    {lightboxAsset.fileType} Asset
-                  </span>
-                  <h3 className="text-base font-bold text-white leading-snug">
-                    {lightboxAsset.title}
-                  </h3>
-                </div>
-
-                {/* Creator Details */}
-                <div className="space-y-1 bg-[#1A1A27] p-3 border border-white/5 rounded-xl">
-                  <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Created By</span>
-                  <span className="text-sm font-semibold text-white block">{lightboxAsset.creatorName}</span>
-                  <span className="text-xs text-[#94A3B8] block">{lightboxAsset.creatorType} Creator</span>
-                </div>
-
-                {/* Campaign context */}
-                <div className="space-y-1">
-                  <span className="text-[10px] text-[#475569] font-bold uppercase tracking-wider block">Campaign Context</span>
-                  <span className="text-xs font-bold text-[#94A3B8] block">{lightboxAsset.campaignName}</span>
-                  <span className="text-[10px] text-[#475569] block">Delivered on {lightboxAsset.date}</span>
-                </div>
-
-              </div>
-
-              {/* Actions */}
-              <div className="pt-6 border-t border-white/5 space-y-3">
-                <button 
-                  onClick={() => {
-                    handleDownload(lightboxAsset);
-                    setLightboxAsset(null);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 bg-brand-purple text-white py-3 px-4 rounded-xl text-xs font-bold btn-glow"
-                >
-                  <Download size={14} /> Download High-Res
-                </button>
-                <button 
-                  onClick={() => setLightboxAsset(null)}
-                  className="w-full py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-[#94A3B8] hover:text-white rounded-xl text-xs font-bold transition-all"
-                >
-                  Close Preview
-                </button>
-              </div>
-
-            </div>
-
+      {/* Upload drawer (creators) */}
+      <SlideDrawer
+        isOpen={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        title="Upload Content"
+        width="w-[85vw] sm:w-[460px]"
+      >
+        <div className="space-y-5">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Campaign *</label>
+            <select
+              value={uCampaign}
+              onChange={(e) => setUCampaign(e.target.value)}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+            >
+              <option value="">Select a campaign…</option>
+              {campaignOptions.map((o) => (
+                <option key={o.campaignId} value={o.campaignId}>
+                  {o.name}
+                </option>
+              ))}
+            </select>
+            {campaignOptions.length === 0 && (
+              <p className="text-xs text-[#475569]">
+                You&apos;re not attached to any campaigns yet.
+              </p>
+            )}
           </div>
 
-        </div>
-      )}
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Title *</label>
+            <input
+              value={uTitle}
+              onChange={(e) => setUTitle(e.target.value)}
+              placeholder="e.g. Summer Reel — Draft 1"
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+            />
+          </div>
 
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Type *</label>
+            <select
+              value={uType}
+              onChange={(e) => setUType(e.target.value as FileType)}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+            >
+              <option value="Photo">Photo</option>
+              <option value="Video">Video</option>
+              <option value="Document">Document</option>
+            </select>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">File *</label>
+            <input
+              type="file"
+              onChange={(e) => setUFile(e.target.files?.[0] ?? null)}
+              className="w-full text-sm text-[#94A3B8] file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-purple file:text-white file:cursor-pointer"
+            />
+          </div>
+
+          <div className="pt-4 flex gap-3">
+            <button
+              onClick={() => setUploadOpen(false)}
+              className="flex-1 px-4 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-medium transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleUpload}
+              disabled={uploading}
+              className="flex-1 bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl font-medium flex justify-center items-center disabled:opacity-60"
+            >
+              {uploading ? <Loader2 className="animate-spin" size={18} /> : "Upload"}
+            </button>
+          </div>
+        </div>
+      </SlideDrawer>
+
+      {/* Revision modal (businesses) */}
+      <SlideDrawer
+        isOpen={!!revisionFor}
+        onClose={() => setRevisionFor(null)}
+        title="Request a Revision"
+        width="w-[85vw] sm:w-[420px]"
+      >
+        <div className="space-y-5">
+          <p className="text-sm text-[#94A3B8]">
+            Let the creator know what to change for{" "}
+            <span className="text-white font-medium">{revisionFor?.title}</span>.
+          </p>
+          <textarea
+            value={revisionNotes}
+            onChange={(e) => setRevisionNotes(e.target.value)}
+            rows={5}
+            placeholder="e.g. Please brighten the intro and add the logo at the end."
+            className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+          />
+          <button
+            onClick={submitRevision}
+            className="w-full bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl py-3 font-medium"
+          >
+            Send Revision Request
+          </button>
+        </div>
+      </SlideDrawer>
     </div>
   );
 }

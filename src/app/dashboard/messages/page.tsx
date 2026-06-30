@@ -1,671 +1,465 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { 
-  Send, 
-  Paperclip, 
-  Check, 
-  X, 
-  AlertCircle, 
-  MessageSquare, 
-  LifeBuoy, 
-  Clock, 
-  Layers, 
-  Plus, 
-  User, 
-  File, 
-  ArrowUpRight,
-  TrendingUp,
-  Image as ImageIcon,
-  CheckCircle2,
-  HelpCircle
-} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Send, Plus, Loader2, MessageSquare, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
-
-interface Message {
-  id: string;
-  sender: "Client" | "ItCrowd" | "System";
-  senderName: string;
-  text: string;
-  timestamp: string;
-  attachment?: {
-    name: string;
-    type: "image" | "file";
-    url: string;
-  };
-  approvalCard?: {
-    id: string;
-    assetTitle: string;
-    status: "Pending" | "Approved" | "Revision Requested";
-    notes?: string;
-  };
-}
+import { supabase } from "@/lib/supabase";
+import { useAccount } from "@/lib/account-context";
+import SlideDrawer from "@/components/ui/SlideDrawer";
 
 interface Thread {
   id: string;
-  title: string;
-  subtitle: string;
-  type: "campaign" | "support";
-  unread: boolean;
-  avatarInitials: string;
-  messages: Message[];
+  campaign_id: string | null;
+  company_id: string | null;
+  influencer_id: string | null;
+  subject: string;
+  thread_type: string;
+  status: string;
+  created_at: string;
+  companies?: { company_name: string } | null;
+  influencers?: { full_name: string; handle: string } | null;
+  campaigns?: { campaign_name: string } | null;
 }
 
-export default function MessagingPage() {
-  const [threads, setThreads] = useState<Thread[]>([
-    {
-      id: "t1",
-      title: "Summer Sweat Challenge Campaign",
-      subtitle: "Campaign Thread",
-      type: "campaign",
-      unread: true,
-      avatarInitials: "SS",
-      messages: [
-        {
-          id: "m1",
-          sender: "ItCrowd",
-          senderName: "Anusha (ItCrowd)",
-          text: "Hi team! We've kicked off the Summer Sweat Challenge. Jordan is prepped for the first photoshoot. Let us know if you have any last-minute brand guidelines updates.",
-          timestamp: "Jun 1, 10:15 AM"
-        },
-        {
-          id: "m2",
-          sender: "Client",
-          senderName: "Glow Fitness (You)",
-          text: "Thanks Anusha! We uploaded our updated typography guidelines to the Content Library. Excited for this!",
-          timestamp: "Jun 1, 11:30 AM"
-        },
-        {
-          id: "m3",
-          sender: "ItCrowd",
-          senderName: "Anusha (ItCrowd)",
-          text: "Awesome. Zach just finished the rough draft for Jordan Carter's first Instagram Reel. I've sent it over in the card below for your review. Please review and let us know if we should approve or request revisions!",
-          timestamp: "Today, 1:40 PM",
-          approvalCard: {
-            id: "ap-1",
-            assetTitle: "Jordan Carter - Summer Sweat Workout Reel Draft",
-            status: "Pending"
-          }
-        }
-      ]
+interface Message {
+  id: string;
+  thread_id: string;
+  sender_profile_id: string | null;
+  body: string;
+  created_at: string;
+}
+
+interface CampaignLite {
+  id: string;
+  campaign_name: string;
+  company_id: string;
+}
+
+interface CreatorLite {
+  id: string;
+  full_name: string;
+}
+
+export default function MessagesPage() {
+  const account = useAccount();
+  const isBusiness = account.role === "business";
+  const isCreator = account.role === "influencer";
+
+  const [threads, setThreads] = useState<Thread[]>([]);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loadingThreads, setLoadingThreads] = useState(true);
+  const [loadingMsgs, setLoadingMsgs] = useState(false);
+  const [draft, setDraft] = useState("");
+  const [sending, setSending] = useState(false);
+  const endRef = useRef<HTMLDivElement>(null);
+
+  // New conversation drawer
+  const [newOpen, setNewOpen] = useState(false);
+  const [campaigns, setCampaigns] = useState<CampaignLite[]>([]);
+  const [creators, setCreators] = useState<CreatorLite[]>([]);
+  const [nCampaign, setNCampaign] = useState("");
+  const [nCreator, setNCreator] = useState("");
+  const [nSubject, setNSubject] = useState("");
+  const [creating, setCreating] = useState(false);
+
+  const counterpartName = useCallback(
+    (t: Thread) => {
+      if (isCreator) return t.companies?.company_name ?? "Business";
+      if (isBusiness)
+        return t.influencers
+          ? `${t.influencers.full_name}${t.influencers.handle ? ` · ${t.influencers.handle}` : ""}`
+          : "Creator";
+      // admin
+      return `${t.companies?.company_name ?? "Business"} ↔ ${t.influencers?.full_name ?? "Creator"}`;
     },
-    {
-      id: "t2",
-      title: "Midtown Studio Grand Opening",
-      subtitle: "Campaign Thread",
-      type: "campaign",
-      unread: false,
-      avatarInitials: "GO",
-      messages: [
-        {
-          id: "m4",
-          sender: "ItCrowd",
-          senderName: "Anusha (ItCrowd)",
-          text: "Hey! All photography and video deliverables have been marked complete for the Grand Opening. The final metrics report is live in the Reports tab.",
-          timestamp: "May 28, 4:00 PM"
-        },
-        {
-          id: "m5",
-          sender: "Client",
-          senderName: "Glow Fitness (You)",
-          text: "Excellent work, the reach was fantastic! We're downloading the photos for our newsletter now.",
-          timestamp: "May 28, 4:30 PM"
-        }
-      ]
-    },
-    {
-      id: "t3",
-      title: "General Billing & Inquiries",
-      subtitle: "Support Thread",
-      type: "support",
-      unread: false,
-      avatarInitials: "SP",
-      messages: [
-        {
-          id: "m6",
-          sender: "ItCrowd",
-          senderName: "ItCrowd Support",
-          text: "Hello! Welcome to the Glow Fitness support desk. Let us know if you need to add billing options, request invoice history, or ask general operations questions.",
-          timestamp: "May 10, 9:00 AM"
-        }
-      ]
+    [isCreator, isBusiness]
+  );
+
+  const loadThreads = useCallback(async () => {
+    setLoadingThreads(true);
+    let q = supabase
+      .from("threads")
+      .select(
+        "*, companies(company_name), influencers(full_name, handle), campaigns(campaign_name)"
+      )
+      .order("created_at", { ascending: false });
+
+    if (isBusiness) {
+      if (!account.companyId) {
+        setThreads([]);
+        setLoadingThreads(false);
+        return;
+      }
+      q = q.eq("company_id", account.companyId);
+    } else if (isCreator) {
+      if (!account.influencerId) {
+        setThreads([]);
+        setLoadingThreads(false);
+        return;
+      }
+      q = q.eq("influencer_id", account.influencerId);
+    } else {
+      q = q.limit(100);
     }
-  ]);
 
-  const [activeThreadId, setActiveThreadId] = useState<string>("t1");
-  const [typedMessage, setTypedMessage] = useState("");
-  const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
-  const [ticketSubject, setTicketSubject] = useState("");
-  const [ticketDescription, setTicketDescription] = useState("");
-  const [ticketType, setTicketType] = useState<"campaign" | "support">("campaign");
-  const [revisionNotesInput, setRevisionNotesInput] = useState<string>("");
-  const [pendingRevisionId, setPendingRevisionId] = useState<string | null>(null);
+    const { data, error } = await q;
+    if (error) {
+      toast.error("Failed to load conversations");
+      setLoadingThreads(false);
+      return;
+    }
+    const rows = (data as Thread[]) || [];
+    setThreads(rows);
+    setActiveId((cur) => cur ?? rows[0]?.id ?? null);
+    setLoadingThreads(false);
+  }, [account.companyId, account.influencerId, isBusiness, isCreator]);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const activeThread = threads.find((t) => t.id === activeThreadId) || threads[0];
+  const loadMessages = useCallback(async (threadId: string) => {
+    setLoadingMsgs(true);
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .eq("thread_id", threadId)
+      .order("created_at", { ascending: true });
+    if (!error) setMessages((data as Message[]) || []);
+    setLoadingMsgs(false);
+  }, []);
 
-  // Scroll to bottom of chat when messages change or thread changes
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [activeThreadId, threads]);
+    loadThreads();
+  }, [loadThreads]);
 
-  const handleSendMessage = () => {
-    if (typedMessage.trim() === "") return;
+  useEffect(() => {
+    if (activeId) loadMessages(activeId);
+  }, [activeId, loadMessages]);
 
-    const newMessage: Message = {
-      id: `msg-${Date.now()}`,
-      sender: "Client",
-      senderName: "Glow Fitness (You)",
-      text: typedMessage,
-      timestamp: "Just now"
-    };
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-    setThreads((prev) =>
-      prev.map((t) =>
-        t.id === activeThreadId
-          ? {
-              ...t,
-              messages: [...t.messages, newMessage]
-            }
-          : t
-      )
-    );
-    setTypedMessage("");
-
-    // Simulate auto-reply from ItCrowd after 2 seconds
-    setTimeout(() => {
-      const autoReply: Message = {
-        id: `msg-reply-${Date.now()}`,
-        sender: "ItCrowd",
-        senderName: activeThread.type === "support" ? "Support Desk" : "Anusha (ItCrowd)",
-        text: "Thanks for the message! Our team will review this and respond shortly.",
-        timestamp: "Just now"
-      };
-
-      setThreads((prev) =>
-        prev.map((t) =>
-          t.id === activeThreadId
-            ? {
-                ...t,
-                messages: [...t.messages, autoReply]
-              }
-            : t
-        )
-      );
-    }, 2000);
-  };
-
-  const handleAttachMock = () => {
-    const toastId = toast.loading("Uploading attachment...");
-    setTimeout(() => {
-      const newMsg: Message = {
-        id: `msg-attach-${Date.now()}`,
-        sender: "Client",
-        senderName: "Glow Fitness (You)",
-        text: "Sent an attachment: Midtown Gym Map.png",
-        timestamp: "Just now",
-        attachment: {
-          name: "Midtown Gym Map.png",
-          type: "image",
-          url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80"
+  // Populate the new-conversation drawer
+  useEffect(() => {
+    if (!newOpen) return;
+    (async () => {
+      if (isBusiness && account.companyId) {
+        const { data } = await supabase
+          .from("campaigns")
+          .select("id, campaign_name, company_id")
+          .eq("company_id", account.companyId);
+        setCampaigns((data as CampaignLite[]) || []);
+      } else if (isCreator && account.influencerId) {
+        const { data } = await supabase
+          .from("campaign_influencers")
+          .select("campaigns(id, campaign_name, company_id)")
+          .eq("influencer_id", account.influencerId);
+        const list: CampaignLite[] = [];
+        for (const row of (data as unknown as Array<{
+          campaigns: CampaignLite | null;
+        }>) || []) {
+          if (row.campaigns) list.push(row.campaigns);
         }
-      };
-      setThreads((prev) =>
-        prev.map((t) =>
-          t.id === activeThreadId ? { ...t, messages: [...t.messages, newMsg] } : t
-        )
-      );
-      toast.success("Attachment sent!", { id: toastId });
-    }, 1500);
-  };
+        setCampaigns(list);
+      }
+    })();
+  }, [newOpen, isBusiness, isCreator, account.companyId, account.influencerId]);
 
-  const handleApproveAsset = (cardId: string, sysId: string) => {
-    const systemConfirm: Message = {
-      id: sysId,
-      sender: "System",
-      senderName: "System Notification",
-      text: "⚡️ You approved the asset Jordan Carter - Summer Sweat Workout Reel Draft for publication.",
-      timestamp: "Just now"
-    };
+  // When a business picks a campaign, load creators attached to it
+  useEffect(() => {
+    if (!isBusiness || !nCampaign) {
+      setCreators([]);
+      return;
+    }
+    (async () => {
+      const { data } = await supabase
+        .from("campaign_influencers")
+        .select("influencers(id, full_name)")
+        .eq("campaign_id", nCampaign);
+      const list: CreatorLite[] = [];
+      for (const row of (data as unknown as Array<{ influencers: CreatorLite | null }>) || []) {
+        if (row.influencers) list.push(row.influencers);
+      }
+      setCreators(list);
+    })();
+  }, [isBusiness, nCampaign]);
 
-    setThreads((prev) =>
-      prev.map((t) => {
-        if (t.id !== activeThreadId) return t;
-        return {
-          ...t,
-          messages: [
-            ...t.messages.map((m) => {
-              if (m.approvalCard?.id === cardId) {
-                return {
-                  ...m,
-                  approvalCard: {
-                    ...m.approvalCard,
-                    status: "Approved" as const
-                  }
-                };
-              }
-              return m;
-            }),
-            systemConfirm
-          ]
-        };
-      })
-    );
+  const createConversation = async () => {
+    if (!nCampaign || !nSubject.trim()) {
+      toast.error("Pick a campaign and add a subject");
+      return;
+    }
+    const campaign = campaigns.find((c) => c.id === nCampaign);
+    if (!campaign) return;
 
-    toast.success("Asset approved! Zach has been notified to publish the post.");
-  };
-
-  const handleRequestRevisionSubmit = () => {
-    if (revisionNotesInput.trim() === "") {
-      toast.error("Please enter revision notes");
+    const companyId = isBusiness ? account.companyId : campaign.company_id;
+    const influencerId = isCreator ? account.influencerId : nCreator;
+    if (!companyId || !influencerId) {
+      toast.error(isBusiness ? "Pick a creator" : "Missing account context");
       return;
     }
 
-    const cardId = pendingRevisionId;
+    setCreating(true);
+    try {
+      // Reuse an existing thread for this trio if present
+      const { data: existing } = await supabase
+        .from("threads")
+        .select("id")
+        .eq("company_id", companyId)
+        .eq("influencer_id", influencerId)
+        .eq("campaign_id", nCampaign)
+        .maybeSingle();
 
-    setThreads((prev) =>
-      prev.map((t) => {
-        if (t.id !== activeThreadId) return t;
-        return {
-          ...t,
-          messages: t.messages.map((m) => {
-            if (m.approvalCard?.id === cardId) {
-              return {
-                ...m,
-                approvalCard: {
-                  ...m.approvalCard,
-                  status: "Revision Requested",
-                  notes: revisionNotesInput
-                }
-              };
-            }
-            return m;
+      let threadId = existing?.id as string | undefined;
+      if (!threadId) {
+        const { data: inserted, error } = await supabase
+          .from("threads")
+          .insert({
+            company_id: companyId,
+            influencer_id: influencerId,
+            campaign_id: nCampaign,
+            subject: nSubject.trim(),
+            thread_type: "campaign",
           })
-        };
-      })
-    );
+          .select("id")
+          .single();
+        if (error) throw error;
+        threadId = inserted.id;
+      }
 
-    const feedbackMsg: Message = {
-      id: `msg-feedback-${Date.now()}`,
-      sender: "Client",
-      senderName: "Glow Fitness (You)",
-      text: `Revision requested. Feedback notes: "${revisionNotesInput}"`,
-      timestamp: "Just now"
-    };
-
-    setThreads((prev) =>
-      prev.map((t) =>
-        t.id === activeThreadId ? { ...t, messages: [...t.messages, feedbackMsg] } : t
-      )
-    );
-
-    setPendingRevisionId(null);
-    setRevisionNotesInput("");
-    toast.success("Revision request sent to creator.");
-  };
-
-  const handleCreateNewTicket = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (ticketSubject.trim() === "" || ticketDescription.trim() === "") {
-      toast.error("Please fill in all ticket details");
-      return;
+      toast.success("Conversation ready");
+      setNewOpen(false);
+      setNCampaign("");
+      setNCreator("");
+      setNSubject("");
+      await loadThreads();
+      if (threadId) setActiveId(threadId);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Could not start conversation";
+      toast.error(msg);
+    } finally {
+      setCreating(false);
     }
-
-    const newThread: Thread = {
-      id: `t-new-${Date.now()}`,
-      title: ticketSubject,
-      subtitle: ticketType === "campaign" ? "New Campaign Request" : "General Support Inquiry",
-      type: ticketType,
-      unread: false,
-      avatarInitials: ticketSubject.substring(0, 2).toUpperCase(),
-      messages: [
-        {
-          id: `m-init-${Date.now()}`,
-          sender: "Client",
-          senderName: "Glow Fitness (You)",
-          text: ticketDescription,
-          timestamp: "Just now"
-        },
-        {
-          id: `m-reply-${Date.now()}`,
-          sender: "ItCrowd",
-          senderName: "ItCrowd Support",
-          text: "Hi! We've received your request and opened a ticket. A coordinator will follow up here shortly.",
-          timestamp: "Just now"
-        }
-      ]
-    };
-
-    setThreads((prev) => [newThread, ...prev]);
-    setActiveThreadId(newThread.id);
-    setIsNewTicketOpen(false);
-    setTicketSubject("");
-    setTicketDescription("");
-    toast.success("Ticket / thread created successfully!");
   };
 
-  const markRead = (id: string) => {
-    setActiveThreadId(id);
-    setThreads((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, unread: false } : t))
-    );
+  const send = async () => {
+    if (!draft.trim() || !activeId) return;
+    setSending(true);
+    const body = draft.trim();
+    setDraft("");
+    const { error } = await supabase.from("messages").insert({
+      thread_id: activeId,
+      sender_profile_id: account.userId,
+      body,
+    });
+    if (error) {
+      toast.error("Message failed to send");
+      setDraft(body);
+    } else {
+      await loadMessages(activeId);
+    }
+    setSending(false);
   };
+
+  const activeThread = threads.find((t) => t.id === activeId) || null;
 
   return (
-    <div className="h-[calc(100vh-140px)] flex flex-col md:flex-row bg-[#1A1A27] border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative">
-      
-      {/* Left Panel: Threads list */}
-      <div className="w-full md:w-[320px] bg-[#111118] border-r border-white/5 flex flex-col shrink-0">
-        
-        {/* List Header */}
-        <div className="p-4 border-b border-white/5 flex justify-between items-center bg-[#1A1A27]">
-          <span className="text-sm font-bold text-white font-[family-name:var(--font-syne)] flex items-center gap-1.5">
-            <MessageSquare size={16} className="text-brand-purple-light" /> Messaging Inbox
-          </span>
-          <button 
-            onClick={() => setIsNewTicketOpen(true)}
-            className="p-2 bg-brand-purple hover:bg-brand-purple-light rounded-xl text-white transition-all hover:scale-105"
-            title="Create ticket / thread"
-          >
-            <Plus size={14} />
-          </button>
-        </div>
-
-        {/* Threads Loop */}
-        <div className="flex-1 overflow-y-auto divide-y divide-white/5 p-2 space-y-1">
-          {threads.map((t) => (
-            <div
-              key={t.id}
-              onClick={() => markRead(t.id)}
-              className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all ${
-                activeThreadId === t.id 
-                  ? "bg-brand-purple/15 border border-brand-purple/20 text-white" 
-                  : "text-[#94A3B8] hover:bg-white/5 hover:text-white border border-transparent"
-              }`}
+    <div className="flex gap-4 h-[calc(100vh-140px)]">
+      {/* Thread list */}
+      <div className="w-[300px] shrink-0 bg-[#1A1A27] border border-white/5 rounded-2xl flex flex-col overflow-hidden">
+        <div className="p-4 border-b border-white/5 flex items-center justify-between">
+          <span className="font-semibold text-white font-[family-name:var(--font-syne)]">Conversations</span>
+          {(isBusiness || isCreator) && (
+            <button
+              onClick={() => setNewOpen(true)}
+              className="p-1.5 rounded-lg bg-brand-purple text-white hover:bg-brand-purple-light transition-colors"
+              title="New conversation"
             >
-              {/* Thread Avatar initials */}
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-purple to-brand-purple-dark flex items-center justify-center text-xs font-extrabold text-white shrink-0 shadow-lg">
-                {t.avatarInitials}
-              </div>
+              <Plus size={16} />
+            </button>
+          )}
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          {loadingThreads ? (
+            <div className="p-6 text-center text-[#94A3B8]">
+              <Loader2 className="animate-spin mx-auto" size={20} />
+            </div>
+          ) : threads.length === 0 ? (
+            <div className="p-6 text-center text-sm text-[#94A3B8]">
+              No conversations yet.
+            </div>
+          ) : (
+            threads.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setActiveId(t.id)}
+                className={`w-full text-left px-4 py-3 border-b border-white/5 transition-colors ${
+                  t.id === activeId ? "bg-brand-purple/10" : "hover:bg-white/[0.03]"
+                }`}
+              >
+                <p className="text-sm font-medium text-white truncate">{counterpartName(t)}</p>
+                <p className="text-xs text-[#94A3B8] truncate">{t.subject}</p>
+                <p className="text-[10px] text-[#475569] mt-0.5 truncate">
+                  {t.campaigns?.campaign_name ?? "General"}
+                </p>
+              </button>
+            ))
+          )}
+        </div>
+      </div>
 
-              {/* Thread details */}
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start">
-                  <span className="text-xs font-bold truncate block">{t.title}</span>
-                  {t.unread && (
-                    <span className="w-2 h-2 rounded-full bg-brand-purple animate-pulse shrink-0 mt-1" />
-                  )}
-                </div>
-                <span className="text-[10px] text-[#475569] block mt-0.5 font-bold uppercase tracking-wider">{t.subtitle}</span>
-                <p className="text-xs text-[#94A3B8]/80 truncate mt-1">
-                  {t.messages[t.messages.length - 1]?.text}
+      {/* Conversation */}
+      <div className="flex-1 bg-[#1A1A27] border border-white/5 rounded-2xl flex flex-col overflow-hidden">
+        {!activeThread ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-[#475569]">
+            <MessageSquare size={40} className="mb-3" />
+            <p className="text-sm">Select or start a conversation.</p>
+          </div>
+        ) : (
+          <>
+            <div className="p-4 border-b border-white/5 flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-white">{counterpartName(activeThread)}</p>
+                <p className="text-xs text-[#94A3B8]">
+                  {activeThread.subject}
+                  {activeThread.campaigns?.campaign_name
+                    ? ` · ${activeThread.campaigns.campaign_name}`
+                    : ""}
                 </p>
               </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
-
-      {/* Right Panel: Chat view */}
-      <div className="flex-1 flex flex-col justify-between bg-[#0D0D14]/80">
-        
-        {/* Chat Header */}
-        <div className="p-4 border-b border-white/5 bg-[#111118] flex justify-between items-center">
-          <div>
-            <span className="text-sm font-bold text-white block">{activeThread.title}</span>
-            <span className="text-[10px] text-brand-purple-light uppercase font-bold tracking-wider">{activeThread.subtitle}</span>
-          </div>
-          
-          <div className="flex gap-2">
-            <span className="text-[10px] px-3 py-1 bg-white/5 rounded-full border border-white/10 text-white font-medium flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 bg-brand-lime rounded-full"></span> Support Coordinator Assigned
-            </span>
-          </div>
-        </div>
-
-        {/* Chat Feed */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {activeThread.messages.map((m) => {
-            const isMe = m.sender === "Client";
-            const isSys = m.sender === "System";
-
-            if (isSys) {
-              return (
-                <div key={m.id} className="flex justify-center">
-                  <div className="bg-[#1A1A27] border border-white/5 text-xs text-brand-purple-light px-4 py-2 rounded-full font-medium shadow flex items-center gap-1.5">
-                    {m.text}
-                  </div>
-                </div>
-              );
-            }
-
-            return (
-              <div 
-                key={m.id} 
-                className={`flex gap-3 max-w-[80%] ${isMe ? "ml-auto flex-row-reverse" : "mr-auto"}`}
+              <button
+                onClick={() => activeId && loadMessages(activeId)}
+                className="p-2 text-[#94A3B8] hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                title="Refresh"
               >
-                {/* User avatar */}
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 ${
-                  isMe ? "bg-brand-lime-dark" : "bg-brand-purple-dark"
-                }`}>
-                  {isMe ? "YOU" : "IC"}
+                <RefreshCw size={15} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5 space-y-3">
+              {loadingMsgs ? (
+                <div className="text-center text-[#94A3B8]">
+                  <Loader2 className="animate-spin mx-auto" size={20} />
                 </div>
-
-                <div className="space-y-1">
-                  <span className={`text-[10px] text-[#475569] block font-bold uppercase tracking-wider ${isMe ? "text-right" : ""}`}>
-                    {m.senderName} · {m.timestamp}
-                  </span>
-                  
-                  {/* Text bubble */}
-                  <div className={`p-4 rounded-2xl text-sm leading-relaxed border ${
-                    isMe 
-                      ? "bg-brand-purple/10 border-brand-purple/20 text-[#EDEDED] rounded-tr-none" 
-                      : "bg-[#1A1A27] border-white/5 text-[#EDEDED] rounded-tl-none"
-                  }`}>
-                    {m.text}
-
-                    {/* Attachment preview if exists */}
-                    {m.attachment && (
-                      <div className="mt-3 bg-[#0D0D14] border border-white/10 rounded-xl overflow-hidden p-2 flex gap-3 items-center max-w-sm">
-                        <ImageIcon size={32} className="text-brand-purple-light shrink-0" />
-                        <div className="min-w-0">
-                          <span className="text-xs font-semibold text-white block truncate">{m.attachment.name}</span>
-                          <span className="text-[10px] text-[#475569] block uppercase tracking-wider">Preview Sent</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Interactive Approval Card */}
-                  {m.approvalCard && (
-                    <div className="mt-3 bg-gradient-to-r from-[#1A1A27] to-[#111118] border border-brand-purple/20 rounded-2xl p-5 shadow-lg max-w-md space-y-4">
-                      <div className="flex items-start gap-2">
-                        <AlertCircle className="text-brand-purple-light shrink-0 mt-0.5" size={16} />
-                        <div>
-                          <span className="text-xs font-bold text-white block">Approval Needed: Creator Asset Draft</span>
-                          <p className="text-xs text-[#94A3B8] mt-1">{m.approvalCard.assetTitle}</p>
-                        </div>
-                      </div>
-
-                      <div className="pt-2 border-t border-white/5 flex flex-col gap-2">
-                        {m.approvalCard.status === "Pending" ? (
-                          <div className="flex gap-2">
-                            <button 
-                               onClick={() => {
-                                 const sysId = `sys-${Date.now()}`;
-                                 handleApproveAsset(m.approvalCard!.id, sysId);
-                               }}
-                               className="flex-1 flex items-center justify-center gap-1.5 bg-brand-lime text-black hover:bg-brand-lime-dark font-bold text-xs py-2.5 px-3 rounded-xl transition-all hover:scale-[1.02]"
-                             >
-                               <Check size={14} /> Approve Asset
-                             </button>
-                            <button 
-                              onClick={() => setPendingRevisionId(m.approvalCard!.id)}
-                              className="flex-1 flex items-center justify-center gap-1.5 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-semibold text-xs py-2.5 px-3 rounded-xl transition-all"
-                            >
-                              <X size={14} /> Request Revision
-                            </button>
-                          </div>
-                        ) : m.approvalCard.status === "Approved" ? (
-                          <div className="flex items-center gap-1.5 text-xs text-brand-lime font-semibold py-2">
-                            <CheckCircle2 size={16} /> Approved & queued for publish
-                          </div>
-                        ) : (
-                          <div className="space-y-1 pt-1">
-                            <div className="text-xs text-yellow-400 font-semibold flex items-center gap-1.5">
-                              <Clock size={14} /> Revision requested
-                            </div>
-                            <p className="text-xs text-[#94A3B8] italic bg-[#0D0D14] p-2 rounded-lg border border-white/5 mt-1">
-                              &quot;{m.approvalCard.notes}&quot;
-                            </p>
-                          </div>
-                        )}
+              ) : messages.length === 0 ? (
+                <p className="text-center text-sm text-[#475569] mt-6">
+                  No messages yet — say hello 👋
+                </p>
+              ) : (
+                messages.map((m) => {
+                  const mine = m.sender_profile_id === account.userId;
+                  return (
+                    <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+                      <div
+                        className={`max-w-[70%] rounded-2xl px-4 py-2.5 text-sm ${
+                          mine
+                            ? "bg-brand-purple text-white rounded-br-sm"
+                            : "bg-[#0D0D14] border border-white/10 text-[#E2E8F0] rounded-bl-sm"
+                        }`}
+                      >
+                        <p className="whitespace-pre-wrap break-words">{m.body}</p>
+                        <p className={`text-[10px] mt-1 ${mine ? "text-white/60" : "text-[#475569]"}`}>
+                          {new Date(m.created_at).toLocaleString([], {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-          <div ref={messagesEndRef} />
-        </div>
+                  );
+                })
+              )}
+              <div ref={endRef} />
+            </div>
 
-        {/* Revision Input Overlay (Modal-like) */}
-        {pendingRevisionId && (
-          <div className="bg-[#111118] border-t border-white/10 p-4 space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">Describe Revision Requests</span>
-              <button 
-                onClick={() => setPendingRevisionId(null)}
-                className="text-[#475569] hover:text-white"
+            <div className="p-4 border-t border-white/5 flex items-center gap-3">
+              <input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    send();
+                  }
+                }}
+                placeholder="Type a message…"
+                className="flex-1 bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+              />
+              <button
+                onClick={send}
+                disabled={sending || !draft.trim()}
+                className="bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl p-2.5 transition-colors disabled:opacity-50"
               >
-                <X size={16} />
+                {sending ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
               </button>
             </div>
-            <textarea
-              value={revisionNotesInput}
-              onChange={(e) => setRevisionNotesInput(e.target.value)}
-              placeholder="e.g. Please change the caption CTA link, and shorten the workout clip by 3 seconds..."
-              rows={2}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
-            />
-            <div className="flex justify-end gap-2">
-              <button 
-                onClick={() => setPendingRevisionId(null)}
-                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-semibold"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleRequestRevisionSubmit}
-                className="px-4 py-1.5 bg-brand-purple hover:bg-brand-purple-light rounded-lg text-xs font-semibold text-white"
-              >
-                Submit Request
-              </button>
-            </div>
-          </div>
+          </>
         )}
-
-        {/* Chat Input Bar */}
-        <div className="p-4 border-t border-white/5 bg-[#111118] flex items-center gap-3">
-          <button 
-            onClick={handleAttachMock}
-            className="p-2.5 bg-white/5 border border-white/5 text-[#94A3B8] hover:text-white rounded-xl hover:bg-white/10 transition-colors"
-            title="Attach a file"
-          >
-            <Paperclip size={18} />
-          </button>
-          
-          <input
-            type="text"
-            placeholder="Type a message, ask support, or paste details..."
-            value={typedMessage}
-            onChange={(e) => setTypedMessage(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-            className="flex-1 bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
-          />
-
-          <button 
-            onClick={handleSendMessage}
-            className="p-2.5 bg-brand-purple text-white rounded-xl hover:bg-brand-purple-light transition-all btn-glow shadow-md"
-          >
-            <Send size={18} />
-          </button>
-        </div>
-
       </div>
 
-      {/* Support Ticket Modal / Dialog */}
-      {isNewTicketOpen && (
-        <div className="fixed inset-0 z-[250] bg-black/70 backdrop-blur-sm flex justify-center items-center p-6 animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-[#1A1A27] border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 space-y-6">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] flex items-center gap-1.5">
-                <HelpCircle className="text-brand-purple-light" size={18} /> Open Support Ticket
-              </h3>
-              <button onClick={() => setIsNewTicketOpen(false)} className="text-[#475569] hover:text-white">
-                <X size={18} />
-              </button>
-            </div>
-
-            <form onSubmit={handleCreateNewTicket} className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Subject / Campaign Title *</label>
-                <input
-                  required
-                  type="text"
-                  placeholder="e.g. Autumn photoshoot scheduling issues"
-                  value={ticketSubject}
-                  onChange={(e) => setTicketSubject(e.target.value)}
-                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Topic Category *</label>
-                <select 
-                  value={ticketType}
-                  onChange={(e) => setTicketType(e.target.value as "campaign" | "support")}
-                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white cursor-pointer focus:outline-none focus:border-brand-purple"
-                >
-                  <option value="campaign">New Campaign Request</option>
-                  <option value="support">General Support / Billing Help</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Description of Request *</label>
-                <textarea
-                  required
-                  rows={4}
-                  placeholder="Please describe what you need help with. A representative will get back to you directly in this thread."
-                  value={ticketDescription}
-                  onChange={(e) => setTicketDescription(e.target.value)}
-                  className="w-full bg-[#0D0D14] border border-white/10 rounded-xl p-3 text-xs text-white placeholder-[#475569] focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
-                />
-              </div>
-
-              <div className="pt-4 flex gap-3">
-                <button 
-                  type="button" 
-                  onClick={() => setIsNewTicketOpen(false)}
-                  className="flex-1 py-2.5 border border-white/10 hover:bg-white/5 rounded-xl font-semibold text-xs transition-colors"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit"
-                  className="flex-1 bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl font-bold text-xs btn-glow"
-                >
-                  Open Thread
-                </button>
-              </div>
-            </form>
+      {/* New conversation */}
+      <SlideDrawer
+        isOpen={newOpen}
+        onClose={() => setNewOpen(false)}
+        title="New Conversation"
+        width="w-[85vw] sm:w-[440px]"
+      >
+        <div className="space-y-5">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Campaign *</label>
+            <select
+              value={nCampaign}
+              onChange={(e) => setNCampaign(e.target.value)}
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+            >
+              <option value="">Select a campaign…</option>
+              {campaigns.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.campaign_name}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
-      )}
 
+          {isBusiness && (
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-[#94A3B8]">Creator *</label>
+              <select
+                value={nCreator}
+                onChange={(e) => setNCreator(e.target.value)}
+                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+                disabled={!nCampaign}
+              >
+                <option value="">{nCampaign ? "Select a creator…" : "Pick a campaign first"}</option>
+                {creators.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.full_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-[#94A3B8]">Subject *</label>
+            <input
+              value={nSubject}
+              onChange={(e) => setNSubject(e.target.value)}
+              placeholder="e.g. Kickoff & brand guidelines"
+              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+            />
+          </div>
+
+          <button
+            onClick={createConversation}
+            disabled={creating}
+            className="w-full bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl py-3 font-medium flex justify-center items-center disabled:opacity-60"
+          >
+            {creating ? <Loader2 className="animate-spin" size={18} /> : "Start Conversation"}
+          </button>
+        </div>
+      </SlideDrawer>
     </div>
   );
 }

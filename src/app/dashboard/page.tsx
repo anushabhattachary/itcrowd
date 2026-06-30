@@ -1,280 +1,387 @@
 "use client";
 
-import { useState } from "react";
-import { 
-  Activity, 
-  Users, 
-  Sparkles, 
-  Calendar, 
-  ArrowUpRight, 
-  Video, 
-  Camera, 
-  MessageSquare,
+import { useEffect, useState } from "react";
+import {
+  Activity,
+  Users,
+  Sparkles,
+  Briefcase,
   CheckCircle2,
   Clock,
-  ChevronRight,
+  FileVideo,
+  Loader2,
   TrendingUp,
-  Award
+  Building2,
+  type LucideIcon,
 } from "lucide-react";
-import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+import { useAccount } from "@/lib/account-context";
 
-export default function ClientDashboardHome() {
-  const [businessInfo] = useState({
-    name: "Glow Fitness Studio",
-    niche: "Local Boutique Gym",
-    location: "Atlanta, GA",
-  });
+// ---------- Types ----------
 
-  // Mock metrics
-  const stats = [
-    { label: "Active Campaigns", value: "3", icon: Activity, change: "+1 this month", isNeutral: false },
-    { label: "Total Reach", value: "124.8K", icon: TrendingUp, change: "+18.2% vs last month", isNeutral: false },
-    { label: "Total Engagement", value: "8.4%", icon: Sparkles, change: "+0.6% vs industry avg", isNeutral: false },
-    { label: "Content Delivered", value: "48 assets", icon: Award, change: "Photos & Videos", isNeutral: true },
-    { label: "Upcoming Deliverables", value: "6 pending", icon: Clock, change: "Due this week", isNeutral: true },
-    { label: "Next Creator Visit", value: "June 10", icon: Calendar, change: "Tomorrow at 2:00 PM", isNeutral: false },
-  ];
+interface StatCard {
+  label: string;
+  value: number;
+  icon: LucideIcon;
+  accent: string; // tailwind text color class for the icon
+}
 
-  // Creator network snapshot
-  const creatorSnapshot = [
-    { type: "NIL Athletes Used", count: 4, icon: Users, color: "from-brand-purple to-brand-purple-light" },
-    { type: "Influencers Used", count: 6, icon: Sparkles, color: "from-pink-500 to-rose-400" },
-    { type: "Photographers Used", count: 2, icon: Camera, color: "from-brand-lime to-emerald-400" },
-    { type: "Videographers Used", count: 1, icon: Video, color: "from-blue-500 to-indigo-400" },
-  ];
+interface RecentContentRow {
+  id: string;
+  title: string | null;
+  status: string | null;
+  created_at: string;
+}
 
-  // Recent activity feed
-  const activities = [
-    {
-      id: 1,
-      type: "content",
-      badge: "New Content Uploaded",
-      badgeColor: "bg-brand-lime/10 text-brand-lime border-brand-lime/20",
-      description: "Videographer Zach uploaded 4 raw TikTok drafts for the 'Summer Sweat Challenge'.",
-      time: "2 hours ago",
-    },
-    {
-      id: 2,
-      type: "published",
-      badge: "Post Published",
-      badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-      description: "Athlete Jordan Carter posted a brand endorsement Reel on Instagram.",
-      time: "5 hours ago",
-    },
-    {
-      id: 3,
-      type: "approval",
-      badge: "Campaign Approval",
-      badgeColor: "bg-brand-purple/10 text-brand-purple-light border-brand-purple/20",
-      description: "You approved the content brief for 'Glow Fitness Grand Opening V2'.",
-      time: "1 day ago",
-    },
-    {
-      id: 4,
-      type: "milestone",
-      badge: "Upcoming Milestone",
-      badgeColor: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-      description: "Next scheduled photographer visit at Midtown location on Wednesday.",
-      time: "2 days ago",
-    },
-  ];
+interface AdminRecentCompany {
+  id: string;
+  company_name: string | null;
+  created_at: string;
+  stage: string | null;
+}
+
+interface AdminRecentInfluencer {
+  id: string;
+  handle: string | null;
+  created_at: string;
+}
+
+interface AdminMetricsResponse {
+  metrics: {
+    activeCompanies: number;
+    networkInfluencers: number;
+    activeCampaigns: number;
+    dealsClosed: number;
+  };
+  recentActivity: {
+    companies: AdminRecentCompany[] | null;
+    influencers: AdminRecentInfluencer[] | null;
+  };
+}
+
+type ActivityItem =
+  | { id: string; kind: "company"; label: string; sub: string; created_at: string }
+  | { id: string; kind: "influencer"; label: string; sub: string; created_at: string };
+
+// ---------- Helpers ----------
+
+function timeAgo(iso: string): string {
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "";
+  const diff = Date.now() - then;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 30) return `${days}d ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
+function statusBadgeClasses(status: string | null): string {
+  switch (status) {
+    case "Approved":
+      return "bg-brand-lime/10 text-brand-lime border-brand-lime/20";
+    case "Pending":
+      return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
+    case "Revision Requested":
+      return "bg-rose-500/10 text-rose-400 border-rose-500/20";
+    default:
+      return "bg-white/5 text-[#94A3B8] border-white/10";
+  }
+}
+
+// ---------- Component ----------
+
+export default function DashboardOverview() {
+  const account = useAccount();
+  const { role, displayName, companyId, influencerId } = account;
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<StatCard[]>([]);
+  const [recentContent, setRecentContent] = useState<RecentContentRow[]>([]);
+  const [recentActivity, setRecentActivity] = useState<ActivityItem[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadAdmin() {
+      const res = await fetch("/api/dashboard/metrics");
+      if (!res.ok) throw new Error("Failed to load metrics");
+      const data = (await res.json()) as AdminMetricsResponse;
+      if (cancelled) return;
+
+      const m = data.metrics;
+      setStats([
+        { label: "Active Companies", value: m.activeCompanies, icon: Building2, accent: "text-brand-purple-light" },
+        { label: "Network Influencers", value: m.networkInfluencers, icon: Users, accent: "text-brand-lime" },
+        { label: "Active Campaigns", value: m.activeCampaigns, icon: Activity, accent: "text-brand-purple-light" },
+        { label: "Deals Closed", value: m.dealsClosed, icon: TrendingUp, accent: "text-brand-lime" },
+      ]);
+
+      const companies = data.recentActivity.companies ?? [];
+      const influencers = data.recentActivity.influencers ?? [];
+      const combined: ActivityItem[] = [
+        ...companies.map<ActivityItem>((c) => ({
+          id: `company-${c.id}`,
+          kind: "company",
+          label: c.company_name ?? "New company",
+          sub: c.stage ? `Stage: ${c.stage}` : "Company onboarded",
+          created_at: c.created_at,
+        })),
+        ...influencers.map<ActivityItem>((i) => ({
+          id: `influencer-${i.id}`,
+          kind: "influencer",
+          label: i.handle ? `@${i.handle}` : "New influencer",
+          sub: "Joined the network",
+          created_at: i.created_at,
+        })),
+      ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+      setRecentActivity(combined.slice(0, 8));
+    }
+
+    async function loadBusiness() {
+      if (!companyId) {
+        setStats([]);
+        setRecentContent([]);
+        return;
+      }
+
+      const [campaignsRes, activeCampaignsRes, contentRes, pendingRes, recentRes] = await Promise.all([
+        supabase.from("campaigns").select("id", { count: "exact", head: true }).eq("company_id", companyId),
+        supabase
+          .from("campaigns")
+          .select("id", { count: "exact", head: true })
+          .eq("company_id", companyId)
+          .eq("status", "Campaign Live"),
+        supabase.from("content").select("id", { count: "exact", head: true }).eq("company_id", companyId),
+        supabase
+          .from("content")
+          .select("id", { count: "exact", head: true })
+          .eq("company_id", companyId)
+          .eq("status", "Pending"),
+        supabase
+          .from("content")
+          .select("id,title,status,created_at")
+          .eq("company_id", companyId)
+          .order("created_at", { ascending: false })
+          .limit(5),
+      ]);
+
+      if (cancelled) return;
+
+      setStats([
+        { label: "Total Campaigns", value: campaignsRes.count ?? 0, icon: Briefcase, accent: "text-brand-purple-light" },
+        { label: "Active Campaigns", value: activeCampaignsRes.count ?? 0, icon: Activity, accent: "text-brand-lime" },
+        { label: "Content Items", value: contentRes.count ?? 0, icon: FileVideo, accent: "text-brand-purple-light" },
+        { label: "Pending Approvals", value: pendingRes.count ?? 0, icon: Clock, accent: "text-yellow-400" },
+      ]);
+
+      setRecentContent((recentRes.data as RecentContentRow[] | null) ?? []);
+    }
+
+    async function loadInfluencer() {
+      if (!influencerId) {
+        setStats([]);
+        setRecentContent([]);
+        return;
+      }
+
+      const [assignedRes, uploadedRes, approvedRes, pendingRes, recentRes] = await Promise.all([
+        supabase
+          .from("campaign_influencers")
+          .select("id", { count: "exact", head: true })
+          .eq("influencer_id", influencerId),
+        supabase.from("content").select("id", { count: "exact", head: true }).eq("influencer_id", influencerId),
+        supabase
+          .from("content")
+          .select("id", { count: "exact", head: true })
+          .eq("influencer_id", influencerId)
+          .eq("status", "Approved"),
+        supabase
+          .from("content")
+          .select("id", { count: "exact", head: true })
+          .eq("influencer_id", influencerId)
+          .eq("status", "Pending"),
+        supabase
+          .from("content")
+          .select("id,title,status,created_at")
+          .eq("influencer_id", influencerId)
+          .order("created_at", { ascending: false })
+          .limit(5),
+      ]);
+
+      if (cancelled) return;
+
+      setStats([
+        { label: "Campaigns Assigned", value: assignedRes.count ?? 0, icon: Briefcase, accent: "text-brand-purple-light" },
+        { label: "Content Uploaded", value: uploadedRes.count ?? 0, icon: FileVideo, accent: "text-brand-lime" },
+        { label: "Approved", value: approvedRes.count ?? 0, icon: CheckCircle2, accent: "text-brand-lime" },
+        { label: "Pending", value: pendingRes.count ?? 0, icon: Clock, accent: "text-yellow-400" },
+      ]);
+
+      setRecentContent((recentRes.data as RecentContentRow[] | null) ?? []);
+    }
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        if (role === "admin") {
+          await loadAdmin();
+        } else if (role === "business") {
+          await loadBusiness();
+        } else {
+          await loadInfluencer();
+        }
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Something went wrong loading your dashboard.");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [role, companyId, influencerId]);
+
+  const showActivityFeed = role === "admin";
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#1A1A27] to-[#111118] border border-white/5 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl">
+      {/* Header */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#1A1A27] to-[#111118] border border-white/5 rounded-3xl p-6 md:p-8 shadow-xl">
         <div className="space-y-2 relative z-10">
-          <span className="text-xs font-semibold text-brand-purple-light uppercase tracking-wider">Client Command Center</span>
+          <span className="text-xs font-semibold text-brand-purple-light uppercase tracking-wider">
+            {role === "admin" ? "Admin Overview" : role === "business" ? "Client Command Center" : "Creator Hub"}
+          </span>
           <h1 className="text-3xl font-extrabold text-white font-[family-name:var(--font-syne)]">
-            Welcome back, {businessInfo.name}! ⚡️
+            Welcome back, {displayName}
           </h1>
           <p className="text-[#94A3B8] text-sm">
-            Managing marketing campaigns and creators across your locations from one central operations hub.
+            {role === "admin"
+              ? "A live snapshot of your network, campaigns, and deal flow."
+              : role === "business"
+                ? "Track your campaigns and review creator content from one hub."
+                : "Manage your assignments and keep your content moving."}
           </p>
         </div>
-        
-        {/* Next Visit Quick Check */}
-        <div className="bg-[#0D0D14]/80 backdrop-blur border border-white/10 rounded-2xl p-4 flex items-center gap-4 shrink-0 relative z-10 hover:border-brand-purple/40 transition-colors">
-          <div className="w-10 h-10 rounded-xl bg-brand-purple/15 flex items-center justify-center text-brand-purple-light shadow-md shadow-brand-purple/10">
-            <Calendar size={20} />
-          </div>
-          <div>
-            <span className="text-[10px] text-[#475569] font-bold uppercase block tracking-wider">Next Creator Visit</span>
-            <span className="text-sm font-bold text-white block">Tomorrow · 2:00 PM</span>
-            <span className="text-xs text-[#94A3B8] block">Midtown Studio photoshoot</span>
-          </div>
-        </div>
-        
-        {/* Decorative background glow */}
         <div className="absolute right-0 top-0 w-80 h-80 bg-brand-purple/5 blur-[100px] rounded-full pointer-events-none" />
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-        {stats.map((stat, i) => (
-          <div 
-            key={i} 
-            className="bg-[#1A1A27] border border-white/5 rounded-2xl p-5 shadow-xl flex flex-col justify-between group hover:border-white/10 transition-all hover:-translate-y-0.5"
-          >
-            <div className="flex justify-between items-start">
-              <span className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider line-clamp-1">{stat.label}</span>
-              <span className="p-1.5 bg-white/5 rounded-lg text-brand-purple-light group-hover:bg-brand-purple/15 transition-colors">
-                <stat.icon size={14} />
-              </span>
-            </div>
-            <div className="mt-4 space-y-1">
-              <span className="text-2xl font-bold text-white font-[family-name:var(--font-syne)]">{stat.value}</span>
-              <span className={`text-[10px] block font-medium ${stat.isNeutral ? "text-[#475569]" : "text-brand-lime"}`}>
-                {stat.change}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Creator Snapshot & Quick Actions Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Creator Network Snapshot */}
-        <div className="lg:col-span-8 bg-[#1A1A27] border border-white/5 rounded-3xl p-6 shadow-xl">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Creator Network Snapshot</h2>
-              <p className="text-xs text-[#94A3B8] mt-0.5">Summary of creators deployed for your brand campaign campaigns</p>
-            </div>
-            <span className="text-xs px-3 py-1 bg-white/5 rounded-full border border-white/10 text-white font-medium">All Campaigns</span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {creatorSnapshot.map((c, i) => (
-              <div 
-                key={i} 
-                className="bg-[#0D0D14] border border-white/5 rounded-2xl p-5 text-center group hover:border-brand-purple/30 transition-all relative overflow-hidden"
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-24 gap-3 text-[#94A3B8]">
+          <Loader2 className="animate-spin text-brand-purple-light" size={28} />
+          <span className="text-sm">Loading your dashboard…</span>
+        </div>
+      ) : error ? (
+        <div className="bg-[#1A1A27] border border-rose-500/20 rounded-2xl shadow-xl p-6 text-center">
+          <p className="text-sm text-rose-400 font-medium">{error}</p>
+          <p className="text-xs text-[#475569] mt-1">Please refresh the page or try again shortly.</p>
+        </div>
+      ) : (
+        <>
+          {/* Stat cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col justify-between group hover:border-white/10 transition-all hover:-translate-y-0.5"
               >
-                <div className={`w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-tr ${c.color} p-0.5 shadow-lg shadow-black/40`}>
-                  <div className="w-full h-full bg-[#0D0D14] rounded-full flex items-center justify-center text-white">
-                    <c.icon size={18} className="text-brand-purple-light" />
-                  </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider">{stat.label}</span>
+                  <span className={`p-1.5 bg-white/5 rounded-lg ${stat.accent} group-hover:bg-white/10 transition-colors`}>
+                    <stat.icon size={16} />
+                  </span>
                 </div>
-                <span className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)] block">{c.count}</span>
-                <span className="text-xs text-[#94A3B8] block mt-1 font-medium">{c.type}</span>
+                <span className="mt-4 text-3xl font-bold text-white font-[family-name:var(--font-syne)]">
+                  {stat.value.toLocaleString()}
+                </span>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Quick Operations Actions */}
-        <div className="lg:col-span-4 bg-gradient-to-b from-[#1A1A27] to-[#111118] border border-[#7C3AED]/20 rounded-3xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
-          <div className="space-y-4 relative z-10">
-            <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Campaign Shortcuts</h2>
-            <div className="space-y-3">
-              <Link href="/dashboard/messages" className="flex items-center justify-between p-3 bg-[#0D0D14] border border-white/5 hover:border-[#7C3AED]/50 rounded-xl transition-all group">
-                <div className="flex items-center gap-3">
-                  <span className="p-2 bg-brand-purple/10 rounded-lg text-brand-purple-light">
-                    <MessageSquare size={16} />
-                  </span>
-                  <div>
-                    <span className="text-xs font-bold text-white block">Review Creative Assets</span>
-                    <span className="text-[10px] text-[#94A3B8] block">2 drafts waiting for approval</span>
-                  </div>
-                </div>
-                <ChevronRight size={14} className="text-[#475569] group-hover:text-brand-purple-light transition-colors" />
-              </Link>
-
-              <Link href="/dashboard/content" className="flex items-center justify-between p-3 bg-[#0D0D14] border border-white/5 hover:border-brand-lime/50 rounded-xl transition-all group">
-                <div className="flex items-center gap-3">
-                  <span className="p-2 bg-brand-lime/10 rounded-lg text-brand-lime">
-                    <Camera size={16} />
-                  </span>
-                  <div>
-                    <span className="text-xs font-bold text-white block">Browse Content Library</span>
-                    <span className="text-[10px] text-[#94A3B8] block">Download your campaign photos</span>
-                  </div>
-                </div>
-                <ChevronRight size={14} className="text-[#475569] group-hover:text-brand-lime transition-colors" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="pt-6 border-t border-white/5 relative z-10">
-            <Link 
-              href="/dashboard/campaigns" 
-              className="w-full flex items-center justify-center gap-1 bg-brand-purple text-white py-3 px-4 rounded-xl text-xs font-bold btn-glow"
-            >
-              Go to Campaigns <ArrowUpRight size={14} />
-            </Link>
-          </div>
-          
-          <div className="absolute right-0 bottom-0 w-32 h-32 bg-brand-purple/5 blur-3xl rounded-full" />
-        </div>
-      </div>
-
-      {/* Recent Activity Feed & Detailed Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Recent Activity Feed */}
-        <div className="lg:col-span-8 bg-[#1A1A27] border border-white/5 rounded-3xl p-6 shadow-xl">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Recent Activity</h2>
-              <p className="text-xs text-[#94A3B8] mt-0.5">Chronological feed of creator activities and milestones</p>
-            </div>
-            <span className="text-xs text-[#475569] font-bold uppercase tracking-wider">Live Updates</span>
-          </div>
-
-          <div className="space-y-6">
-            {activities.map((act) => (
-              <div key={act.id} className="flex gap-4 items-start group">
-                <div className="w-2.5 h-2.5 rounded-full bg-brand-purple mt-2 shrink-0 group-hover:scale-125 transition-transform" />
-                <div className="flex-1 bg-[#0D0D14]/60 border border-white/5 rounded-2xl p-4 hover:border-white/10 transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
-                    <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md border inline-block ${act.badgeColor}`}>
-                      {act.badge}
-                    </span>
-                    <span className="text-[10px] text-[#475569] font-medium flex items-center gap-1">
-                      <Clock size={10} /> {act.time}
-                    </span>
-                  </div>
-                  <p className="text-sm text-white/95 leading-relaxed">{act.description}</p>
-                </div>
+          {/* Recent list */}
+          {showActivityFeed ? (
+            <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
+              <div className="mb-6">
+                <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Recent activity</h2>
+                <p className="text-xs text-[#94A3B8] mt-0.5">Latest companies and influencers across the network</p>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Live Active Campaigns Snapshot */}
-        <div className="lg:col-span-4 bg-[#1A1A27] border border-white/5 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Campaign Progress</h2>
-            <p className="text-xs text-[#94A3B8]">Ongoing marketing pipelines running this month</p>
-            
-            <div className="space-y-4 pt-2">
-              {[
-                { name: "Summer Sweat Challenge", progress: 66, color: "bg-brand-purple" },
-                { name: "Midtown Studio Grand Opening", progress: 100, color: "bg-brand-lime" },
-                { name: "NIL Athlete Endorsements", progress: 40, color: "bg-blue-500" }
-              ].map((c, i) => (
-                <div key={i} className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-semibold">
-                    <span className="text-white line-clamp-1">{c.name}</span>
-                    <span className="text-[#94A3B8]">{c.progress}%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-[#0D0D14] rounded-full overflow-hidden">
-                    <div className={`h-full ${c.color} rounded-full transition-all duration-500`} style={{ width: `${c.progress}%` }} />
-                  </div>
+              {recentActivity.length === 0 ? (
+                <p className="text-sm text-[#475569] py-8 text-center">No recent activity yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {recentActivity.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-4 bg-[#0D0D14]/60 border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors"
+                    >
+                      <span
+                        className={`p-2 rounded-lg ${
+                          item.kind === "company"
+                            ? "bg-brand-purple/10 text-brand-purple-light"
+                            : "bg-brand-lime/10 text-brand-lime"
+                        }`}
+                      >
+                        {item.kind === "company" ? <Building2 size={16} /> : <Sparkles size={16} />}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-white truncate">{item.label}</p>
+                        <p className="text-xs text-[#94A3B8] truncate">{item.sub}</p>
+                      </div>
+                      <span className="text-[10px] text-[#475569] font-medium flex items-center gap-1 shrink-0">
+                        <Clock size={10} /> {timeAgo(item.created_at)}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
-          </div>
+          ) : (
+            <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
+              <div className="mb-6">
+                <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Recent content</h2>
+                <p className="text-xs text-[#94A3B8] mt-0.5">Your 5 most recently added content items</p>
+              </div>
 
-          <div className="pt-6 border-t border-white/5 mt-6">
-            <Link 
-              href="/dashboard/reports" 
-              className="w-full flex items-center justify-center gap-1 bg-white/5 hover:bg-white/10 text-white py-3 px-4 rounded-xl text-xs font-bold transition-all border border-white/5"
-            >
-              View Performance Reports
-            </Link>
-          </div>
-        </div>
-      </div>
+              {recentContent.length === 0 ? (
+                <p className="text-sm text-[#475569] py-8 text-center">No content yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {recentContent.map((row) => (
+                    <div
+                      key={row.id}
+                      className="flex items-center gap-4 bg-[#0D0D14]/60 border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors"
+                    >
+                      <span className="p-2 rounded-lg bg-brand-purple/10 text-brand-purple-light">
+                        <FileVideo size={16} />
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-white truncate">{row.title ?? "Untitled content"}</p>
+                        <p className="text-xs text-[#475569]">{timeAgo(row.created_at)}</p>
+                      </div>
+                      <span
+                        className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md border shrink-0 ${statusBadgeClasses(
+                          row.status
+                        )}`}
+                      >
+                        {row.status ?? "Unknown"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
