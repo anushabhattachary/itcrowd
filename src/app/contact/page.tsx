@@ -12,56 +12,42 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <Navbar />
-      <main className="pt-32 pb-8 md:pt-40">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16">
-            {/* Left — Info */}
-            <div>
-              <span className="text-sm uppercase tracking-[0.2em] text-brand-purple font-semibold">
-                Contact
-              </span>
-              <h1 className="mt-4 text-3xl md:text-5xl font-extrabold font-[family-name:var(--font-syne)]">
-                Let&apos;s Build Something Together.
-              </h1>
-              <p className="mt-4 text-muted leading-relaxed">
-                Whether you&apos;re a business owner looking for marketing help or
-                a creator ready to level up, we&apos;d love to hear from you.
-              </p>
+      {/* Dark mini-hero */}
+      <section className="dark-surface relative bg-[#141413] text-white p-6 md:p-12 pb-16 md:pb-24 overflow-hidden">
+        <Navbar theme="dark" entrance="fade" />
 
-              <div className="mt-10 space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-brand-purple/10 flex items-center justify-center flex-shrink-0">
-                    <Mail size={18} className="text-brand-purple" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm">Email Us</h3>
-                    <p className="text-muted text-sm mt-1">
-                      hello@itcrowd.io
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-brand-purple/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin size={18} className="text-brand-purple" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm">Location</h3>
-                    <p className="text-muted text-sm mt-1">
-                      Atlanta, GA — Georgia Tech 🐝
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <div className="w-full max-w-[1360px] mx-auto mt-16 md:mt-24">
+          <span className="block text-sm uppercase tracking-[0.2em] text-[#9E948B] font-sans">
+            Contact
+          </span>
+          <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-normal leading-[1.08] font-heading max-w-[760px]">
+            Let&apos;s build something{" "}
+            <span className="font-accent italic">together.</span>
+          </h1>
+          <p className="mt-6 text-white/70 text-lg md:text-xl leading-snug max-w-[560px] font-sans">
+            Whether you&apos;re a business owner looking for marketing help or a
+            creator ready to level up, we&apos;d love to hear from you.
+          </p>
+
+          {/* Contact details */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-3">
+            <div className="inline-flex items-center gap-3 h-[56px] px-5 rounded-2xl border border-white/40 font-sans">
+              <Mail size={18} className="text-white/70" aria-hidden="true" />
+              <span className="text-white text-lg whitespace-nowrap">hello@itcrowd.io</span>
             </div>
-
-            {/* Right — Form */}
-            <div>
-              <ContactForm />
+            <div className="inline-flex items-center gap-3 h-[56px] px-5 rounded-2xl border border-white/40 font-sans">
+              <MapPin size={18} className="text-white/70" aria-hidden="true" />
+              <span className="text-white text-lg whitespace-nowrap">
+                Atlanta, GA — Georgia Tech 🐝
+              </span>
             </div>
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* Form — ContactForm renders its own white section (id="contact") */}
+      <ContactForm />
+
       <Footer />
     </>
   );
