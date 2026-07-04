@@ -1,40 +1,49 @@
 import type { Metadata } from "next";
-import { Inter, Syne } from "next/font/google";
+import { Inter_Tight, Playfair_Display, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
-const syne = Syne({
-  variable: "--font-syne",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
-  weight: ["700", "800"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-grotesk",
+  subsets: ["latin"],
+  weight: ["500", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://itcrowd.io"),
-  title: "ItCrowd | Where Businesses Meet Their Match",
+  title: "ItCrowd — Where businesses meet their match",
   description:
-    "ItCrowd connects established businesses with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for business owners.",
+    "ItCrowd matches growing businesses with vetted content creators — paid in cash, equity, or both. Human-curated matches, agency results without agency fees, live in days.",
   keywords: [
     "influencer marketing",
-    "business marketing",
+    "creator marketplace",
     "equity deals",
-    "influencer platform",
+    "NIL athletes",
+    "content creators",
     "Georgia Tech",
   ],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "ItCrowd | Where Businesses Meet Their Match",
+    title: "ItCrowd — Where businesses meet their match",
     description:
-      "ItCrowd connects established businesses with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for business owners.",
+      "ItCrowd matches growing businesses with vetted content creators — paid in cash, equity, or both. Human-curated matches, agency results without agency fees, live in days.",
     url: "https://itcrowd.io",
     siteName: "ItCrowd",
     images: [
@@ -50,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ItCrowd | Where Businesses Meet Their Match",
+    title: "ItCrowd — Where businesses meet their match",
     description:
-      "ItCrowd connects established businesses with influencers and athletes for cash or equity deals. Affordable, vetted influencer marketing built for business owners.",
+      "ItCrowd matches growing businesses with vetted content creators — paid in cash, equity, or both.",
     images: ["/og-image.jpg"],
   },
 };
@@ -62,8 +71,9 @@ const jsonLd = {
   "@type": "Organization",
   name: "ItCrowd",
   url: "https://itcrowd.io",
-  logo: "https://itcrowd.io/icon.svg",
-  description: "A platform connecting established businesses with influencers and athletes for cash or equity deals.",
+  logo: "https://itcrowd.io/logo-dark.svg",
+  description:
+    "A marketplace connecting growing businesses with vetted content creators for campaigns paid in cash, equity, or both.",
   foundingDate: "2025",
   contactPoint: {
     "@type": "ContactPoint",
@@ -78,28 +88,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${syne.variable}`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${interTight.variable} ${playfair.variable} ${spaceGrotesk.variable}`}
+    >
       <head>
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2L12 14h8L14 30l2-12H8L16 2z' fill='%237C3AED'/></svg>"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased pb-20 md:pb-0">
+      <body className="min-h-screen bg-white text-[#141413] font-sans antialiased">
         {children}
-        {/* Sticky Mobile CTA */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-background/90 backdrop-blur-xl border-t border-white/10 z-[100]">
-          <a
-            href="#contact"
-            className="flex items-center justify-center w-full py-4 rounded-full bg-brand-purple text-white font-semibold text-lg btn-glow shadow-[0_0_30px_rgba(124,58,237,0.4)]"
-          >
-            Get Matched &rarr;
-          </a>
-        </div>
         <Analytics />
       </body>
     </html>

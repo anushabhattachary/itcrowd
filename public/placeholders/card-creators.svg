@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid slice">
+  <!-- Placeholder backdrop for the creator-niche carousel card -->
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#9E948B"/>
+      <stop offset="55%" stop-color="#887C71"/>
+      <stop offset="100%" stop-color="#5F5D4D"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="22%" r="60%">
+      <stop offset="0%" stop-color="#F1F0EF" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#F1F0EF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1200" fill="url(#base)"/>
+  <rect width="800" height="1200" fill="url(#glow)"/>
+  <circle cx="640" cy="980" r="340" fill="#5F5D4D" opacity="0.35"/>
+  <circle cx="120" cy="1130" r="260" fill="#252522" opacity="0.2"/>
+</svg>
