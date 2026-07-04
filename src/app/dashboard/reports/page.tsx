@@ -33,14 +33,14 @@ interface ContentRow {
   engagement: Record<string, number> | null;
 }
 
-const PURPLE = "#7C3AED";
-const LIME = "#A3E635";
+const STONE = "#5F5D4D";
+const CLAY = "#887C71";
 
 const tooltipStyle = {
-  backgroundColor: "#1A1A27",
-  borderColor: "#ffffff10",
+  backgroundColor: "#ffffff",
+  borderColor: "#D8D5D2",
   borderRadius: "12px",
-  color: "#fff",
+  color: "#141413",
 };
 
 export default function ReportsPage() {
@@ -172,7 +172,7 @@ export default function ReportsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="animate-spin text-brand-purple" size={32} />
+        <Loader2 className="animate-spin text-[#5F5D4D]" size={32} />
       </div>
     );
   }
@@ -182,48 +182,48 @@ export default function ReportsPage() {
       label: "Total Content",
       value: stats.total,
       icon: FileText,
-      color: "text-brand-purple-light",
+      color: "text-[#5F5D4D]",
     },
     {
       label: "Approved",
       value: stats.approved,
       icon: CheckCircle2,
-      color: "text-brand-lime",
+      color: "text-emerald-700",
     },
     {
       label: "Pending",
       value: stats.pending,
       icon: Clock,
-      color: "text-blue-400",
+      color: "text-amber-600",
     },
     {
       label: "Campaigns",
       value: campaignCount,
       icon: Layers,
-      color: "text-brand-purple-light",
+      color: "text-[#5F5D4D]",
     },
   ];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div>
-        <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">
+        <h1 className="text-2xl font-medium text-[#141413] font-heading">
           Performance Reports
         </h1>
-        <p className="text-sm text-[#94A3B8] mt-1">
+        <p className="text-sm text-[#887C71] mt-1">
           Real-time analytics derived from your content and campaigns.
         </p>
       </div>
 
       {rows.length === 0 ? (
-        <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col items-center justify-center text-center py-20">
-          <div className="p-4 bg-white/5 rounded-2xl text-[#475569]">
+        <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6 flex flex-col items-center justify-center text-center py-20">
+          <div className="p-4 bg-[#F1F0EF] rounded-2xl text-[#9E948B]">
             <BarChart3 size={36} />
           </div>
-          <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)] mt-4">
+          <h2 className="text-lg font-medium text-[#141413] font-heading mt-4">
             No data yet
           </h2>
-          <p className="text-sm text-[#94A3B8] mt-1 max-w-sm">
+          <p className="text-sm text-[#887C71] mt-1 max-w-sm">
             Once content starts flowing through your campaigns, analytics and
             performance trends will appear here.
           </p>
@@ -235,17 +235,17 @@ export default function ReportsPage() {
             {statCards.map((card) => (
               <div
                 key={card.label}
-                className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col justify-between"
+                className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6 flex flex-col justify-between"
               >
                 <div className="flex justify-between items-start">
-                  <span className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-wider">
+                  <span className="text-[10px] font-medium text-[#887C71] uppercase tracking-wider">
                     {card.label}
                   </span>
-                  <span className={`p-1.5 bg-white/5 rounded-lg ${card.color}`}>
+                  <span className={`p-1.5 bg-[#F1F0EF] rounded-lg ${card.color}`}>
                     <card.icon size={14} />
                   </span>
                 </div>
-                <span className="text-2xl font-bold text-white font-[family-name:var(--font-syne)] mt-4">
+                <span className="text-2xl font-medium text-[#141413] font-heading mt-4">
                   {card.value}
                 </span>
               </div>
@@ -258,17 +258,17 @@ export default function ReportsPage() {
               {engagementTotals.map((e) => (
                 <div
                   key={e.label}
-                  className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col justify-between"
+                  className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6 flex flex-col justify-between"
                 >
                   <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-wider">
+                    <span className="text-[10px] font-medium text-[#887C71] uppercase tracking-wider">
                       Total {e.label}
                     </span>
-                    <span className="p-1.5 bg-white/5 rounded-lg text-brand-lime">
+                    <span className="p-1.5 bg-[#F1F0EF] rounded-lg text-[#5F5D4D]">
                       <Eye size={14} />
                     </span>
                   </div>
-                  <span className="text-2xl font-bold text-white font-[family-name:var(--font-syne)] mt-4">
+                  <span className="text-2xl font-medium text-[#141413] font-heading mt-4">
                     {formatNumber(e.value)}
                   </span>
                 </div>
@@ -279,80 +279,80 @@ export default function ReportsPage() {
           {/* Charts grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* By file type */}
-            <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
-              <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+            <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6">
+              <h2 className="text-lg font-medium text-[#141413] font-heading">
                 Content by Type
               </h2>
-              <p className="text-xs text-[#94A3B8] mt-0.5 mb-4">
+              <p className="text-xs text-[#887C71] mt-0.5 mb-4">
                 Breakdown of deliverables by file type
               </p>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={byFileType} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
-                  <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#475569" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#D8D5D2" vertical={false} />
+                  <XAxis dataKey="name" stroke="#887C71" fontSize={11} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#9E948B" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
                   <RechartsTooltip
-                    cursor={{ fill: "#ffffff05" }}
+                    cursor={{ fill: "#1414130D" }}
                     contentStyle={tooltipStyle}
-                    itemStyle={{ color: "#fff", fontSize: "12px" }}
+                    itemStyle={{ color: "#141413", fontSize: "12px" }}
                   />
-                  <Bar dataKey="count" fill={PURPLE} radius={[6, 6, 0, 0]} name="Content" />
+                  <Bar dataKey="count" fill={STONE} radius={[6, 6, 0, 0]} name="Content" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             {/* By status */}
-            <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
-              <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+            <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6">
+              <h2 className="text-lg font-medium text-[#141413] font-heading">
                 Content by Status
               </h2>
-              <p className="text-xs text-[#94A3B8] mt-0.5 mb-4">
+              <p className="text-xs text-[#887C71] mt-0.5 mb-4">
                 Approval pipeline distribution
               </p>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={byStatus} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
-                  <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#475569" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#D8D5D2" vertical={false} />
+                  <XAxis dataKey="name" stroke="#887C71" fontSize={11} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#9E948B" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
                   <RechartsTooltip
-                    cursor={{ fill: "#ffffff05" }}
+                    cursor={{ fill: "#1414130D" }}
                     contentStyle={tooltipStyle}
-                    itemStyle={{ color: "#fff", fontSize: "12px" }}
+                    itemStyle={{ color: "#141413", fontSize: "12px" }}
                   />
-                  <Bar dataKey="count" fill={LIME} radius={[6, 6, 0, 0]} name="Content" />
+                  <Bar dataKey="count" fill={CLAY} radius={[6, 6, 0, 0]} name="Content" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Over time */}
-          <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
-            <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+          <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6">
+            <h2 className="text-lg font-medium text-[#141413] font-heading">
               Content Created Over Time
             </h2>
-            <p className="text-xs text-[#94A3B8] mt-0.5 mb-4">
+            <p className="text-xs text-[#887C71] mt-0.5 mb-4">
               Volume of content created, grouped by month
             </p>
             <ResponsiveContainer width="100%" height={260}>
               <AreaChart data={overTime} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={PURPLE} stopOpacity={0.3} />
-                    <stop offset="95%" stopColor={PURPLE} stopOpacity={0} />
+                    <stop offset="5%" stopColor={STONE} stopOpacity={0.3} />
+                    <stop offset="95%" stopColor={STONE} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
-                <XAxis dataKey="date" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="#475569" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#D8D5D2" vertical={false} />
+                <XAxis dataKey="date" stroke="#887C71" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="#9E948B" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
                 <RechartsTooltip
-                  cursor={{ fill: "#ffffff05" }}
+                  cursor={{ fill: "#1414130D" }}
                   contentStyle={tooltipStyle}
-                  itemStyle={{ color: "#fff", fontSize: "12px" }}
+                  itemStyle={{ color: "#141413", fontSize: "12px" }}
                 />
                 <Area
                   type="monotone"
                   dataKey="count"
-                  stroke={PURPLE}
+                  stroke={STONE}
                   strokeWidth={2}
                   fillOpacity={1}
                   fill="url(#colorCount)"

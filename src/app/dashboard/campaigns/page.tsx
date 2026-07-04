@@ -89,20 +89,20 @@ type CampaignFormData = {
 function statusBadgeClasses(status: CampaignStatus): string {
   switch (status) {
     case "Campaign Live":
-      return "bg-brand-lime/20 border-brand-lime/30 text-brand-lime";
+      return "bg-emerald-50 border-emerald-200 text-emerald-700";
     case "Completed":
-      return "bg-brand-purple/20 border-brand-purple/30 text-brand-purple-light";
+      return "bg-[#141413]/5 border-[#141413]/15 text-[#141413]";
     case "Matching":
-      return "bg-gray-500/20 border-gray-500/30 text-gray-300";
+      return "bg-[#887C71]/10 border-[#887C71]/20 text-[#5F5D4D]";
     default:
-      return "bg-blue-500/20 border-blue-500/30 text-blue-300";
+      return "bg-amber-50 border-amber-200 text-amber-700";
   }
 }
 
 function StatusBadge({ status }: { status: CampaignStatus }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-semibold ${statusBadgeClasses(
+      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-medium ${statusBadgeClasses(
         status
       )}`}
     >
@@ -143,10 +143,10 @@ function PageHeader({
   return (
     <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
       <div>
-        <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">
+        <h1 className="text-2xl font-medium text-[#141413] font-heading">
           {title}
         </h1>
-        <p className="text-sm text-[#94A3B8] mt-1">{subtitle}</p>
+        <p className="text-sm text-[#887C71] mt-1">{subtitle}</p>
       </div>
       {action}
     </div>
@@ -155,7 +155,7 @@ function PageHeader({
 
 function LoadingState() {
   return (
-    <div className="flex flex-col items-center justify-center py-24 text-[#94A3B8]">
+    <div className="flex flex-col items-center justify-center py-24 text-[#887C71]">
       <Loader2 className="animate-spin mb-3" size={28} />
       <span className="text-sm">Loading campaigns…</span>
     </div>
@@ -164,9 +164,9 @@ function LoadingState() {
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl py-20 px-6 text-center">
-      <Megaphone className="mx-auto mb-3 text-[#475569]" size={32} />
-      <p className="text-sm text-[#94A3B8]">{message}</p>
+    <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm py-20 px-6 text-center">
+      <Megaphone className="mx-auto mb-3 text-[#9E948B]" size={32} />
+      <p className="text-sm text-[#887C71]">{message}</p>
     </div>
   );
 }
@@ -266,17 +266,17 @@ function AdminCampaigns() {
         action={
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-purple hover:bg-brand-purple-light text-white px-5 py-2.5 rounded-xl font-medium btn-glow"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#141413] hover:bg-neutral-800 text-white px-5 py-2.5 rounded-2xl font-medium transition-colors"
           >
             <Plus size={18} /> Add Campaign
           </button>
         }
       />
 
-      <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl overflow-hidden">
+      <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-[#0D0D14] text-[#94A3B8] border-b border-white/5">
+            <thead className="bg-[#F1F0EF]/60 text-xs uppercase tracking-wider text-[#887C71] border-b border-[#141413]/8">
               <tr>
                 <th className="px-6 py-4 font-medium">Campaign</th>
                 <th className="px-6 py-4 font-medium">Company</th>
@@ -286,39 +286,39 @@ function AdminCampaigns() {
                 <th className="px-6 py-4 font-medium">End</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#141413]/8">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-16 text-center text-[#94A3B8]">
+                  <td colSpan={6} className="px-6 py-16 text-center text-[#887C71]">
                     <Loader2 className="animate-spin mx-auto mb-2" size={24} />
                     Loading campaigns…
                   </td>
                 </tr>
               ) : campaigns.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-16 text-center text-[#94A3B8]">
+                  <td colSpan={6} className="px-6 py-16 text-center text-[#887C71]">
                     No campaigns yet. Create your first one.
                   </td>
                 </tr>
               ) : (
                 campaigns.map((c) => (
-                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="px-6 py-4 font-bold text-white">
+                  <tr key={c.id} className="hover:bg-[#F1F0EF]/60 transition-colors">
+                    <td className="px-6 py-4 font-medium text-[#141413]">
                       {c.campaign_name}
                     </td>
-                    <td className="px-6 py-4 text-[#94A3B8]">
+                    <td className="px-6 py-4 text-[#887C71]">
                       {c.companies?.company_name ?? "—"}
                     </td>
-                    <td className="px-6 py-4 text-[#94A3B8]">
+                    <td className="px-6 py-4 text-[#887C71]">
                       {c.deal_type ?? "—"}
                     </td>
                     <td className="px-6 py-4">
                       <StatusBadge status={c.status} />
                     </td>
-                    <td className="px-6 py-4 text-[#475569]">
+                    <td className="px-6 py-4 text-[#9E948B]">
                       {formatDate(c.start_date)}
                     </td>
-                    <td className="px-6 py-4 text-[#475569]">
+                    <td className="px-6 py-4 text-[#9E948B]">
                       {formatDate(c.end_date)}
                     </td>
                   </tr>
@@ -337,22 +337,22 @@ function AdminCampaigns() {
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">
+            <label className="text-sm font-medium text-[#887C71]">
               Campaign Name *
             </label>
             <input
               required
               {...register("campaign_name")}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Company *</label>
+            <label className="text-sm font-medium text-[#887C71]">Company *</label>
             <select
               required
               {...register("company_id")}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             >
               <option value="">Select a company…</option>
               {companies.map((co) => (
@@ -365,12 +365,12 @@ function AdminCampaigns() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-sm font-medium text-[#94A3B8]">
+              <label className="text-sm font-medium text-[#887C71]">
                 Deal Type
               </label>
               <select
                 {...register("deal_type")}
-                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+                className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
               >
                 <option value="">None</option>
                 {DEAL_TYPES.map((d) => (
@@ -381,24 +381,24 @@ function AdminCampaigns() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-sm font-medium text-[#94A3B8]">
+              <label className="text-sm font-medium text-[#887C71]">
                 Posts / Month
               </label>
               <input
                 type="number"
                 min="0"
                 {...register("posts_per_month_target", { valueAsNumber: true })}
-                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+                className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Status *</label>
+            <label className="text-sm font-medium text-[#887C71]">Status *</label>
             <select
               required
               {...register("status")}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             >
               {STATUSES.map((s) => (
                 <option key={s} value={s}>
@@ -409,13 +409,13 @@ function AdminCampaigns() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">
+            <label className="text-sm font-medium text-[#887C71]">
               Notes (Optional)
             </label>
             <textarea
               {...register("notes")}
               rows={4}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             />
           </div>
 
@@ -423,14 +423,14 @@ function AdminCampaigns() {
             <button
               type="button"
               onClick={() => setIsDrawerOpen(false)}
-              className="flex-1 px-4 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-medium transition-colors text-white"
+              className="flex-1 px-4 py-3 border border-[#141413]/15 hover:bg-[#F1F0EF] rounded-2xl font-medium transition-colors text-[#141413]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl font-medium btn-glow flex justify-center items-center py-3"
+              className="flex-1 bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl font-medium transition-colors flex justify-center items-center py-3"
             >
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={18} />
@@ -532,28 +532,28 @@ function BusinessCampaigns({ companyId }: { companyId: string | null }) {
             return (
               <div
                 key={c.id}
-                className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col gap-5"
+                className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6 flex flex-col gap-5"
               >
                 <div className="flex justify-between items-start gap-3">
-                  <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+                  <h3 className="text-lg font-medium text-[#141413] font-heading">
                     {c.campaign_name}
                   </h3>
                   <StatusBadge status={c.status} />
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-semibold">
-                    <span className="text-[#94A3B8]">Deliverables</span>
-                    <span className="text-white">
+                  <div className="flex justify-between text-xs font-medium">
+                    <span className="text-[#887C71]">Deliverables</span>
+                    <span className="text-[#141413]">
                       {done}/{target}
                     </span>
                   </div>
-                  <div className="h-1.5 w-full bg-[#0D0D14] rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-[#F1F0EF] rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
                         c.status === "Completed"
-                          ? "bg-brand-lime"
-                          : "bg-brand-purple"
+                          ? "bg-emerald-600"
+                          : "bg-[#141413]"
                       }`}
                       style={{ width: `${percent}%` }}
                     />
@@ -562,9 +562,9 @@ function BusinessCampaigns({ companyId }: { companyId: string | null }) {
 
                 <div className="flex items-center justify-between pt-1">
                   <div className="flex items-center gap-2">
-                    <Users size={14} className="text-[#475569]" />
+                    <Users size={14} className="text-[#9E948B]" />
                     {creators.length === 0 ? (
-                      <span className="text-xs text-[#475569]">
+                      <span className="text-xs text-[#9E948B]">
                         No creators attached
                       </span>
                     ) : (
@@ -576,7 +576,7 @@ function BusinessCampaigns({ companyId }: { companyId: string | null }) {
                             <div
                               key={ci.influencer_id}
                               title={handle ? `${name} (${handle})` : name}
-                              className="w-7 h-7 rounded-full bg-brand-purple/90 border-2 border-[#1A1A27] flex items-center justify-center text-[10px] font-bold text-white"
+                              className="w-7 h-7 rounded-full bg-[#141413] border-2 border-white flex items-center justify-center text-[10px] font-medium text-white"
                             >
                               {initialsOf(name)}
                             </div>
@@ -586,7 +586,7 @@ function BusinessCampaigns({ companyId }: { companyId: string | null }) {
                     )}
                   </div>
                   {creators.length > 0 && (
-                    <span className="text-xs text-[#94A3B8]">
+                    <span className="text-xs text-[#887C71]">
                       {creators.length} creator
                       {creators.length === 1 ? "" : "s"}
                     </span>
@@ -668,16 +668,16 @@ function InfluencerCampaigns({
           {campaigns.map((c) => (
             <div
               key={c.id}
-              className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col gap-4"
+              className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6 flex flex-col gap-4"
             >
               <div className="flex justify-between items-start gap-3">
-                <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+                <h3 className="text-lg font-medium text-[#141413] font-heading">
                   {c.campaign_name}
                 </h3>
                 <StatusBadge status={c.status} />
               </div>
-              <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
-                <Building2 size={14} className="text-[#475569]" />
+              <div className="flex items-center gap-2 text-sm text-[#887C71]">
+                <Building2 size={14} className="text-[#9E948B]" />
                 {c.companies?.company_name ?? "—"}
               </div>
             </div>

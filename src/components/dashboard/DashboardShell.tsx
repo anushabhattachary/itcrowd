@@ -11,7 +11,6 @@ import {
   MessageSquare,
   TrendingUp,
   Settings,
-  Sparkles,
   Bell,
   LogOut,
   Star,
@@ -19,6 +18,7 @@ import {
 import { Toaster } from "react-hot-toast";
 import type { Role } from "@/lib/types";
 import { useAccount } from "@/lib/account-context";
+import A from "@/lib/assets";
 
 interface NavItem {
   icon: React.ComponentType<{ size?: number; className?: string }>;
@@ -86,23 +86,23 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   const initial = (account.displayName || account.email || "?").charAt(0).toUpperCase();
 
   return (
-    <div className="flex bg-[#0D0D14] min-h-screen text-white font-[family-name:var(--font-inter)] selection:bg-brand-purple/30">
+    <div className="flex bg-[#F1F0EF] min-h-screen text-[#141413] font-sans">
       <Toaster position="top-right" />
 
-      <aside className="w-[240px] fixed top-0 bottom-0 left-0 bg-[#111118] border-r border-white/5 flex flex-col z-20">
+      <aside className="dark-surface w-[240px] fixed top-0 bottom-0 left-0 bg-[#141413] text-white flex flex-col z-20">
         <div className="p-6">
-          <Link href="/dashboard" className="flex items-center gap-1 group">
-            <span className="text-xl font-extrabold tracking-tight font-[family-name:var(--font-syne)] flex items-center">
-              ItCrowd <span className="ml-1 text-brand-purple">⚡️</span>
-            </span>
+          <Link href="/dashboard" className="flex items-center gap-2.5 group">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={A.logo} alt="" aria-hidden="true" className="w-6 h-6" />
+            <span className="text-xl font-medium tracking-tight font-heading">ItCrowd</span>
           </Link>
-          <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider text-brand-purple-light uppercase">
-            <Sparkles size={10} /> {ROLE_LABEL[account.role]}
+          <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium tracking-[0.15em] text-white/50 uppercase bg-white/10 px-2 py-0.5 rounded-full">
+            {ROLE_LABEL[account.role]}
           </span>
         </div>
 
         <nav className="flex-1 mt-2 space-y-1 overflow-y-auto px-4 pb-4">
-          <span className="px-2 text-[10px] font-semibold tracking-wider text-[#475569] uppercase">Manage</span>
+          <span className="px-2 text-[10px] font-medium tracking-[0.15em] text-white/35 uppercase">Manage</span>
           {navItems.map((item) => {
             const isActive =
               item.href === "/dashboard"
@@ -114,8 +114,8 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                 href={item.href}
                 className={`flex items-center px-3 py-2 text-sm font-medium rounded-xl transition-all ${
                   isActive
-                    ? "bg-brand-purple/15 text-brand-purple-light border-l-2 border-brand-purple"
-                    : "text-[#94A3B8] hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+                    ? "bg-white text-[#141413]"
+                    : "text-white/60 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <item.icon size={16} className="mr-3" />
@@ -125,16 +125,16 @@ export default function DashboardShell({ children }: { children: React.ReactNode
           })}
         </nav>
 
-        <div className="p-6 border-t border-white/5">
+        <div className="p-6 border-t border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-brand-purple flex items-center justify-center text-sm font-bold shadow-[0_0_10px_rgba(124,58,237,0.4)]">
+            <div className="w-8 h-8 rounded-full bg-[#9E948B] flex items-center justify-center text-sm font-medium text-white">
               {initial}
             </div>
             <div className="flex flex-col min-w-0">
               <span className="text-sm font-medium truncate">{account.displayName || account.email}</span>
               <button
                 onClick={handleSignOut}
-                className="text-xs text-[#475569] hover:text-red-400 text-left flex items-center mt-0.5 transition-colors"
+                className="text-xs text-white/40 hover:text-white text-left flex items-center mt-0.5 transition-colors"
               >
                 Sign Out <LogOut size={10} className="ml-1" />
               </button>
@@ -144,17 +144,20 @@ export default function DashboardShell({ children }: { children: React.ReactNode
       </aside>
 
       <div className="flex-1 ml-[240px] flex flex-col min-h-screen">
-        <header className="h-[72px] sticky top-0 z-10 bg-[#0D0D14]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8">
-          <h1 className="text-xl font-bold font-[family-name:var(--font-syne)]">{getPageTitle()}</h1>
+        <header className="h-[72px] sticky top-0 z-10 bg-[#F1F0EF]/80 backdrop-blur-md border-b border-[#141413]/10 flex items-center justify-between px-8">
+          <h1 className="text-xl font-medium font-heading">{getPageTitle()}</h1>
           <div className="flex items-center gap-4">
             {account.status === "pending" && (
-              <span className="text-xs text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
+              <span className="text-xs text-[#5F5D4D] bg-[#887C71]/15 px-3 py-1 rounded-full border border-[#887C71]/25">
                 Pending review
               </span>
             )}
-            <button className="relative text-[#94A3B8] hover:text-white transition-colors p-2 rounded-full hover:bg-white/5">
+            <button
+              className="relative text-[#887C71] hover:text-[#141413] transition-colors p-2 rounded-full hover:bg-[#141413]/5"
+              aria-label="Notifications"
+            >
               <Bell size={20} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-brand-purple rounded-full"></span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-[#5F5D4D] rounded-full"></span>
             </button>
           </div>
         </header>

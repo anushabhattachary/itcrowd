@@ -39,15 +39,15 @@ interface AdminForm {
 // ---- Shared UI tokens -------------------------------------------------------
 
 const cardClass =
-  "bg-[#1A1A27] border border-white/5 rounded-2xl p-6 shadow-xl space-y-6";
+  "bg-white border border-[#141413]/8 rounded-2xl p-6 shadow-sm space-y-6";
 const labelClass =
-  "text-xs font-bold text-[#94A3B8] uppercase tracking-wider block mb-1.5";
+  "text-xs font-medium text-[#887C71] uppercase tracking-wider block mb-1.5";
 const inputClass =
-  "w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple";
+  "w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-sm text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none";
 const buttonClass =
-  "bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl px-5 py-2.5 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2";
+  "bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl px-5 py-2.5 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2";
 const headingClass =
-  "text-lg font-bold text-white font-[family-name:var(--font-syne)] flex items-center gap-2";
+  "text-lg font-medium text-[#141413] font-heading flex items-center gap-2";
 
 function SaveButton({ saving }: { saving: boolean }) {
   return (
@@ -60,8 +60,8 @@ function SaveButton({ saving }: { saving: boolean }) {
 
 function LoadingState() {
   return (
-    <div className="flex items-center justify-center py-24 text-[#94A3B8]">
-      <Loader2 size={28} className="animate-spin text-brand-purple-light" />
+    <div className="flex items-center justify-center py-24 text-[#887C71]">
+      <Loader2 size={28} className="animate-spin text-[#5F5D4D]" />
     </div>
   );
 }
@@ -70,8 +70,8 @@ function OnboardingNotice() {
   return (
     <div className={cardClass}>
       <div className="flex items-start gap-3">
-        <Info size={18} className="text-brand-purple-light shrink-0 mt-0.5" />
-        <p className="text-sm text-[#94A3B8]">Complete onboarding first.</p>
+        <Info size={18} className="text-[#5F5D4D] shrink-0 mt-0.5" />
+        <p className="text-sm text-[#887C71]">Complete onboarding first.</p>
       </div>
     </div>
   );
@@ -174,7 +174,7 @@ function BusinessSettings({
     <>
       <form onSubmit={saveCompany} className={cardClass}>
         <h2 className={headingClass}>
-          <Building2 size={18} className="text-brand-purple-light" />
+          <Building2 size={18} className="text-[#5F5D4D]" />
           Business Profile
         </h2>
         <div>
@@ -217,7 +217,7 @@ function BusinessSettings({
 
       <form onSubmit={saveDetails} className={cardClass}>
         <h2 className={headingClass}>
-          <User size={18} className="text-brand-purple-light" />
+          <User size={18} className="text-[#5F5D4D]" />
           Your details
         </h2>
         <div>
@@ -358,7 +358,7 @@ function InfluencerSettings({
     <>
       <form onSubmit={saveCreator} className={cardClass}>
         <h2 className={headingClass}>
-          <Sparkles size={18} className="text-brand-purple-light" />
+          <Sparkles size={18} className="text-[#5F5D4D]" />
           Creator details
         </h2>
         <div>
@@ -437,7 +437,7 @@ function InfluencerSettings({
 
       <form onSubmit={saveContact} className={cardClass}>
         <h2 className={headingClass}>
-          <Phone size={18} className="text-brand-purple-light" />
+          <Phone size={18} className="text-[#5F5D4D]" />
           Contact
         </h2>
         <div>
@@ -500,7 +500,7 @@ function AdminSettings({ userId }: { userId: string }) {
   return (
     <form onSubmit={save} className={cardClass}>
       <h2 className={headingClass}>
-        <ShieldCheck size={18} className="text-brand-purple-light" />
+        <ShieldCheck size={18} className="text-[#5F5D4D]" />
         Account
       </h2>
       <div>
@@ -527,10 +527,10 @@ export default function SettingsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold text-white font-[family-name:var(--font-syne)]">
+        <h1 className="text-2xl font-medium text-[#141413] font-heading">
           Settings
         </h1>
-        <p className="text-sm text-[#94A3B8]">
+        <p className="text-sm text-[#887C71]">
           Manage your profile and account information.
         </p>
       </div>

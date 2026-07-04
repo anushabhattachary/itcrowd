@@ -82,13 +82,13 @@ function timeAgo(iso: string): string {
 function statusBadgeClasses(status: string | null): string {
   switch (status) {
     case "Approved":
-      return "bg-brand-lime/10 text-brand-lime border-brand-lime/20";
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
     case "Pending":
-      return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
+      return "bg-amber-50 text-amber-700 border-amber-200";
     case "Revision Requested":
-      return "bg-rose-500/10 text-rose-400 border-rose-500/20";
+      return "bg-red-50 text-red-700 border-red-200";
     default:
-      return "bg-white/5 text-[#94A3B8] border-white/10";
+      return "bg-[#887C71]/10 text-[#5F5D4D] border-[#887C71]/20";
   }
 }
 
@@ -115,10 +115,10 @@ export default function DashboardOverview() {
 
       const m = data.metrics;
       setStats([
-        { label: "Active Companies", value: m.activeCompanies, icon: Building2, accent: "text-brand-purple-light" },
-        { label: "Network Influencers", value: m.networkInfluencers, icon: Users, accent: "text-brand-lime" },
-        { label: "Active Campaigns", value: m.activeCampaigns, icon: Activity, accent: "text-brand-purple-light" },
-        { label: "Deals Closed", value: m.dealsClosed, icon: TrendingUp, accent: "text-brand-lime" },
+        { label: "Active Companies", value: m.activeCompanies, icon: Building2, accent: "text-[#5F5D4D]" },
+        { label: "Network Influencers", value: m.networkInfluencers, icon: Users, accent: "text-[#5F5D4D]" },
+        { label: "Active Campaigns", value: m.activeCampaigns, icon: Activity, accent: "text-[#5F5D4D]" },
+        { label: "Deals Closed", value: m.dealsClosed, icon: TrendingUp, accent: "text-[#5F5D4D]" },
       ]);
 
       const companies = data.recentActivity.companies ?? [];
@@ -174,10 +174,10 @@ export default function DashboardOverview() {
       if (cancelled) return;
 
       setStats([
-        { label: "Total Campaigns", value: campaignsRes.count ?? 0, icon: Briefcase, accent: "text-brand-purple-light" },
-        { label: "Active Campaigns", value: activeCampaignsRes.count ?? 0, icon: Activity, accent: "text-brand-lime" },
-        { label: "Content Items", value: contentRes.count ?? 0, icon: FileVideo, accent: "text-brand-purple-light" },
-        { label: "Pending Approvals", value: pendingRes.count ?? 0, icon: Clock, accent: "text-yellow-400" },
+        { label: "Total Campaigns", value: campaignsRes.count ?? 0, icon: Briefcase, accent: "text-[#5F5D4D]" },
+        { label: "Active Campaigns", value: activeCampaignsRes.count ?? 0, icon: Activity, accent: "text-[#5F5D4D]" },
+        { label: "Content Items", value: contentRes.count ?? 0, icon: FileVideo, accent: "text-[#5F5D4D]" },
+        { label: "Pending Approvals", value: pendingRes.count ?? 0, icon: Clock, accent: "text-amber-600" },
       ]);
 
       setRecentContent((recentRes.data as RecentContentRow[] | null) ?? []);
@@ -217,10 +217,10 @@ export default function DashboardOverview() {
       if (cancelled) return;
 
       setStats([
-        { label: "Campaigns Assigned", value: assignedRes.count ?? 0, icon: Briefcase, accent: "text-brand-purple-light" },
-        { label: "Content Uploaded", value: uploadedRes.count ?? 0, icon: FileVideo, accent: "text-brand-lime" },
-        { label: "Approved", value: approvedRes.count ?? 0, icon: CheckCircle2, accent: "text-brand-lime" },
-        { label: "Pending", value: pendingRes.count ?? 0, icon: Clock, accent: "text-yellow-400" },
+        { label: "Campaigns Assigned", value: assignedRes.count ?? 0, icon: Briefcase, accent: "text-[#5F5D4D]" },
+        { label: "Content Uploaded", value: uploadedRes.count ?? 0, icon: FileVideo, accent: "text-[#5F5D4D]" },
+        { label: "Approved", value: approvedRes.count ?? 0, icon: CheckCircle2, accent: "text-[#5F5D4D]" },
+        { label: "Pending", value: pendingRes.count ?? 0, icon: Clock, accent: "text-amber-600" },
       ]);
 
       setRecentContent((recentRes.data as RecentContentRow[] | null) ?? []);
@@ -255,15 +255,15 @@ export default function DashboardOverview() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#1A1A27] to-[#111118] border border-white/5 rounded-3xl p-6 md:p-8 shadow-xl">
-        <div className="space-y-2 relative z-10">
-          <span className="text-xs font-semibold text-brand-purple-light uppercase tracking-wider">
+      <div className="bg-white border border-[#141413]/8 rounded-3xl p-6 md:p-8 shadow-sm">
+        <div className="space-y-2">
+          <span className="text-xs font-medium text-[#887C71] uppercase tracking-wider">
             {role === "admin" ? "Admin Overview" : role === "business" ? "Client Command Center" : "Creator Hub"}
           </span>
-          <h1 className="text-3xl font-extrabold text-white font-[family-name:var(--font-syne)]">
+          <h1 className="text-3xl font-medium text-[#141413] font-heading">
             Welcome back, {displayName}
           </h1>
-          <p className="text-[#94A3B8] text-sm">
+          <p className="text-[#887C71] text-sm">
             {role === "admin"
               ? "A live snapshot of your network, campaigns, and deal flow."
               : role === "business"
@@ -271,18 +271,17 @@ export default function DashboardOverview() {
                 : "Manage your assignments and keep your content moving."}
           </p>
         </div>
-        <div className="absolute right-0 top-0 w-80 h-80 bg-brand-purple/5 blur-[100px] rounded-full pointer-events-none" />
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-3 text-[#94A3B8]">
-          <Loader2 className="animate-spin text-brand-purple-light" size={28} />
+        <div className="flex flex-col items-center justify-center py-24 gap-3 text-[#887C71]">
+          <Loader2 className="animate-spin text-[#5F5D4D]" size={28} />
           <span className="text-sm">Loading your dashboard…</span>
         </div>
       ) : error ? (
-        <div className="bg-[#1A1A27] border border-rose-500/20 rounded-2xl shadow-xl p-6 text-center">
-          <p className="text-sm text-rose-400 font-medium">{error}</p>
-          <p className="text-xs text-[#475569] mt-1">Please refresh the page or try again shortly.</p>
+        <div className="bg-white border border-red-200 rounded-2xl shadow-sm p-6 text-center">
+          <p className="text-sm text-red-700 font-medium">{error}</p>
+          <p className="text-xs text-[#887C71] mt-1">Please refresh the page or try again shortly.</p>
         </div>
       ) : (
         <>
@@ -291,15 +290,15 @@ export default function DashboardOverview() {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6 flex flex-col justify-between group hover:border-white/10 transition-all hover:-translate-y-0.5"
+                className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6 flex flex-col justify-between group hover:border-[#141413]/15 transition-all hover:-translate-y-0.5"
               >
                 <div className="flex justify-between items-start">
-                  <span className="text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider">{stat.label}</span>
-                  <span className={`p-1.5 bg-white/5 rounded-lg ${stat.accent} group-hover:bg-white/10 transition-colors`}>
+                  <span className="text-[11px] font-medium text-[#887C71] uppercase tracking-wider">{stat.label}</span>
+                  <span className={`p-1.5 bg-[#F1F0EF] rounded-lg ${stat.accent} group-hover:bg-[#141413]/10 transition-colors`}>
                     <stat.icon size={16} />
                   </span>
                 </div>
-                <span className="mt-4 text-3xl font-bold text-white font-[family-name:var(--font-syne)]">
+                <span className="mt-4 text-3xl font-medium text-[#141413] font-heading">
                   {stat.value.toLocaleString()}
                 </span>
               </div>
@@ -308,35 +307,35 @@ export default function DashboardOverview() {
 
           {/* Recent list */}
           {showActivityFeed ? (
-            <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
+            <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6">
               <div className="mb-6">
-                <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Recent activity</h2>
-                <p className="text-xs text-[#94A3B8] mt-0.5">Latest companies and influencers across the network</p>
+                <h2 className="text-lg font-medium text-[#141413] font-heading">Recent activity</h2>
+                <p className="text-xs text-[#887C71] mt-0.5">Latest companies and influencers across the network</p>
               </div>
 
               {recentActivity.length === 0 ? (
-                <p className="text-sm text-[#475569] py-8 text-center">No recent activity yet.</p>
+                <p className="text-sm text-[#887C71] py-8 text-center">No recent activity yet.</p>
               ) : (
                 <div className="space-y-3">
                   {recentActivity.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center gap-4 bg-[#0D0D14]/60 border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors"
+                      className="flex items-center gap-4 bg-[#F1F0EF]/60 border border-[#141413]/8 rounded-xl p-4 hover:border-[#141413]/15 transition-colors"
                     >
                       <span
                         className={`p-2 rounded-lg ${
                           item.kind === "company"
-                            ? "bg-brand-purple/10 text-brand-purple-light"
-                            : "bg-brand-lime/10 text-brand-lime"
+                            ? "bg-[#141413]/5 text-[#5F5D4D]"
+                            : "bg-[#887C71]/10 text-[#887C71]"
                         }`}
                       >
                         {item.kind === "company" ? <Building2 size={16} /> : <Sparkles size={16} />}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">{item.label}</p>
-                        <p className="text-xs text-[#94A3B8] truncate">{item.sub}</p>
+                        <p className="text-sm font-medium text-[#141413] truncate">{item.label}</p>
+                        <p className="text-xs text-[#887C71] truncate">{item.sub}</p>
                       </div>
-                      <span className="text-[10px] text-[#475569] font-medium flex items-center gap-1 shrink-0">
+                      <span className="text-[10px] text-[#9E948B] font-medium flex items-center gap-1 shrink-0">
                         <Clock size={10} /> {timeAgo(item.created_at)}
                       </span>
                     </div>
@@ -345,30 +344,30 @@ export default function DashboardOverview() {
               )}
             </div>
           ) : (
-            <div className="bg-[#1A1A27] border border-white/5 rounded-2xl shadow-xl p-6">
+            <div className="bg-white border border-[#141413]/8 rounded-2xl shadow-sm p-6">
               <div className="mb-6">
-                <h2 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">Recent content</h2>
-                <p className="text-xs text-[#94A3B8] mt-0.5">Your 5 most recently added content items</p>
+                <h2 className="text-lg font-medium text-[#141413] font-heading">Recent content</h2>
+                <p className="text-xs text-[#887C71] mt-0.5">Your 5 most recently added content items</p>
               </div>
 
               {recentContent.length === 0 ? (
-                <p className="text-sm text-[#475569] py-8 text-center">No content yet.</p>
+                <p className="text-sm text-[#887C71] py-8 text-center">No content yet.</p>
               ) : (
                 <div className="space-y-3">
                   {recentContent.map((row) => (
                     <div
                       key={row.id}
-                      className="flex items-center gap-4 bg-[#0D0D14]/60 border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors"
+                      className="flex items-center gap-4 bg-[#F1F0EF]/60 border border-[#141413]/8 rounded-xl p-4 hover:border-[#141413]/15 transition-colors"
                     >
-                      <span className="p-2 rounded-lg bg-brand-purple/10 text-brand-purple-light">
+                      <span className="p-2 rounded-lg bg-[#141413]/5 text-[#5F5D4D]">
                         <FileVideo size={16} />
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">{row.title ?? "Untitled content"}</p>
-                        <p className="text-xs text-[#475569]">{timeAgo(row.created_at)}</p>
+                        <p className="text-sm font-medium text-[#141413] truncate">{row.title ?? "Untitled content"}</p>
+                        <p className="text-xs text-[#9E948B]">{timeAgo(row.created_at)}</p>
                       </div>
                       <span
-                        className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md border shrink-0 ${statusBadgeClasses(
+                        className={`text-[10px] font-medium uppercase px-2 py-0.5 rounded-md border shrink-0 ${statusBadgeClasses(
                           row.status
                         )}`}
                       >
