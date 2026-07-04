@@ -1,155 +1,130 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, LogIn } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import A from "@/lib/assets";
 
-const navLinks = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "For Businesses", href: "#for-businesses" },
-  { label: "For Creators", href: "#for-creators" },
-  { label: "Join as a Business", href: "/join-as-business" },
-  { label: "FAQs", href: "#faq" },
+const NAV_LINKS = [
+  { label: "For Businesses", href: "/for-businesses" },
+  { label: "For Creators", href: "/for-influencers" },
+  { label: "Apply", href: "/apply" },
+  { label: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+type NavbarProps = {
+  /** "dark" sits over the dark hero (white wordmark); "light" sits on white pages. */
+  theme?: "dark" | "light";
+  /** "hero" rises from the center of the viewport (homepage); "fade" for subpages. */
+  entrance?: "hero" | "fade";
+};
+
+export default function Navbar({ theme = "dark", entrance = "fade" }: NavbarProps) {
+  const [open, setOpen] = useState(false);
+  const onDark = theme === "dark";
 
   return (
-    <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-background/90 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20"
-            : "bg-transparent"
-        }`}
+    <motion.header
+      initial={entrance === "hero" ? { y: "45vh", opacity: 0 } : { y: -12, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: entrance === "hero" ? 1 : 0.6, ease: EASE }}
+      className="w-full max-w-[1360px] mx-auto flex justify-between items-center z-20 relative"
+    >
+      {/* Brand */}
+      <Link href="/" className="flex items-center gap-[20px]" aria-label="ItCrowd home">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={onDark ? A.logo : A.logoDark}
+          alt=""
+          className="w-9 h-9"
+          aria-hidden="true"
+        />
+        <span
+          className={`${onDark ? "text-white" : "text-[#141413]"} text-3xl font-medium font-heading`}
+        >
+          ItCrowd
+        </span>
+      </Link>
+
+      {/* Desktop glass nav */}
+      <motion.nav
+        layout
+        initial={{ width: 110 }}
+        animate={{ width: "auto" }}
+        transition={{ duration: 0.8, delay: entrance === "hero" ? 1.1 : 0.3, ease: EASE }}
+        style={{ willChange: "width" }}
+        className="hidden lg:flex bg-black/40 backdrop-blur-lg rounded-3xl items-center overflow-hidden h-[64px] flex-row-reverse"
       >
-        <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-1 group">
-            <span className="text-xl md:text-2xl font-extrabold tracking-tight font-[family-name:var(--font-syne)]">
-              <span className="relative text-brand-purple group-hover:drop-shadow-[0_0_12px_rgba(124,58,237,0.6)] transition-all">
-                I
-              </span>
-              <span className="text-white">t</span>
-              <span className="text-white">Crowd</span>
-            </span>
-          </Link>
-
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="relative text-sm text-muted hover:text-white transition-colors group/nav"
-              >
-                {link.label}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-brand-purple transition-all duration-300 group-hover/nav:w-full"></span>
-              </a>
-            ))}
-          </div>
-
-          {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-muted hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors"
-              title="Admin Login"
-            >
-              <LogIn size={20} />
-            </Link>
-            <a
-              href="#for-influencers"
-              className="text-sm px-5 py-2.5 rounded-full border border-white/20 text-white hover:border-brand-purple hover:text-brand-purple-light transition-all"
-            >
-              Join as Influencer
-            </a>
-            <a
-              href="#contact"
-              className="text-sm px-5 py-2.5 rounded-full bg-brand-purple text-white btn-glow font-medium"
-            >
-              Get Started
-            </a>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-white p-2"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile drawer overlay */}
-      <div
-        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setMobileOpen(false)}
-      />
-
-      {/* Mobile drawer sidebar */}
-      <div
-        className={`fixed top-0 right-0 bottom-0 w-[80%] max-w-sm z-50 bg-surface/95 backdrop-blur-3xl border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col p-8 ${
-          mobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex justify-end mb-8">
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="text-white p-2"
-            aria-label="Close menu"
-          >
-            <X size={24} />
-          </button>
-        </div>
-        <div className="flex flex-col gap-6">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-2xl font-semibold text-white hover:text-brand-purple transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-        <div className="flex flex-col gap-4 mt-auto w-full">
+        <div className="p-1.5">
           <Link
             href="/login"
-            onClick={() => setMobileOpen(false)}
-            className="flex items-center justify-center gap-2 text-center px-6 py-4 w-full rounded-full bg-white/5 border border-white/10 text-white hover:border-brand-purple transition-all"
+            className="h-12 px-6 rounded-full bg-white text-black text-xl font-medium inline-flex items-center justify-center hover:bg-neutral-100 transition-colors whitespace-nowrap font-sans"
           >
-            <LogIn size={20} /> Admin Login
+            Login
           </Link>
-          <a
-            href="#for-influencers"
-            onClick={() => setMobileOpen(false)}
-            className="text-center px-6 py-4 w-full rounded-full border border-white/20 text-white hover:border-brand-purple transition-all"
-          >
-            Join as Influencer
-          </a>
-          <a
-            href="#contact"
-            onClick={() => setMobileOpen(false)}
-            className="text-center px-6 py-4 w-full rounded-full bg-brand-purple text-white btn-glow font-medium"
-          >
-            Get Started
-          </a>
         </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: entrance === "hero" ? 1.5 : 0.6, duration: 0.5 }}
+          className="flex items-center gap-8 pl-8 pr-2 whitespace-nowrap"
+        >
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-white text-base opacity-90 hover:opacity-100 transition-opacity"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </motion.div>
+      </motion.nav>
+
+      {/* Mobile toggle */}
+      <div className="lg:hidden relative">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-label={open ? "Close menu" : "Open menu"}
+          className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-lg flex items-center justify-center text-white"
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute top-full right-0 mt-3 w-60 bg-black/70 backdrop-blur-lg rounded-2xl p-4 flex flex-col gap-3 z-30"
+            >
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="text-white text-base opacity-90 hover:opacity-100 transition-opacity"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="h-11 rounded-full bg-white text-black text-lg font-medium inline-flex items-center justify-center hover:bg-neutral-100 transition-colors font-sans"
+              >
+                Login
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </>
+    </motion.header>
   );
 }

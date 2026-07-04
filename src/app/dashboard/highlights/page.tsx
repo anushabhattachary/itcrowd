@@ -84,8 +84,8 @@ function SortableHighlightRow({
     <tr 
       ref={setNodeRef} 
       style={style} 
-      className={`hover:bg-white/[0.02] transition-colors group ${
-        isDragging ? "bg-[#1B1B29] border border-brand-purple/30 shadow-2xl relative z-50" : "divide-y divide-white/5"
+      className={`hover:bg-[#F1F0EF]/60 transition-colors group ${
+        isDragging ? "bg-white border border-[#141413]/20 shadow-2xl relative z-50" : "divide-y divide-[#141413]/8"
       }`}
     >
       {/* Drag Handle */}
@@ -94,7 +94,7 @@ function SortableHighlightRow({
           type="button"
           {...attributes} 
           {...listeners} 
-          className="cursor-grab active:cursor-grabbing p-1.5 text-[#475569] hover:text-white rounded hover:bg-white/5 transition-colors touch-none"
+          className="cursor-grab active:cursor-grabbing p-1.5 text-[#9E948B] hover:text-[#141413] rounded hover:bg-[#141413]/5 transition-colors touch-none"
         >
           <GripVertical size={16} />
         </button>
@@ -106,16 +106,16 @@ function SortableHighlightRow({
           <img 
             src={highlight.image_url} 
             alt={highlight.name} 
-            className={`w-10 h-10 object-cover border border-white/10 shrink-0 ${
+            className={`w-10 h-10 object-cover border border-[#141413]/10 shrink-0 ${
               isInfluencer ? "rounded-full" : "rounded-lg"
             }`}
           />
         ) : (
           <div 
-            className={`w-10 h-10 flex items-center justify-center font-bold text-xs shrink-0 border border-white/5 ${
-              isInfluencer 
-                ? "rounded-full bg-brand-purple/20 text-brand-purple-light" 
-                : "rounded-lg bg-brand-lime/20 text-brand-lime"
+            className={`w-10 h-10 flex items-center justify-center font-medium text-xs shrink-0 border border-[#141413]/8 ${
+              isInfluencer
+                ? "rounded-full bg-[#141413]/5 text-[#5F5D4D]"
+                : "rounded-lg bg-[#887C71]/10 text-[#5F5D4D]"
             }`}
           >
             {highlight.name.substring(0, 2).toUpperCase()}
@@ -126,24 +126,24 @@ function SortableHighlightRow({
       {/* Name */}
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-white flex items-center gap-1">
+          <span className="font-medium text-[#141413] flex items-center gap-1">
             {highlight.name}
             {highlight.link_url && (
-              <a 
-                href={highlight.link_url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-[#475569] hover:text-white transition-colors"
+              <a
+                href={highlight.link_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#9E948B] hover:text-[#141413] transition-colors"
               >
                 <ExternalLink size={12} />
               </a>
             )}
           </span>
           <span 
-            className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border uppercase tracking-wider ${
-              isInfluencer 
-                ? "bg-brand-purple/10 border-brand-purple/20 text-brand-purple-light" 
-                : "bg-brand-lime/10 border-brand-lime/20 text-brand-lime"
+            className={`text-[10px] px-2 py-0.5 rounded-full font-medium border uppercase tracking-wider ${
+              isInfluencer
+                ? "bg-[#141413]/5 border-[#141413]/15 text-[#5F5D4D]"
+                : "bg-[#887C71]/10 border-[#887C71]/20 text-[#5F5D4D]"
             }`}
           >
             {highlight.type}
@@ -152,7 +152,7 @@ function SortableHighlightRow({
       </td>
 
       {/* Tagline */}
-      <td className="px-6 py-4 text-sm text-[#94A3B8] max-w-xs truncate">
+      <td className="px-6 py-4 text-sm text-[#887C71] max-w-xs truncate">
         {highlight.tagline}
       </td>
 
@@ -161,7 +161,7 @@ function SortableHighlightRow({
         <button 
           onClick={() => onTogglePublish(highlight.id, !highlight.published)}
           className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-            highlight.published ? "bg-brand-purple" : "bg-white/10"
+            highlight.published ? "bg-[#141413]" : "bg-[#141413]/15"
           }`}
         >
           <span 
@@ -177,14 +177,14 @@ function SortableHighlightRow({
         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button 
             onClick={() => onEdit(highlight)} 
-            className="p-1.5 text-[#94A3B8] hover:text-white rounded hover:bg-white/10 transition-colors"
+            className="p-1.5 text-[#887C71] hover:text-[#141413] rounded hover:bg-[#141413]/10 transition-colors"
             title="Edit"
           >
             <Edit2 size={16} />
           </button>
           <button 
             onClick={() => onDelete(highlight)} 
-            className="p-1.5 text-[#94A3B8] hover:text-red-400 rounded hover:bg-red-400/10 transition-colors"
+            className="p-1.5 text-[#887C71] hover:text-red-600 rounded hover:bg-red-50 transition-colors"
             title="Delete"
           >
             <Trash2 size={16} />
@@ -406,26 +406,26 @@ export default function HighlightsDashboardPage() {
     <div className="space-y-6">
       
       {/* Action Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-[#1A1A27] p-4 rounded-2xl border border-white/5 shadow-xl">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-[#141413]/8 shadow-sm">
         <div className="flex flex-1 gap-2 w-full sm:w-auto">
           {/* Search */}
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#887C71]" size={18} />
             <input 
               type="text" 
               placeholder="Search name or tagline..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+              className="w-full bg-white border border-[#141413]/10 rounded-xl pl-10 pr-4 py-2 text-sm text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none transition-all"
             />
           </div>
           {/* Filter */}
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#887C71]" size={18} />
             <select 
               value={typeFilter}
               onChange={e => setTypeFilter(e.target.value)}
-              className="appearance-none bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-8 py-2 text-sm text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple"
+              className="appearance-none bg-white border border-[#141413]/10 rounded-xl pl-10 pr-8 py-2 text-sm text-[#141413] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             >
               <option value="All">All Types</option>
               <option value="Influencer">Influencers</option>
@@ -436,18 +436,18 @@ export default function HighlightsDashboardPage() {
         
         <button 
           onClick={handleAddClick}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-purple text-white px-5 py-2 rounded-xl font-medium btn-glow cursor-pointer"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#141413] hover:bg-neutral-800 text-white px-5 py-2 rounded-2xl font-medium transition-colors cursor-pointer"
         >
           <Plus size={18} /> Add Highlight
         </button>
       </div>
 
       {/* Table Container */}
-      <div className="bg-[#1A1A27] rounded-2xl border border-white/5 shadow-xl overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#141413]/8 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <table className="w-full text-left text-sm whitespace-nowrap">
-              <thead className="bg-[#0D0D14] text-[#94A3B8] border-b border-white/5">
+              <thead className="bg-[#F1F0EF]/60 text-xs uppercase tracking-wider text-[#887C71] border-b border-[#141413]/8">
                 <tr>
                   <th className="px-6 py-4 font-medium w-10"></th>
                   <th className="px-6 py-4 font-medium w-16">Profile</th>
@@ -457,17 +457,17 @@ export default function HighlightsDashboardPage() {
                   <th className="px-6 py-4 font-medium text-right w-24">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-[#141413]/8">
                 {isLoading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-[#94A3B8]">
-                      <Loader2 className="animate-spin mx-auto mb-2 text-brand-purple" size={24} />
+                    <td colSpan={6} className="px-6 py-12 text-center text-[#887C71]">
+                      <Loader2 className="animate-spin mx-auto mb-2 text-[#5F5D4D]" size={24} />
                       Loading highlights...
                     </td>
                   </tr>
                 ) : filteredHighlights.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-[#94A3B8]">
+                    <td colSpan={6} className="px-6 py-12 text-center text-[#887C71]">
                       No highlights found. Create one to get started!
                     </td>
                   </tr>
@@ -500,84 +500,84 @@ export default function HighlightsDashboardPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pb-8">
           
           <div className="space-y-2">
-            <label className="text-sm font-medium text-[#94A3B8]">Entity Type *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Entity Type *</label>
             <div className="grid grid-cols-2 gap-4">
-              <label className={`flex items-center justify-center p-3 rounded-xl border border-white/10 cursor-pointer transition-all ${
-                register("type").name ? "hover:bg-white/5" : ""
+              <label className={`flex items-center justify-center p-3 rounded-xl border border-[#141413]/15 cursor-pointer transition-all ${
+                register("type").name ? "hover:bg-[#F1F0EF]" : ""
               }`}>
-                <input 
-                  type="radio" 
-                  value="influencer" 
-                  {...register("type")} 
-                  className="sr-only" 
+                <input
+                  type="radio"
+                  value="influencer"
+                  {...register("type")}
+                  className="sr-only"
                 />
-                <span className="text-sm font-semibold text-white">Influencer</span>
+                <span className="text-sm font-medium text-[#141413]">Influencer</span>
               </label>
-              <label className="flex items-center justify-center p-3 rounded-xl border border-white/10 cursor-pointer hover:bg-white/5 transition-all">
-                <input 
-                  type="radio" 
-                  value="business" 
-                  {...register("type")} 
-                  className="sr-only" 
+              <label className="flex items-center justify-center p-3 rounded-xl border border-[#141413]/15 cursor-pointer hover:bg-[#F1F0EF] transition-all">
+                <input
+                  type="radio"
+                  value="business"
+                  {...register("type")}
+                  className="sr-only"
                 />
-                <span className="text-sm font-semibold text-white">Business</span>
+                <span className="text-sm font-medium text-[#141413]">Business</span>
               </label>
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Name *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Name *</label>
             <input 
               required 
               {...register("name")} 
               placeholder="e.g. John Doe or Business.com"
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all" 
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none transition-all" 
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Tagline *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Tagline *</label>
             <input 
               required 
               {...register("tagline")} 
               placeholder="One short punchy line..."
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all" 
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none transition-all" 
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Description *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Description *</label>
             <textarea 
               required 
               {...register("description")} 
               rows={4}
               placeholder="2-3 sentences about what they do or who they are..."
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all" 
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none transition-all" 
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Image URL (Optional)</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Image URL (Optional)</label>
             <input 
               {...register("image_url")} 
               placeholder="https://example.com/avatar.jpg"
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all" 
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none transition-all" 
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Link URL (Optional)</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Link URL (Optional)</label>
             <input 
               {...register("link_url")} 
               placeholder="https://instagram.com/username or website link"
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all" 
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none transition-all" 
             />
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
+          <div className="flex items-center justify-between p-4 bg-[#F1F0EF] border border-[#141413]/10 rounded-xl">
             <div>
-              <p className="text-sm font-semibold text-white">Publish Immediately</p>
-              <p className="text-xs text-[#94A3B8]">Allow this highlight to be visible on the public homepage.</p>
+              <p className="text-sm font-medium text-[#141413]">Publish Immediately</p>
+              <p className="text-xs text-[#887C71]">Allow this highlight to be visible on the public homepage.</p>
             </div>
             <button 
               type="button"
@@ -592,7 +592,7 @@ export default function HighlightsDashboardPage() {
             <input 
               type="checkbox" 
               {...register("published")} 
-              className="h-6 w-11 cursor-pointer accent-brand-purple"
+              className="h-6 w-11 cursor-pointer accent-[#141413]"
             />
           </div>
 
@@ -600,14 +600,14 @@ export default function HighlightsDashboardPage() {
             <button 
               type="button" 
               onClick={() => setIsDrawerOpen(false)} 
-              className="flex-1 px-4 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-medium transition-colors"
+              className="flex-1 px-4 py-3 border border-[#141413]/15 hover:bg-[#F1F0EF] rounded-2xl font-medium transition-colors text-[#141413]"
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
-              disabled={isSubmitting} 
-              className="flex-1 bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl font-medium btn-glow flex justify-center items-center cursor-pointer"
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl font-medium transition-colors flex justify-center items-center cursor-pointer"
             >
               {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : "Save Highlight"}
             </button>
@@ -617,32 +617,32 @@ export default function HighlightsDashboardPage() {
 
       {/* Delete Confirmation Modal */}
       {highlightToDelete && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#1A1A27] border border-white/10 rounded-2xl max-w-md w-full p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-[#141413]/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white border border-[#141413]/10 rounded-2xl max-w-md w-full p-6 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex items-start justify-between mb-4">
-              <h3 className="text-lg font-bold text-white font-[family-name:var(--font-syne)]">
+              <h3 className="text-lg font-medium text-[#141413] font-heading">
                 Delete Highlight?
               </h3>
-              <button 
+              <button
                 onClick={() => setHighlightToDelete(null)}
-                className="text-[#94A3B8] hover:text-white transition-colors"
+                className="text-[#887C71] hover:text-[#141413] transition-colors"
               >
                 <X size={18} />
               </button>
             </div>
-            <p className="text-sm text-[#94A3B8] mb-6">
-              Are you sure you want to delete <strong className="text-white">{highlightToDelete.name}</strong>? This action cannot be undone.
+            <p className="text-sm text-[#887C71] mb-6">
+              Are you sure you want to delete <strong className="text-[#141413]">{highlightToDelete.name}</strong>? This action cannot be undone.
             </p>
             <div className="flex gap-3 justify-end">
-              <button 
-                onClick={() => setHighlightToDelete(null)} 
-                className="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+              <button
+                onClick={() => setHighlightToDelete(null)}
+                className="px-4 py-2 bg-[#F1F0EF] border border-[#141413]/15 hover:bg-[#141413]/10 rounded-xl text-sm font-medium text-[#141413] transition-colors cursor-pointer"
               >
                 Cancel
               </button>
-              <button 
-                onClick={handleConfirmDelete} 
-                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+              <button
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
               >
                 Delete
               </button>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <!-- Placeholder hero backdrop: swap for real campaign footage (video) when available -->
+  <defs>
+    <radialGradient id="g1" cx="22%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#5F5D4D" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#252522" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#141413" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="80%" cy="75%" r="70%">
+      <stop offset="0%" stop-color="#887C71" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#3a352f" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#141413" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g3" cx="55%" cy="8%" r="45%">
+      <stop offset="0%" stop-color="#9E948B" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#141413" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#141413"/>
+  <rect width="1920" height="1080" fill="url(#g1)"/>
+  <rect width="1920" height="1080" fill="url(#g2)"/>
+  <rect width="1920" height="1080" fill="url(#g3)"/>
+</svg>

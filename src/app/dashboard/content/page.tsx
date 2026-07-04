@@ -46,9 +46,9 @@ interface CampaignOption {
 }
 
 const STATUS_STYLES: Record<Status, string> = {
-  Approved: "bg-brand-lime/15 border-brand-lime/30 text-brand-lime",
-  Pending: "bg-amber-400/10 border-amber-400/20 text-amber-300",
-  "Revision Requested": "bg-red-500/10 border-red-500/20 text-red-400",
+  Approved: "bg-emerald-50 border-emerald-200 text-emerald-700",
+  Pending: "bg-amber-50 border-amber-200 text-amber-700",
+  "Revision Requested": "bg-red-50 border-red-200 text-red-700",
 };
 
 const STATUS_ICON: Record<Status, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -257,10 +257,10 @@ export default function ContentPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white font-[family-name:var(--font-syne)]">
+          <h1 className="text-2xl font-medium text-[#141413] font-heading">
             {isCreator ? "My Content" : "Content Library"}
           </h1>
-          <p className="text-sm text-[#94A3B8] mt-1">
+          <p className="text-sm text-[#887C71] mt-1">
             {isCreator
               ? "Upload deliverables — they appear instantly in the business's library."
               : isBusiness
@@ -271,7 +271,7 @@ export default function ContentPage() {
         {isCreator && (
           <button
             onClick={() => setUploadOpen(true)}
-            className="flex items-center justify-center gap-2 bg-brand-purple hover:bg-brand-purple-light text-white px-5 py-2.5 rounded-xl font-medium transition-colors"
+            className="flex items-center justify-center gap-2 bg-[#141413] hover:bg-neutral-800 text-white px-5 py-2.5 rounded-2xl font-medium transition-colors"
           >
             <Upload size={18} /> Upload Content
           </button>
@@ -279,20 +279,20 @@ export default function ContentPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 bg-[#1A1A27] p-4 rounded-2xl border border-white/5">
+      <div className="flex flex-col sm:flex-row gap-3 bg-white p-4 rounded-2xl border border-[#141413]/8 shadow-sm">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#887C71]" size={18} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search title, creator, campaign…"
-            className="w-full bg-[#0D0D14] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple"
+            className="w-full bg-white border border-[#141413]/10 rounded-xl pl-10 pr-4 py-2 text-sm text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as "All" | Status)}
-          className="bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-purple"
+          className="bg-white border border-[#141413]/10 rounded-xl px-4 py-2 text-sm text-[#141413] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
         >
           <option value="All">All statuses</option>
           <option value="Pending">Pending</option>
@@ -301,7 +301,7 @@ export default function ContentPage() {
         </select>
         <button
           onClick={load}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-[#94A3B8] hover:text-white border border-white/10 rounded-xl hover:bg-white/5 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-[#5F5D4D] hover:text-[#141413] border border-[#141413]/15 rounded-xl hover:bg-[#F1F0EF] transition-colors"
         >
           <RefreshCw size={15} /> Refresh
         </button>
@@ -309,11 +309,11 @@ export default function ContentPage() {
 
       {/* Grid */}
       {loading ? (
-        <div className="py-20 text-center text-[#94A3B8]">
+        <div className="py-20 text-center text-[#887C71]">
           <Loader2 className="animate-spin mx-auto mb-3" size={26} /> Loading content…
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-20 text-center text-[#94A3B8] bg-[#1A1A27] rounded-2xl border border-white/5">
+        <div className="py-20 text-center text-[#887C71] bg-white rounded-2xl border border-[#141413]/8 shadow-sm">
           {isCreator
             ? "No uploads yet. Hit “Upload Content” to add your first deliverable."
             : "No content yet. Once your creators upload, it shows up here automatically."}
@@ -327,49 +327,49 @@ export default function ContentPage() {
             return (
               <div
                 key={row.id}
-                className="bg-[#1A1A27] border border-white/5 rounded-2xl overflow-hidden shadow-xl flex flex-col"
+                className="bg-white border border-[#141413]/8 rounded-2xl overflow-hidden shadow-sm flex flex-col"
               >
-                <div className="relative h-40 bg-[#0D0D14] flex items-center justify-center">
+                <div className="relative h-40 bg-[#F1F0EF] flex items-center justify-center">
                   {row.file_type === "Photo" && thumb ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={thumb} alt={row.title} className="w-full h-full object-cover" />
                   ) : (
-                    <TypeIcon size={36} className="text-[#475569]" />
+                    <TypeIcon size={36} className="text-[#9E948B]" />
                   )}
                   <span
-                    className={`absolute top-2 right-2 px-2 py-1 rounded-full border text-[10px] font-semibold flex items-center gap-1 ${STATUS_STYLES[row.status]}`}
+                    className={`absolute top-2 right-2 px-2 py-1 rounded-full border text-[10px] font-medium flex items-center gap-1 ${STATUS_STYLES[row.status]}`}
                   >
                     <StatusIcon size={11} /> {row.status}
                   </span>
                 </div>
                 <div className="p-4 flex flex-col flex-1">
-                  <h3 className="font-semibold text-white text-sm leading-snug">{row.title}</h3>
-                  <p className="text-xs text-[#94A3B8] mt-1">
+                  <h3 className="font-medium text-[#141413] text-sm leading-snug">{row.title}</h3>
+                  <p className="text-xs text-[#887C71] mt-1">
                     {row.influencers?.full_name ?? "Creator"}
                     {row.influencers?.handle ? ` · ${row.influencers.handle}` : ""}
                   </p>
-                  <p className="text-xs text-[#475569] mt-0.5">
+                  <p className="text-xs text-[#9E948B] mt-0.5">
                     {row.campaigns?.campaign_name ?? "Campaign"} ·{" "}
                     {new Date(row.created_at).toLocaleDateString()}
                   </p>
 
                   {row.status === "Revision Requested" && row.revision_notes && (
-                    <p className="text-xs text-red-400 mt-2 bg-red-500/5 border border-red-500/10 rounded-lg p-2">
+                    <p className="text-xs text-red-700 mt-2 bg-red-50 border border-red-200 rounded-lg p-2">
                       “{row.revision_notes}”
                     </p>
                   )}
 
-                  <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-2">
+                  <div className="mt-3 pt-3 border-t border-[#141413]/8 flex items-center gap-2">
                     <button
                       onClick={() => openFile(row)}
-                      className="flex items-center gap-1 text-xs text-[#94A3B8] hover:text-white transition-colors"
+                      className="flex items-center gap-1 text-xs text-[#887C71] hover:text-[#141413] transition-colors"
                     >
                       <Download size={14} /> View
                     </button>
                     {isBusiness && row.status !== "Approved" && (
                       <button
                         onClick={() => setStatus(row, "Approved")}
-                        className="ml-auto flex items-center gap-1 text-xs text-brand-lime hover:opacity-80 transition-opacity"
+                        className="ml-auto flex items-center gap-1 text-xs text-emerald-700 hover:opacity-80 transition-opacity"
                       >
                         <Check size={14} /> Approve
                       </button>
@@ -380,7 +380,7 @@ export default function ContentPage() {
                           setRevisionFor(row);
                           setRevisionNotes("");
                         }}
-                        className={`${row.status === "Approved" ? "ml-auto" : ""} flex items-center gap-1 text-xs text-amber-300 hover:opacity-80 transition-opacity`}
+                        className={`${row.status === "Approved" ? "ml-auto" : ""} flex items-center gap-1 text-xs text-amber-700 hover:opacity-80 transition-opacity`}
                       >
                         <AlertCircle size={14} /> Revise
                       </button>
@@ -402,11 +402,11 @@ export default function ContentPage() {
       >
         <div className="space-y-5">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Campaign *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Campaign *</label>
             <select
               value={uCampaign}
               onChange={(e) => setUCampaign(e.target.value)}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             >
               <option value="">Select a campaign…</option>
               {campaignOptions.map((o) => (
@@ -416,28 +416,28 @@ export default function ContentPage() {
               ))}
             </select>
             {campaignOptions.length === 0 && (
-              <p className="text-xs text-[#475569]">
+              <p className="text-xs text-[#9E948B]">
                 You&apos;re not attached to any campaigns yet.
               </p>
             )}
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Title *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Title *</label>
             <input
               value={uTitle}
               onChange={(e) => setUTitle(e.target.value)}
               placeholder="e.g. Summer Reel — Draft 1"
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Type *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Type *</label>
             <select
               value={uType}
               onChange={(e) => setUType(e.target.value as FileType)}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             >
               <option value="Photo">Photo</option>
               <option value="Video">Video</option>
@@ -446,25 +446,25 @@ export default function ContentPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">File *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">File *</label>
             <input
               type="file"
               onChange={(e) => setUFile(e.target.files?.[0] ?? null)}
-              className="w-full text-sm text-[#94A3B8] file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-purple file:text-white file:cursor-pointer"
+              className="w-full text-sm text-[#887C71] file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#141413] file:text-white file:cursor-pointer"
             />
           </div>
 
           <div className="pt-4 flex gap-3">
             <button
               onClick={() => setUploadOpen(false)}
-              className="flex-1 px-4 py-3 border border-white/10 hover:bg-white/5 rounded-xl font-medium transition-colors"
+              className="flex-1 px-4 py-3 border border-[#141413]/15 hover:bg-[#F1F0EF] rounded-2xl font-medium transition-colors text-[#141413]"
             >
               Cancel
             </button>
             <button
               onClick={handleUpload}
               disabled={uploading}
-              className="flex-1 bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl font-medium flex justify-center items-center disabled:opacity-60"
+              className="flex-1 bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl font-medium transition-colors flex justify-center items-center disabled:opacity-60"
             >
               {uploading ? <Loader2 className="animate-spin" size={18} /> : "Upload"}
             </button>
@@ -480,20 +480,20 @@ export default function ContentPage() {
         width="w-[85vw] sm:w-[420px]"
       >
         <div className="space-y-5">
-          <p className="text-sm text-[#94A3B8]">
+          <p className="text-sm text-[#887C71]">
             Let the creator know what to change for{" "}
-            <span className="text-white font-medium">{revisionFor?.title}</span>.
+            <span className="text-[#141413] font-medium">{revisionFor?.title}</span>.
           </p>
           <textarea
             value={revisionNotes}
             onChange={(e) => setRevisionNotes(e.target.value)}
             rows={5}
             placeholder="e.g. Please brighten the intro and add the logo at the end."
-            className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+            className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
           />
           <button
             onClick={submitRevision}
-            className="w-full bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl py-3 font-medium"
+            className="w-full bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl py-3 font-medium transition-colors"
           >
             Send Revision Request
           </button>

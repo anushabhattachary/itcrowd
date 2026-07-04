@@ -265,13 +265,13 @@ export default function MessagesPage() {
   return (
     <div className="flex gap-4 h-[calc(100vh-140px)]">
       {/* Thread list */}
-      <div className="w-[300px] shrink-0 bg-[#1A1A27] border border-white/5 rounded-2xl flex flex-col overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex items-center justify-between">
-          <span className="font-semibold text-white font-[family-name:var(--font-syne)]">Conversations</span>
+      <div className="w-[300px] shrink-0 bg-white border border-[#141413]/8 rounded-2xl shadow-sm flex flex-col overflow-hidden">
+        <div className="p-4 border-b border-[#141413]/8 flex items-center justify-between">
+          <span className="font-medium text-[#141413] font-heading">Conversations</span>
           {(isBusiness || isCreator) && (
             <button
               onClick={() => setNewOpen(true)}
-              className="p-1.5 rounded-lg bg-brand-purple text-white hover:bg-brand-purple-light transition-colors"
+              className="p-1.5 rounded-lg bg-[#141413] text-white hover:bg-neutral-800 transition-colors"
               title="New conversation"
             >
               <Plus size={16} />
@@ -280,11 +280,11 @@ export default function MessagesPage() {
         </div>
         <div className="flex-1 overflow-y-auto">
           {loadingThreads ? (
-            <div className="p-6 text-center text-[#94A3B8]">
+            <div className="p-6 text-center text-[#887C71]">
               <Loader2 className="animate-spin mx-auto" size={20} />
             </div>
           ) : threads.length === 0 ? (
-            <div className="p-6 text-center text-sm text-[#94A3B8]">
+            <div className="p-6 text-center text-sm text-[#887C71]">
               No conversations yet.
             </div>
           ) : (
@@ -292,13 +292,13 @@ export default function MessagesPage() {
               <button
                 key={t.id}
                 onClick={() => setActiveId(t.id)}
-                className={`w-full text-left px-4 py-3 border-b border-white/5 transition-colors ${
-                  t.id === activeId ? "bg-brand-purple/10" : "hover:bg-white/[0.03]"
+                className={`w-full text-left px-4 py-3 border-b border-[#141413]/8 transition-colors ${
+                  t.id === activeId ? "bg-[#F1F0EF]" : "hover:bg-[#F1F0EF]/60"
                 }`}
               >
-                <p className="text-sm font-medium text-white truncate">{counterpartName(t)}</p>
-                <p className="text-xs text-[#94A3B8] truncate">{t.subject}</p>
-                <p className="text-[10px] text-[#475569] mt-0.5 truncate">
+                <p className="text-sm font-medium text-[#141413] truncate">{counterpartName(t)}</p>
+                <p className="text-xs text-[#887C71] truncate">{t.subject}</p>
+                <p className="text-[10px] text-[#9E948B] mt-0.5 truncate">
                   {t.campaigns?.campaign_name ?? "General"}
                 </p>
               </button>
@@ -308,18 +308,18 @@ export default function MessagesPage() {
       </div>
 
       {/* Conversation */}
-      <div className="flex-1 bg-[#1A1A27] border border-white/5 rounded-2xl flex flex-col overflow-hidden">
+      <div className="flex-1 bg-white border border-[#141413]/8 rounded-2xl shadow-sm flex flex-col overflow-hidden">
         {!activeThread ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-[#475569]">
+          <div className="flex-1 flex flex-col items-center justify-center text-[#9E948B]">
             <MessageSquare size={40} className="mb-3" />
             <p className="text-sm">Select or start a conversation.</p>
           </div>
         ) : (
           <>
-            <div className="p-4 border-b border-white/5 flex items-center justify-between">
+            <div className="p-4 border-b border-[#141413]/8 flex items-center justify-between">
               <div>
-                <p className="font-semibold text-white">{counterpartName(activeThread)}</p>
-                <p className="text-xs text-[#94A3B8]">
+                <p className="font-medium text-[#141413]">{counterpartName(activeThread)}</p>
+                <p className="text-xs text-[#887C71]">
                   {activeThread.subject}
                   {activeThread.campaigns?.campaign_name
                     ? ` · ${activeThread.campaigns.campaign_name}`
@@ -328,7 +328,7 @@ export default function MessagesPage() {
               </div>
               <button
                 onClick={() => activeId && loadMessages(activeId)}
-                className="p-2 text-[#94A3B8] hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                className="p-2 text-[#887C71] hover:text-[#141413] rounded-lg hover:bg-[#141413]/5 transition-colors"
                 title="Refresh"
               >
                 <RefreshCw size={15} />
@@ -337,11 +337,11 @@ export default function MessagesPage() {
 
             <div className="flex-1 overflow-y-auto p-5 space-y-3">
               {loadingMsgs ? (
-                <div className="text-center text-[#94A3B8]">
+                <div className="text-center text-[#887C71]">
                   <Loader2 className="animate-spin mx-auto" size={20} />
                 </div>
               ) : messages.length === 0 ? (
-                <p className="text-center text-sm text-[#475569] mt-6">
+                <p className="text-center text-sm text-[#9E948B] mt-6">
                   No messages yet — say hello 👋
                 </p>
               ) : (
@@ -352,12 +352,12 @@ export default function MessagesPage() {
                       <div
                         className={`max-w-[70%] rounded-2xl px-4 py-2.5 text-sm ${
                           mine
-                            ? "bg-brand-purple text-white rounded-br-sm"
-                            : "bg-[#0D0D14] border border-white/10 text-[#E2E8F0] rounded-bl-sm"
+                            ? "bg-[#141413] text-white rounded-br-sm"
+                            : "bg-[#F1F0EF] border border-[#141413]/8 text-[#141413] rounded-bl-sm"
                         }`}
                       >
                         <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                        <p className={`text-[10px] mt-1 ${mine ? "text-white/60" : "text-[#475569]"}`}>
+                        <p className={`text-[10px] mt-1 ${mine ? "text-white/60" : "text-[#887C71]"}`}>
                           {new Date(m.created_at).toLocaleString([], {
                             month: "short",
                             day: "numeric",
@@ -373,7 +373,7 @@ export default function MessagesPage() {
               <div ref={endRef} />
             </div>
 
-            <div className="p-4 border-t border-white/5 flex items-center gap-3">
+            <div className="p-4 border-t border-[#141413]/8 flex items-center gap-3">
               <input
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
@@ -384,12 +384,12 @@ export default function MessagesPage() {
                   }
                 }}
                 placeholder="Type a message…"
-                className="flex-1 bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-purple"
+                className="flex-1 bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-sm text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
               />
               <button
                 onClick={send}
                 disabled={sending || !draft.trim()}
-                className="bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl p-2.5 transition-colors disabled:opacity-50"
+                className="bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl p-2.5 transition-colors disabled:opacity-50"
               >
                 {sending ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
               </button>
@@ -407,11 +407,11 @@ export default function MessagesPage() {
       >
         <div className="space-y-5">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Campaign *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Campaign *</label>
             <select
               value={nCampaign}
               onChange={(e) => setNCampaign(e.target.value)}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             >
               <option value="">Select a campaign…</option>
               {campaigns.map((c) => (
@@ -424,11 +424,11 @@ export default function MessagesPage() {
 
           {isBusiness && (
             <div className="space-y-1">
-              <label className="text-sm font-medium text-[#94A3B8]">Creator *</label>
+              <label className="text-sm font-medium text-[#5F5D4D]">Creator *</label>
               <select
                 value={nCreator}
                 onChange={(e) => setNCreator(e.target.value)}
-                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+                className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
                 disabled={!nCampaign}
               >
                 <option value="">{nCampaign ? "Select a creator…" : "Pick a campaign first"}</option>
@@ -442,19 +442,19 @@ export default function MessagesPage() {
           )}
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#94A3B8]">Subject *</label>
+            <label className="text-sm font-medium text-[#5F5D4D]">Subject *</label>
             <input
               value={nSubject}
               onChange={(e) => setNSubject(e.target.value)}
               placeholder="e.g. Kickoff & brand guidelines"
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-purple"
+              className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             />
           </div>
 
           <button
             onClick={createConversation}
             disabled={creating}
-            className="w-full bg-brand-purple hover:bg-brand-purple-light text-white rounded-xl py-3 font-medium flex justify-center items-center disabled:opacity-60"
+            className="w-full bg-[#141413] hover:bg-neutral-800 text-white rounded-2xl py-3 font-medium transition-colors flex justify-center items-center disabled:opacity-60"
           >
             {creating ? <Loader2 className="animate-spin" size={18} /> : "Start Conversation"}
           </button>
