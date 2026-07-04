@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Send } from "lucide-react";
+import A from "@/lib/assets";
 
 /* Inline SVG social icons (lucide-react removed brand icons) */
 const InstagramIcon = () => (
@@ -25,12 +26,17 @@ const XIcon = () => (
   </svg>
 );
 
-const quickLinks = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "For Businesses", href: "#for-businesses" },
-  { label: "For Creators", href: "#for-creators" },
-  { label: "FAQs", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+const exploreLinks = [
+  { label: "For Businesses", href: "/for-businesses" },
+  { label: "For Creators", href: "/for-influencers" },
+  { label: "Join as a Business", href: "/join-as-business" },
+  { label: "Apply as a Creator", href: "/apply" },
+  { label: "Contact", href: "/contact" },
+];
+
+const accountLinks = [
+  { label: "Login", href: "/login" },
+  { label: "Create an account", href: "/signup" },
 ];
 
 export default function Footer() {
@@ -46,75 +52,69 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-background border-t border-white/5">
-      <div className="max-w-[1200px] mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-12">
-          {/* Left — Branding */}
-          <div>
-            <Link href="/" className="inline-block">
-              <span className="text-2xl font-extrabold tracking-tight font-[family-name:var(--font-syne)]">
-                <span className="text-brand-purple">I</span>
-                <span className="text-white">tCrowd</span>
-              </span>
+    <footer className="dark-surface bg-[#141413] text-white">
+      <div className="max-w-[1360px] mx-auto px-6 md:px-12 py-16">
+        <div className="grid md:grid-cols-4 gap-12">
+          {/* Branding */}
+          <div className="md:col-span-2">
+            <Link href="/" className="inline-flex items-center gap-3" aria-label="ItCrowd home">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={A.logo} alt="" aria-hidden="true" className="w-8 h-8" />
+              <span className="text-2xl font-medium font-heading text-white">ItCrowd</span>
             </Link>
-            <p className="mt-3 text-sm text-muted">
-              Where Businesses Find Their Match.
+            <p className="mt-4 text-white/60 text-lg max-w-[360px] leading-snug font-sans">
+              Where businesses meet <span className="font-accent italic text-white/80">their match</span> —
+              vetted creators, flexible deals, campaigns live in days.
             </p>
-            <div className="flex gap-4 mt-5">
-              <a
-                href="#"
-                className="text-muted hover:text-brand-purple transition-colors"
-                aria-label="Instagram"
-              >
+            <div className="flex gap-4 mt-6">
+              <a href="#" className="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
                 <InstagramIcon />
               </a>
               <a
                 href="https://www.linkedin.com/company/itcrowd-llc/posts/?feedView=all"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted hover:text-brand-purple transition-colors"
+                className="text-white/50 hover:text-white transition-colors"
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon />
               </a>
-              <a
-                href="#"
-                className="text-muted hover:text-brand-purple transition-colors"
-                aria-label="Twitter / X"
-              >
+              <a href="#" className="text-white/50 hover:text-white transition-colors" aria-label="Twitter / X">
                 <XIcon />
               </a>
             </div>
           </div>
 
-          {/* Center — Quick Links */}
+          {/* Explore */}
           <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wider mb-4">
-              Quick Links
-            </h4>
+            <h4 className="text-sm uppercase tracking-[0.15em] text-white/40 mb-4 font-sans">Explore</h4>
             <ul className="space-y-3">
-              {quickLinks.map((link) => (
+              {exploreLinks.map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted hover:text-white transition-colors"
-                  >
+                  <Link href={link.href} className="text-base text-white/70 hover:text-white transition-colors font-sans">
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Right — Newsletter */}
+          {/* Account + Newsletter */}
           <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wider mb-4">
-              Stay in the loop
-            </h4>
+            <h4 className="text-sm uppercase tracking-[0.15em] text-white/40 mb-4 font-sans">Account</h4>
+            <ul className="space-y-3 mb-8">
+              {accountLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-base text-white/70 hover:text-white transition-colors font-sans">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h4 className="text-sm uppercase tracking-[0.15em] text-white/40 mb-4 font-sans">Stay in the loop</h4>
             {subscribed ? (
-              <p className="text-sm text-brand-lime">
-                You&apos;re subscribed! 🎉
-              </p>
+              <p className="text-base text-white/80 font-sans">You&apos;re subscribed.</p>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
                 <input
@@ -123,37 +123,32 @@ export default function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-surface border border-white/10 text-white text-sm placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-brand-purple/50"
+                  aria-label="Email address"
+                  className="flex-1 min-w-0 px-4 py-2.5 rounded-2xl bg-white/10 border border-white/15 text-white text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/40 font-sans"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2.5 rounded-xl bg-brand-purple text-white btn-glow"
+                  className="px-4 py-2.5 rounded-2xl bg-white text-black hover:bg-neutral-200 transition-colors"
                   aria-label="Subscribe"
                 >
                   <Send size={16} />
                 </button>
               </form>
             )}
-            <p className="mt-3 text-xs text-muted">
-              No spam. Just deals and news.
-            </p>
+            <p className="mt-3 text-xs text-white/40 font-sans">No spam. Just deals and news.</p>
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/5">
-        <div className="max-w-[1200px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted">
+      <div className="border-t border-white/10">
+        <div className="max-w-[1360px] mx-auto px-6 md:px-12 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40 font-sans">
           <p>© 2025 ItCrowd LLC. All rights reserved.</p>
           <p className="text-center">Founded at Georgia Tech 🐝</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-white transition-colors">
-              Privacy Policy
-            </a>
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <span>·</span>
-            <a href="#" className="hover:text-white transition-colors">
-              Terms of Service
-            </a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>
