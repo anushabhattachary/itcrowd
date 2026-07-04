@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, Zap } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import A from "@/lib/assets";
+
+const inputCls =
+  "w-full px-5 py-3.5 rounded-2xl bg-[#F7F6F5] text-[#141413] placeholder-[#9E948B] border focus:outline-none focus:ring-2 focus:ring-[#141413]/60 transition-all font-sans";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -34,7 +40,7 @@ export default function LoginPage() {
         setError(data.error || "Invalid email or password");
         toast.error(data.error || "Login failed");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred.");
     } finally {
       setIsLoading(false);
@@ -42,84 +48,107 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D14] flex flex-col items-center justify-center font-[family-name:var(--font-inter)] text-white p-6 selection:bg-brand-purple/30">
+    <div className="min-h-screen bg-[#F1F0EF] flex flex-col items-center justify-center p-6 relative">
       <Toaster position="top-center" />
-      
-      {/* Wordmark */}
-      <div className="flex items-center justify-center gap-1 mb-8">
-        <span className="text-3xl font-extrabold tracking-tight font-[family-name:var(--font-syne)] flex items-center">
-          ItCrowd <Zap className="ml-1 text-brand-purple" size={24} fill="currentColor" />
-        </span>
-      </div>
 
-      {/* Login Card */}
-      <div className="w-full max-w-[420px] bg-[#1A1A27] border border-white/10 rounded-[24px] p-8 md:p-10 shadow-2xl shadow-black/50 relative overflow-hidden">
-        {/* Subtle purple gradient at top of card */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50" />
-        
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">Welcome back 👋</h1>
-          <p className="text-[#94A3B8] text-sm">ItCrowd Internal Dashboard</p>
-        </div>
+      {/* Back to site */}
+      <Link
+        href="/"
+        className="absolute top-6 left-6 md:top-8 md:left-8 text-sm text-[#887C71] hover:text-[#141413] transition-colors font-sans"
+      >
+        &larr; Back to itcrowd
+      </Link>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-[#94A3B8]">Email address</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
-              placeholder="admin@itcrowd.io"
-              required
-            />
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full max-w-md flex flex-col items-center"
+      >
+        {/* Brand */}
+        <Link href="/" aria-label="ItCrowd home" className="flex items-center gap-3 mb-8">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={A.logoDark} alt="" aria-hidden="true" className="w-9 h-9" />
+          <span className="text-2xl font-medium text-[#141413] font-heading">ItCrowd</span>
+        </Link>
+
+        {/* Login card */}
+        <div className="w-full bg-white rounded-3xl shadow-[0_24px_60px_-24px_rgba(20,20,19,0.18)] p-8 md:p-10">
+          <div className="mb-8">
+            <h1 className="text-3xl font-normal leading-[1.1] text-[#141413] font-heading">
+              Welcome <span className="font-accent italic">back</span>
+            </h1>
+            <p className="mt-2 text-sm text-[#887C71] font-sans">
+              Sign in to your ItCrowd dashboard.
+            </p>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-[#94A3B8]">Password</label>
-            <div className="relative">
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-[#141413] font-sans">
+                Email address
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0D0D14] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-colors"
-                placeholder="••••••••"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`${inputCls} ${error ? "border-red-500" : "border-[#141413]/10"}`}
+                placeholder="you@company.com"
                 required
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-white transition-colors p-1"
-                tabIndex={-1}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
             </div>
-          </div>
 
-          {error && (
-            <p className="text-sm text-red-400 font-medium">{error}</p>
-          )}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-[#141413] font-sans">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`${inputCls} pr-12 ${error ? "border-red-500" : "border-[#141413]/10"}`}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9E948B] hover:text-[#141413] transition-colors p-1"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-brand-purple text-white py-3 px-4 rounded-xl font-semibold hover:bg-brand-purple-light hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 flex justify-center items-center shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
+            {error && (
+              <p className="text-sm text-red-600 font-medium font-sans">{error}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-4 rounded-2xl bg-[#141413] text-white font-medium hover:bg-neutral-800 transition-colors disabled:opacity-60 flex justify-center items-center font-sans"
+            >
+              {isLoading ? <Loader2 className="animate-spin" size={20} /> : "Sign in"}
+            </button>
+          </form>
+        </div>
+
+        <p className="mt-6 text-sm text-[#887C71] font-sans">
+          New to ItCrowd?{" "}
+          <Link
+            href="/signup"
+            className="text-[#141413] font-medium hover:text-[#5F5D4D] transition-colors"
           >
-            {isLoading ? <Loader2 className="animate-spin" size={20} /> : "Sign In"}
-          </button>
-        </form>
-      </div>
-
-      <p className="mt-6 text-sm text-[#94A3B8]">
-        New to ItCrowd?{" "}
-        <a href="/signup" className="text-brand-purple hover:text-brand-purple-light font-semibold transition-colors">
-          Create an account
-        </a>
-      </p>
-      <p className="mt-3 text-xs text-[#475569]">
-        ItCrowd LLC · Businesses & Creators
-      </p>
+            Create an account
+          </Link>
+        </p>
+        <p className="mt-3 text-xs text-[#9E948B] font-sans">
+          ItCrowd LLC · Businesses &amp; Creators
+        </p>
+      </motion.div>
     </div>
   );
 }
