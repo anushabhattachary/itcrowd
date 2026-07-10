@@ -7,7 +7,7 @@ import A from "@/lib/assets";
 const SPRING = { type: "spring" as const, stiffness: 260, damping: 28 };
 
 /* ------------------------------------------------------------------ */
-/* Card 1 — creator-niche carousel                                     */
+/* Card 1 - creator-niche carousel                                     */
 /* ------------------------------------------------------------------ */
 
 const PILL_ROW_HEIGHT = 56;
@@ -136,7 +136,7 @@ function NicheCarouselCard() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Card 2 — business ↔ creator messaging                               */
+/* Card 2 - business ↔ creator messaging                               */
 /* ------------------------------------------------------------------ */
 
 function SkeletonBubbleContent() {
@@ -184,7 +184,7 @@ function MorphBubble() {
               <span className="text-white text-base leading-none font-sans">Me</span>
             </div>
             <p className="text-white text-[15px] leading-snug mt-[-9px] ml-[56px] font-sans">
-              Loved the draft — can we push the launch post to Friday?
+              Loved the draft! Can we push the launch post to Friday?
             </p>
           </motion.div>
         ) : (
@@ -253,7 +253,7 @@ function MessagingCard() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Card 3 — flexible deal structures                                   */
+/* Card 3 - flexible deal structures                                   */
 /* ------------------------------------------------------------------ */
 
 const DEAL_OPTIONS: { label: string; color: string }[] = [
@@ -264,7 +264,7 @@ const DEAL_OPTIONS: { label: string; color: string }[] = [
 
 function FlexibleCard() {
   const words =
-    "Build deals that fit your budget and your creator's goals — cash, equity, or a blend of both. You set the terms; we handle the paperwork.".split(
+    "Build deals that fit your budget and your creator's goals: cash, equity, or a blend of both. You set the terms; we handle the paperwork.".split(
       " ",
     );
 

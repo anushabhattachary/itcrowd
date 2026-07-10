@@ -1,10 +1,10 @@
 /**
- * Central asset map — every image/video on the marketing surface is referenced
+ * Central asset map - every image/video on the marketing surface is referenced
  * through `A` (mirrors the reference design's assets.ts pattern).
  *
  * Placeholder policy: files under /placeholders are clearly-labeled neutral
  * stand-ins. When real ItCrowd footage/photography exists, drop it in
- * /public/media and update the path here — nothing else needs to change.
+ * /public/media and update the path here - nothing else needs to change.
  */
 const A = {
   /** White ring-and-dot mark, for dark surfaces (hero nav). */
@@ -12,7 +12,7 @@ const A = {
   /** Near-black (#141413) mark, for white surfaces. */
   logoDark: "/logo-dark.svg",
   /**
-   * Hero background video. None shot yet — set to a /media/*.mp4 path when
+   * Hero background video. None shot yet - set to a /media/*.mp4 path when
    * real campaign footage exists; the hero falls back to `heroBackdrop`.
    */
   heroVideo: null as string | null,

@@ -126,7 +126,7 @@ function initialsOf(name: string): string {
 }
 
 function formatDate(value: string | null): string {
-  if (!value) return "—";
+  if (!value) return "-";
   const d = new Date(value);
   return Number.isNaN(d.getTime()) ? value : d.toLocaleDateString();
 }
@@ -307,10 +307,10 @@ function AdminCampaigns() {
                       {c.campaign_name}
                     </td>
                     <td className="px-6 py-4 text-[#887C71]">
-                      {c.companies?.company_name ?? "—"}
+                      {c.companies?.company_name ?? "-"}
                     </td>
                     <td className="px-6 py-4 text-[#887C71]">
-                      {c.deal_type ?? "—"}
+                      {c.deal_type ?? "-"}
                     </td>
                     <td className="px-6 py-4">
                       <StatusBadge status={c.status} />
@@ -678,7 +678,7 @@ function InfluencerCampaigns({
               </div>
               <div className="flex items-center gap-2 text-sm text-[#887C71]">
                 <Building2 size={14} className="text-[#9E948B]" />
-                {c.companies?.company_name ?? "—"}
+                {c.companies?.company_name ?? "-"}
               </div>
             </div>
           ))}

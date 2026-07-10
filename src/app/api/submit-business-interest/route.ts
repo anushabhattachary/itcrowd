@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-// Google Apps Script Web App URL — writes directly to the Google Sheet
+// Google Apps Script Web App URL - writes directly to the Google Sheet
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxOJubT5fXEf32LuDcI9OU4NiR3a5bPqikxRZ5g47hhNA7WZthlb8GZ7tOqY0qzP3qZDw/exec";
 
@@ -43,13 +43,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Apps Script returns a 302 redirect to the actual response.
-    // We must NOT auto-follow redirects — instead we follow manually
+    // We must NOT auto-follow redirects - instead we follow manually
     // so we can read the JSON from the redirected URL.
     const firstRes = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
-      redirect: "manual", // Don't auto-follow — 302 would lose the body
+      redirect: "manual", // Don't auto-follow - 302 would lose the body
     });
 
     // Follow the redirect manually (GET the echo URL)

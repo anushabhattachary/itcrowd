@@ -22,38 +22,38 @@ export const metadata: Metadata = {
 const STEPS = [
   {
     icon: Phone,
-    meta: "Step 01 — 15 minutes",
+    meta: "Step 01 · 15 minutes",
     title: "Discovery Call",
-    desc: "A quick call to understand your business — your product, target audience, marketing goals, and budget. Just a real conversation, no pitch deck.",
+    desc: "A quick call to understand your business: your product, target audience, marketing goals, and budget. Just a real conversation, no pitch deck.",
   },
   {
     icon: Search,
-    meta: "Step 02 — 5–7 days",
+    meta: "Step 02 · 5-7 days",
     title: "Influencer Research & Shortlist",
-    desc: "Our team dives deep into your niche and manually vets creators on engagement rate, audience demographics, content quality, and brand alignment. Within 5–7 days you get a curated shortlist of 5–10 vetted creators with full profiles and proposed rates.",
+    desc: "Our team digs into your niche and manually vets creators on engagement rate, audience demographics, content quality, and brand alignment. Within 5-7 days you get a curated shortlist of 5-10 vetted creators with full profiles and proposed rates.",
   },
   {
     icon: MousePointerClick,
-    meta: "Step 03 — Your move",
+    meta: "Step 03 · Your move",
     title: "You Pick, We Handle the Rest",
-    desc: "Select the creators you vibe with. We run outreach, negotiate rates — cash, equity, or a mix — draft the contracts, and set content expectations. You approve final terms; that's it.",
+    desc: "Select the creators you like. We run outreach, negotiate rates (cash, equity, or a mix), draft the contracts, and set content expectations. You approve final terms; that's it.",
   },
   {
     icon: Rocket,
-    meta: "Step 04 — Ongoing",
+    meta: "Step 04 · Ongoing",
     title: "Campaign Launch & Management",
-    desc: "Content goes live on the agreed schedule — most campaigns run 2–4 posts per creator each month. We coordinate posting times, track performance, and send you weekly reports.",
+    desc: "Content goes live on the agreed schedule. Most campaigns run 2-4 posts per creator each month. We coordinate posting times, track performance, and send you weekly reports.",
   },
   {
     icon: TrendingUp,
-    meta: "Step 05 — Month over month",
+    meta: "Step 05 · Month over month",
     title: "Optimize & Grow",
     desc: "Based on results, we recommend which creators to continue with, who to add, and how to adjust the messaging. Your campaigns get sharper and your ROI grows.",
   },
 ];
 
 const ITCROWD_POINTS = [
-  "Paid directly to your creators — no retainer, no middleman markup",
+  "Paid directly to your creators, with no retainer and no middleman markup",
   "Equity deals available to reduce cash spend",
   "Human-curated matching, weekly reporting included",
 ];
@@ -65,9 +65,9 @@ const AGENCY_POINTS = [
 ];
 
 const HERO_STATS = [
-  { figure: "$500–$2K", label: "typical monthly spend, paid straight to creators" },
-  { figure: "5–10", label: "vetted creators on every shortlist we send you" },
-  { figure: "Days", label: "from first call to live campaign — not months" },
+  { figure: "$500-$2K", label: "typical monthly spend, paid straight to creators" },
+  { figure: "5-10", label: "vetted creators on every shortlist we send you" },
+  { figure: "Days", label: "from first call to live campaign, not months" },
 ];
 
 export default function ForBusinessesPage() {
@@ -92,7 +92,7 @@ export default function ForBusinessesPage() {
           <p className="mt-6 max-w-[560px] text-white/80 text-xl leading-[1.3] font-sans">
             <AnimatedWords
               baseDelay={0.7}
-              text="No retainers. No bloated agency fees. Vetted creators — influencers, NIL athletes, photographers, videographers — promoting your business to the right audience, for cash, equity, or both."
+              text="No retainers. No bloated agency fees. Vetted influencers, NIL athletes, photographers, and videographers promoting your business to the right audience, for cash, equity, or both."
             />
           </p>
 
@@ -186,7 +186,7 @@ export default function ForBusinessesPage() {
                 With ItCrowd
               </p>
               <p className="mt-5 font-heading">
-                <span className="text-5xl md:text-6xl font-medium">$500–$2,000</span>
+                <span className="text-5xl md:text-6xl font-medium">$500-$2,000</span>
                 <span className="text-white/60 text-xl font-sans"> /month, total</span>
               </p>
               <ul className="mt-8 space-y-4">
@@ -214,7 +214,7 @@ export default function ForBusinessesPage() {
               </p>
               <p className="mt-5 font-heading">
                 <span className="text-5xl md:text-6xl font-medium text-[#9E948B]">
-                  $10K–$50K
+                  $10K-$50K
                 </span>
                 <span className="text-[#9E948B] text-xl font-sans"> /month</span>
               </p>
@@ -229,7 +229,7 @@ export default function ForBusinessesPage() {
                 ))}
               </ul>
               <p className="mt-auto pt-10 text-base text-[#9E948B] font-sans">
-                You pay creators directly through ItCrowd — no hidden fees, no retainer markup.
+                You pay creators directly through ItCrowd, with no hidden fees and no retainer markup.
                 Equity-based deals can reduce cash spend even further.
               </p>
             </div>

@@ -6,7 +6,7 @@ import { Mail, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact | ItCrowd",
-  description: "Get in touch with ItCrowd — whether you're a business or a creator.",
+  description: "Get in touch with ItCrowd. We work with both businesses and creators.",
 };
 
 export default function ContactPage() {
@@ -38,14 +38,14 @@ export default function ContactPage() {
             <div className="inline-flex items-center gap-3 h-[56px] px-5 rounded-2xl border border-white/40 font-sans">
               <MapPin size={18} className="text-white/70" aria-hidden="true" />
               <span className="text-white text-lg whitespace-nowrap">
-                Atlanta, GA — Georgia Tech 🐝
+                Atlanta, GA · Georgia Tech 🐝
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Form — ContactForm renders its own white section (id="contact") */}
+      {/* Form: ContactForm renders its own white section (id="contact") */}
       <ContactForm />
 
       <Footer />

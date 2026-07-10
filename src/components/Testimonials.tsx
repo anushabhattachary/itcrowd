@@ -10,7 +10,7 @@ const fadeUp = {
 };
 
 const QUOTE =
-  "ItCrowd found us creators who actually train at gyms like ours. Our first campaign paid for itself in new memberships — for less than one month of the agency we almost hired.";
+  "ItCrowd found us creators who actually train at gyms like ours. Our first campaign paid for itself in new memberships, and it cost less than one month of the agency we almost hired.";
 
 export default function Testimonials() {
   const words = QUOTE.split(" ");
@@ -88,7 +88,7 @@ export default function Testimonials() {
             </motion.div>
           </div>
 
-          {/* Right column — the quote */}
+          {/* Right column: the quote */}
           <motion.div
             variants={fadeUp}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -118,7 +118,7 @@ export default function Testimonials() {
             >
               <span className="font-accent italic text-xl text-black">Alex Carter,</span>
               <span className="text-xl text-black/50 font-sans">
-                Founder, Forge Fitness — ItCrowd&apos;s first campaign
+                Founder, Forge Fitness · ItCrowd&apos;s first campaign
               </span>
             </motion.div>
           </motion.div>

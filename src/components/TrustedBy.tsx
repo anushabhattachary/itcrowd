@@ -1,7 +1,7 @@
 import A from "@/lib/assets";
 
 /**
- * Placeholder brand roster — swap for real client/creator logos when the
+ * Placeholder brand roster. Swap for real client/creator logos when the
  * roster is public. Names are illustrative, marked as such below the strip.
  */
 const BRANDS: { name: string; mark: string | null }[] = [
@@ -41,7 +41,7 @@ export default function TrustedBy() {
       </div>
 
       <p className="text-center text-sm text-neutral-400 mt-10 font-sans">
-        Illustrative placeholder marks — early client roster publishing soon.
+        Illustrative placeholder marks. Early client roster publishing soon.
       </p>
     </section>
   );

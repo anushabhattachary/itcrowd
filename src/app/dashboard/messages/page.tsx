@@ -342,7 +342,7 @@ export default function MessagesPage() {
                 </div>
               ) : messages.length === 0 ? (
                 <p className="text-center text-sm text-[#9E948B] mt-6">
-                  No messages yet — say hello 👋
+                  No messages yet. Say hello 👋
                 </p>
               ) : (
                 messages.map((m) => {

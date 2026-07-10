@@ -26,9 +26,9 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://itcrowd.io"),
-  title: "ItCrowd — Where businesses meet their match",
+  title: "ItCrowd | Where businesses meet their match",
   description:
-    "ItCrowd matches growing businesses with vetted content creators — paid in cash, equity, or both. Human-curated matches, agency results without agency fees, live in days.",
+    "ItCrowd matches growing businesses with vetted content creators. Pay in cash, equity, or both. Real people curate every match, and campaigns go live in days without agency fees.",
   keywords: [
     "influencer marketing",
     "creator marketplace",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "ItCrowd — Where businesses meet their match",
+    title: "ItCrowd | Where businesses meet their match",
     description:
-      "ItCrowd matches growing businesses with vetted content creators — paid in cash, equity, or both. Human-curated matches, agency results without agency fees, live in days.",
+      "ItCrowd matches growing businesses with vetted content creators. Pay in cash, equity, or both. Real people curate every match, and campaigns go live in days without agency fees.",
     url: "https://itcrowd.io",
     siteName: "ItCrowd",
     images: [
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ItCrowd — Where businesses meet their match",
+    title: "ItCrowd | Where businesses meet their match",
     description:
-      "ItCrowd matches growing businesses with vetted content creators — paid in cash, equity, or both.",
+      "ItCrowd matches growing businesses with vetted content creators. Pay in cash, equity, or both.",
     images: ["/og-image.jpg"],
   },
 };

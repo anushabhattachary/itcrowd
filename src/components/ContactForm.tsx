@@ -14,11 +14,11 @@ interface FormData {
   budget: string;
 }
 
-const businessBudgets = ["Under $500", "$500–$1K", "$1K–$2K", "$2K+"];
+const businessBudgets = ["Under $500", "$500-$1K", "$1K-$2K", "$2K+"];
 const influencerFollowers = [
   "Under 10K",
-  "10K–50K",
-  "50K–200K",
+  "10K-50K",
+  "50K-200K",
   "200K+",
 ];
 
@@ -62,7 +62,7 @@ export default function ContactForm() {
           </h2>
           <p className="mt-4 text-neutral-500 max-w-lg mx-auto text-lg leading-snug font-sans">
             Whether you&apos;re a business looking to grow or a creator ready to
-            get matched — fill this out and we&apos;ll be in touch within 24 hours.
+            get matched, fill this out and we&apos;ll be in touch within 24 hours.
           </p>
         </motion.div>
 

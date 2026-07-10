@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const PERKS = [
   {
     icon: Wallet,
-    title: "Cash or Equity — Your Call",
+    title: "Cash or Equity, Your Call",
     desc: "Get paid in cash per post, take a small equity stake in the business, or mix both. It's your deal, your terms.",
   },
   {
@@ -33,7 +33,7 @@ const PERKS = [
   {
     icon: ClipboardList,
     title: "Clear Deliverables",
-    desc: "Every deal spells out exactly what's expected — number of posts, format, timeline, and payment terms. No ambiguity.",
+    desc: "Every deal spells out exactly what's expected: number of posts, format, timeline, and payment terms. No ambiguity.",
   },
   {
     icon: Zap,
@@ -48,7 +48,7 @@ const PERKS = [
   {
     icon: Handshake,
     title: "We Handle the Boring Stuff",
-    desc: "Contracts, negotiations, scheduling — we handle it. You focus on creating great content.",
+    desc: "We handle contracts, negotiations, and scheduling. You focus on creating great content.",
   },
 ];
 
@@ -92,7 +92,7 @@ export default function ForInfluencersPage() {
           <p className="mt-6 max-w-[560px] text-white/80 text-xl leading-[1.3] font-sans">
             <AnimatedWords
               baseDelay={0.8}
-              text="ItCrowd matches you with businesses in your niche — and lets you earn cash, equity, or both for promoting brands you actually believe in."
+              text="ItCrowd matches you with businesses in your niche and lets you earn cash, equity, or both for promoting brands you actually believe in."
             />
           </p>
 
@@ -146,7 +146,7 @@ export default function ForInfluencersPage() {
           </div>
         </section>
 
-        {/* Three-step process — dark band */}
+        {/* Three-step process (dark band) */}
         <section className="dark-surface bg-[#141413] text-white">
           <div className="max-w-[1360px] mx-auto px-6 md:px-12 py-20 md:py-28">
             <p className="text-sm uppercase tracking-[0.2em] text-white/50 font-sans">

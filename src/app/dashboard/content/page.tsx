@@ -262,7 +262,7 @@ export default function ContentPage() {
           </h1>
           <p className="text-sm text-[#887C71] mt-1">
             {isCreator
-              ? "Upload deliverables — they appear instantly in the business's library."
+              ? "Upload deliverables. They appear instantly in the business's library."
               : isBusiness
               ? "Every asset your creators produce, in one place. Approve or request changes."
               : "All content across campaigns (oversight)."}
@@ -427,7 +427,7 @@ export default function ContentPage() {
             <input
               value={uTitle}
               onChange={(e) => setUTitle(e.target.value)}
-              placeholder="e.g. Summer Reel — Draft 1"
+              placeholder="e.g. Summer Reel, Draft 1"
               className="w-full bg-white border border-[#141413]/10 rounded-2xl px-4 py-2.5 text-[#141413] placeholder-[#9E948B] focus:ring-2 focus:ring-[#141413]/60 focus:outline-none"
             />
           </div>

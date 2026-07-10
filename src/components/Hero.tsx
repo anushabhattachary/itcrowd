@@ -88,7 +88,7 @@ export default function Hero() {
         <p className="w-full md:w-[480px] max-w-prose text-white/80 text-xl leading-[1.25] text-left font-sans">
           <AnimatedWords
             baseDelay={1.2}
-            text="ItCrowd matches growing businesses with vetted creators — influencers, athletes, photographers — and runs the whole campaign for you. Live in days, not months."
+            text="ItCrowd matches growing businesses with vetted influencers, athletes, and photographers, then runs the whole campaign for you. Live in days, not months."
           />
         </p>
 

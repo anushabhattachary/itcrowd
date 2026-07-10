@@ -63,8 +63,8 @@ export default function Footer() {
               <span className="text-2xl font-medium font-heading text-white">ItCrowd</span>
             </Link>
             <p className="mt-4 text-white/60 text-lg max-w-[360px] leading-snug font-sans">
-              Where businesses meet <span className="font-accent italic text-white/80">their match</span> —
-              vetted creators, flexible deals, campaigns live in days.
+              Where businesses meet <span className="font-accent italic text-white/80">their match</span>.
+              Vetted creators, flexible deals, campaigns live in days.
             </p>
             <div className="flex gap-4 mt-6">
               <a href="#" className="text-white/50 hover:text-white transition-colors" aria-label="Instagram">

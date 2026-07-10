@@ -20,7 +20,7 @@ interface ApplyData {
 }
 
 const platforms = ["Instagram", "TikTok", "YouTube", "Twitter/X", "Other"];
-const followerRanges = ["Under 10K", "10K–50K", "50K–200K", "200K+"];
+const followerRanges = ["Under 10K", "10K-50K", "50K-200K", "200K+"];
 
 const inputBase =
   "w-full px-5 py-3.5 rounded-2xl bg-white text-[#141413] placeholder-[#9E948B] border focus:outline-none focus:ring-2 focus:ring-[#141413]/60 transition-all font-sans";
@@ -85,7 +85,7 @@ export default function ApplyPage() {
             className="mt-6 text-white/70 text-lg md:text-xl leading-snug max-w-[560px] font-sans"
           >
             Fill out the form below and our team will review your application
-            within 48 hours. We work with micro and macro creators — what
+            within 48 hours. We work with micro and macro creators. What
             matters most is engagement and niche fit.
           </motion.p>
         </div>

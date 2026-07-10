@@ -67,7 +67,7 @@ export default function JoinAsBusinessPage() {
       }
     } catch (error) {
       console.error("Form submission error", error);
-      setSubmitError("Network error — please check your connection and try again.");
+      setSubmitError("Network error. Please check your connection and try again.");
     }
   };
 
@@ -101,8 +101,8 @@ export default function JoinAsBusinessPage() {
             transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
             className="mt-6 text-white/70 text-lg md:text-xl leading-snug max-w-[560px] font-sans"
           >
-            Tell us about your business and what you&apos;re looking for —
-            we&apos;ll take it from there. No commitment, just a conversation.
+            Tell us about your business and what you&apos;re looking for.
+            We&apos;ll take it from there. No commitment, just a conversation.
           </motion.p>
         </div>
       </section>
