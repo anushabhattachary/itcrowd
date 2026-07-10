@@ -10,7 +10,7 @@ const fadeUp = {
 };
 
 const QUOTE =
-  "ItCrowd found us creators who actually train at gyms like ours. Our first campaign paid for itself in new memberships, and it cost less than one month of the agency we almost hired.";
+  "Over half of Gen Z and millennials buy what creators recommend, but most local businesses have no way in. Agencies want ten thousand a month. We built ItCrowd so a local business can run a real creator campaign for a few hundred.";
 
 export default function Testimonials() {
   const words = QUOTE.split(" ");
@@ -35,8 +35,8 @@ export default function Testimonials() {
             >
               <div className="flex flex-col gap-6 flex-1 lg:flex-none">
                 <h3 className="text-3xl text-black leading-tight max-w-[260px]">
-                  <span className="font-medium font-sans">ItCrowd</span>{" "}
-                  <span className="font-accent italic">changed our marketing</span>
+                  <span className="font-medium font-sans">Why we</span>{" "}
+                  <span className="font-accent italic">built ItCrowd</span>
                 </h3>
                 <div className="hidden lg:flex items-center gap-2">
                   <div className="w-8 h-2 bg-black rounded-full" />
@@ -69,7 +69,7 @@ export default function Testimonials() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={A.testimonialPortrait}
-                  alt="Placeholder portrait of an ItCrowd client"
+                  alt="Placeholder portrait, real team photo coming soon"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -83,7 +83,7 @@ export default function Testimonials() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={A.logoDark} alt="" aria-hidden="true" className="w-8 h-8" />
-                <span className="text-3xl font-bold text-black font-brand">Forge Fitness</span>
+                <span className="text-3xl font-bold text-black font-brand">ItCrowd</span>
               </motion.div>
             </motion.div>
           </div>
@@ -116,9 +116,9 @@ export default function Testimonials() {
               transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
               className="flex flex-col gap-1"
             >
-              <span className="font-accent italic text-xl text-black">Alex Carter,</span>
+              <span className="font-accent italic text-xl text-black">Chris Richardson,</span>
               <span className="text-xl text-black/50 font-sans">
-                Founder, Forge Fitness · ItCrowd&apos;s first campaign
+                Co-Founder and CEO, ItCrowd
               </span>
             </motion.div>
           </motion.div>

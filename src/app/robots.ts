@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://itcrowd.io';
+  const baseUrl = 'https://itcrowd.space';
 
   return {
     rules: {

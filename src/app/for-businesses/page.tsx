@@ -67,7 +67,7 @@ const AGENCY_POINTS = [
 const HERO_STATS = [
   { figure: "$500-$2K", label: "typical monthly spend, paid straight to creators" },
   { figure: "5-10", label: "vetted creators on every shortlist we send you" },
-  { figure: "Days", label: "from first call to live campaign, not months" },
+  { figure: "2 weeks", label: "or less from intro call to live campaign" },
 ];
 
 export default function ForBusinessesPage() {

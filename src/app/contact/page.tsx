@@ -33,7 +33,7 @@ export default function ContactPage() {
           <div className="mt-10 flex flex-col sm:flex-row gap-3">
             <div className="inline-flex items-center gap-3 h-[56px] px-5 rounded-2xl border border-white/40 font-sans">
               <Mail size={18} className="text-white/70" aria-hidden="true" />
-              <span className="text-white text-lg whitespace-nowrap">hello@itcrowd.io</span>
+              <span className="text-white text-lg whitespace-nowrap">hello@itcrowd.space</span>
             </div>
             <div className="inline-flex items-center gap-3 h-[56px] px-5 rounded-2xl border border-white/40 font-sans">
               <MapPin size={18} className="text-white/70" aria-hidden="true" />

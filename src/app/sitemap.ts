@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://itcrowd.io'; // Replace with actual domain later
+  const baseUrl = 'https://itcrowd.space';
 
   return [
     {
