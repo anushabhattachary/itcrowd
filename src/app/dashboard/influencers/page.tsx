@@ -37,7 +37,7 @@ type FormData = {
 const PLATFORMS = ["Instagram", "TikTok", "YouTube", "Twitter/X", "Multi-platform"];
 const NICHES = ["Tech", "Health & Wellness", "Fitness", "Consumer Goods", "Gaming", "Fintech", "Fashion", "Food & Beverage", "Other"];
 const STATUSES = ["Active in Network", "Pending", "Not Interested", "Archived"];
-const DEAL_TYPES = ["Cash", "Equity", "Both"];
+const DEAL_TYPES = ["Cash"];
 
 export default function InfluencersPage() {
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
@@ -51,7 +51,7 @@ export default function InfluencersPage() {
       platform: "Instagram",
       niche: "Fitness",
       status: "Pending",
-      deal_preference: "Both",
+      deal_preference: "Cash",
       date_added: new Date().toISOString().split('T')[0]
     }
   });

@@ -16,14 +16,14 @@ import {
 export const metadata: Metadata = {
   title: "For Influencers & Athletes | ItCrowd",
   description:
-    "Join the ItCrowd network and earn cash or equity promoting businesses you believe in.",
+    "Join the ItCrowd network and get paid in cash for promoting businesses you believe in.",
 };
 
 const PERKS = [
   {
     icon: Wallet,
-    title: "Cash or Equity, Your Call",
-    desc: "Get paid in cash per post, take a small equity stake in the business, or mix both. It's your deal, your terms.",
+    title: "Straightforward Cash Pay",
+    desc: "Every deal has a clear cash rate per post. You know exactly what you'll earn before you say yes. Your deal, your terms.",
   },
   {
     icon: Target,
@@ -42,8 +42,8 @@ const PERKS = [
   },
   {
     icon: TrendingUp,
-    title: "Grow With Businesses",
-    desc: "If you take equity and the business succeeds, your stake grows with them. Real upside, not just a paycheck.",
+    title: "Repeat Work, Not One-Offs",
+    desc: "Businesses that like your work book you month after month. One good campaign can turn into steady income.",
   },
   {
     icon: Handshake,
@@ -66,7 +66,7 @@ const STEPS = [
   {
     number: "03",
     title: "Create & Get Paid",
-    desc: "Post content per the agreement, then receive cash, equity, or both. It's that simple.",
+    desc: "Post content per the agreement, then get paid in cash. It's that simple.",
   },
 ];
 
@@ -92,7 +92,7 @@ export default function ForInfluencersPage() {
           <p className="mt-6 max-w-[560px] text-white/80 text-xl leading-[1.3] font-sans">
             <AnimatedWords
               baseDelay={0.8}
-              text="ItCrowd matches you with businesses in your niche and lets you earn cash, equity, or both for promoting brands you actually believe in."
+              text="ItCrowd matches you with businesses in your niche and pays you in cash for promoting brands you actually believe in."
             />
           </p>
 

@@ -25,7 +25,6 @@ interface InfluencerForm {
   platform: string;
   niche: string;
   follower_count: string; // stored as string in the input, parsed on save
-  deal_preference: "Cash" | "Equity" | "Both";
 }
 
 interface InfluencerContactForm {
@@ -267,7 +266,6 @@ function InfluencerSettings({
     platform: "",
     niche: "",
     follower_count: "",
-    deal_preference: "Cash",
   });
   const [contact, setContact] = useState<InfluencerContactForm>({ phone: "" });
 
@@ -293,7 +291,6 @@ function InfluencerSettings({
         toast.error("Failed to load your settings.");
       }
       if (creatorRes.data) {
-        const pref = creatorRes.data.deal_preference;
         setCreator({
           full_name: creatorRes.data.full_name ?? "",
           handle: creatorRes.data.handle ?? "",
@@ -303,10 +300,6 @@ function InfluencerSettings({
             creatorRes.data.follower_count != null
               ? String(creatorRes.data.follower_count)
               : "",
-          deal_preference:
-            pref === "Cash" || pref === "Equity" || pref === "Both"
-              ? pref
-              : "Cash",
         });
       }
       if (profileRes.data) {
@@ -332,7 +325,6 @@ function InfluencerSettings({
         platform: creator.platform,
         niche: creator.niche,
         follower_count: Number.isNaN(parsedFollowers) ? 0 : parsedFollowers,
-        deal_preference: creator.deal_preference,
       })
       .eq("id", influencerId);
     setSavingCreator(false);
@@ -412,23 +404,6 @@ function InfluencerSettings({
             }
             className={inputClass}
           />
-        </div>
-        <div>
-          <label className={labelClass}>Deal preference</label>
-          <select
-            value={creator.deal_preference}
-            onChange={(e) =>
-              setCreator({
-                ...creator,
-                deal_preference: e.target.value as InfluencerForm["deal_preference"],
-              })
-            }
-            className={inputClass}
-          >
-            <option value="Cash">Cash</option>
-            <option value="Equity">Equity</option>
-            <option value="Both">Both</option>
-          </select>
         </div>
         <div className="flex justify-end">
           <SaveButton saving={savingCreator} />

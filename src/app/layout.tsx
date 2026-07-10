@@ -28,11 +28,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://itcrowd.io"),
   title: "ItCrowd | Where businesses meet their match",
   description:
-    "ItCrowd matches growing businesses with vetted content creators. Pay in cash, equity, or both. Real people curate every match, and campaigns go live in days without agency fees.",
+    "ItCrowd matches growing businesses with vetted content creators. Creators are paid in cash, and businesses pay no agency fees. Real people curate every match, and campaigns go live in days.",
   keywords: [
     "influencer marketing",
     "creator marketplace",
-    "equity deals",
+    "creator partnerships",
     "NIL athletes",
     "content creators",
     "Georgia Tech",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ItCrowd | Where businesses meet their match",
     description:
-      "ItCrowd matches growing businesses with vetted content creators. Pay in cash, equity, or both. Real people curate every match, and campaigns go live in days without agency fees.",
+      "ItCrowd matches growing businesses with vetted content creators. Creators are paid in cash, and businesses pay no agency fees. Real people curate every match, and campaigns go live in days.",
     url: "https://itcrowd.io",
     siteName: "ItCrowd",
     images: [
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ItCrowd | Where businesses meet their match",
     description:
-      "ItCrowd matches growing businesses with vetted content creators. Pay in cash, equity, or both.",
+      "ItCrowd matches growing businesses with vetted content creators. Cash payments, no agency fees.",
     images: ["/og-image.jpg"],
   },
 };
@@ -73,7 +73,7 @@ const jsonLd = {
   url: "https://itcrowd.io",
   logo: "https://itcrowd.io/logo-dark.svg",
   description:
-    "A marketplace connecting growing businesses with vetted content creators for campaigns paid in cash, equity, or both.",
+    "A marketplace connecting growing businesses with vetted content creators for cash-paid campaigns with no agency fees.",
   foundingDate: "2025",
   contactPoint: {
     "@type": "ContactPoint",

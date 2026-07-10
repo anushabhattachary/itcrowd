@@ -99,7 +99,7 @@ export default function Hero() {
           className="flex flex-row flex-wrap lg:flex-col items-center lg:items-end gap-2.5 w-full md:w-auto justify-end"
         >
           <div className="h-[56px] px-5 rounded-2xl border border-white/40 text-white text-xl whitespace-nowrap inline-flex items-center justify-center font-sans">
-            Cash, equity, or both
+            Cash paid per post
           </div>
           <div className="flex items-center gap-2">
             <div className="w-[56px] h-[56px] rounded-2xl border border-white/40 flex items-center justify-center">

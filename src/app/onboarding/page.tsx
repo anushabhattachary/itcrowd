@@ -28,7 +28,6 @@ export default function OnboardingPage() {
   const [platform, setPlatform] = useState("Instagram");
   const [niche, setNiche] = useState("");
   const [followers, setFollowers] = useState("");
-  const [dealPref, setDealPref] = useState("Both");
 
   // Shared
   const [phone, setPhone] = useState("");
@@ -81,7 +80,7 @@ export default function OnboardingPage() {
           p_platform: platform,
           p_niche: niche,
           p_follower_count: parseInt(followers, 10) || 0,
-          p_deal_preference: dealPref,
+          p_deal_preference: "Cash",
           p_phone: phone || null,
         });
         if (error) throw error;
@@ -203,19 +202,9 @@ export default function OnboardingPage() {
                     <input type="number" min="0" value={followers} onChange={(e) => setFollowers(e.target.value)} className={inputCls} placeholder="10000" />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className={labelCls}>Niche</label>
-                    <input value={niche} onChange={(e) => setNiche(e.target.value)} className={inputCls} placeholder="Fitness" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className={labelCls}>Deal preference</label>
-                    <select value={dealPref} onChange={(e) => setDealPref(e.target.value)} className={inputCls}>
-                      {["Cash", "Equity", "Both"].map((d) => (
-                        <option key={d} value={d}>{d}</option>
-                      ))}
-                    </select>
-                  </div>
+                <div className="space-y-2">
+                  <label className={labelCls}>Niche</label>
+                  <input value={niche} onChange={(e) => setNiche(e.target.value)} className={inputCls} placeholder="Fitness" />
                 </div>
               </>
             )}

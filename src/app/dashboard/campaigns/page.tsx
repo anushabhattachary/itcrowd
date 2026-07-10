@@ -23,7 +23,9 @@ type CampaignStatus =
   | "Campaign Live"
   | "Completed";
 
-type DealType = "Cash" | "Equity" | "Both" | null;
+// Legacy rows may still carry old raw values, so this stays a plain string for
+// display; only "Cash" is offered as a new option.
+type DealType = string | null;
 
 const STATUSES: CampaignStatus[] = [
   "Matching",
@@ -33,7 +35,7 @@ const STATUSES: CampaignStatus[] = [
   "Completed",
 ];
 
-const DEAL_TYPES: Exclude<DealType, null>[] = ["Cash", "Equity", "Both"];
+const DEAL_TYPES: Exclude<DealType, null>[] = ["Cash"];
 
 // ----- Row shapes returned by the Supabase queries -----
 type CompanyOption = {

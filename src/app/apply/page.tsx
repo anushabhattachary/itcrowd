@@ -16,7 +16,6 @@ interface ApplyData {
   followers: string;
   niche: string;
   why: string;
-  equityInterest: string;
 }
 
 const platforms = ["Instagram", "TikTok", "YouTube", "Twitter/X", "Other"];
@@ -30,11 +29,8 @@ export default function ApplyPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ApplyData>();
-
-  const equityInterest = watch("equityInterest");
 
   const onSubmit = async (data: ApplyData) => {
     // Persist into the Supabase intake table so admins can review + convert
@@ -47,7 +43,6 @@ export default function ApplyPage() {
       follower_range: data.followers,
       niche: data.niche,
       why_join: data.why,
-      equity_interest: data.equityInterest,
     });
     if (error) {
       console.error("Application submit failed:", error.message);
@@ -243,33 +238,6 @@ export default function ApplyPage() {
                   placeholder="Tell us briefly..."
                   className={`${inputBase} border-transparent resize-none`}
                 />
-              </div>
-
-              {/* Equity interest */}
-              <div>
-                <label className="block text-sm font-medium mb-3 text-[#141413] font-sans">
-                  Interested in equity deals?
-                </label>
-                <div className="flex gap-3">
-                  {["Yes", "Maybe", "Cash only"].map((opt) => (
-                    <label
-                      key={opt}
-                      className={`flex-1 text-center py-3 rounded-2xl cursor-pointer transition-all text-sm font-medium font-sans ${
-                        equityInterest === opt
-                          ? "bg-[#141413] text-white"
-                          : "bg-white text-[#887C71] hover:text-[#141413]"
-                      }`}
-                    >
-                      <input
-                        {...register("equityInterest")}
-                        type="radio"
-                        value={opt}
-                        className="sr-only"
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
               </div>
 
               {/* Submit */}

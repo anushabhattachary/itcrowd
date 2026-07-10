@@ -257,14 +257,14 @@ function MessagingCard() {
 /* ------------------------------------------------------------------ */
 
 const DEAL_OPTIONS: { label: string; color: string }[] = [
-  { label: "Pay in cash", color: "#887C71" },
-  { label: "Pay in equity", color: "#9E948B" },
-  { label: "Cash + equity blend", color: "#9E948B" },
+  { label: "Pay per post", color: "#887C71" },
+  { label: "Monthly bundle", color: "#9E948B" },
+  { label: "Performance bonus", color: "#9E948B" },
 ];
 
 function FlexibleCard() {
   const words =
-    "Build deals that fit your budget and your creator's goals: cash, equity, or a blend of both. You set the terms; we handle the paperwork.".split(
+    "Build deals that fit your budget and your creator's goals: pay per post, book a monthly bundle, or add a performance bonus. You set the terms; we handle the paperwork.".split(
       " ",
     );
 

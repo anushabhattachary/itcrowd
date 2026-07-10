@@ -36,7 +36,7 @@ const STEPS = [
     icon: MousePointerClick,
     meta: "Step 03 · Your move",
     title: "You Pick, We Handle the Rest",
-    desc: "Select the creators you like. We run outreach, negotiate rates (cash, equity, or a mix), draft the contracts, and set content expectations. You approve final terms; that's it.",
+    desc: "Select the creators you like. We run outreach, negotiate cash rates, draft the contracts, and set content expectations. You approve final terms; that's it.",
   },
   {
     icon: Rocket,
@@ -54,7 +54,7 @@ const STEPS = [
 
 const ITCROWD_POINTS = [
   "Paid directly to your creators, with no retainer and no middleman markup",
-  "Equity deals available to reduce cash spend",
+  "Rates agreed up front, so you know the cost before anything goes live",
   "Human-curated matching, weekly reporting included",
 ];
 
@@ -92,7 +92,7 @@ export default function ForBusinessesPage() {
           <p className="mt-6 max-w-[560px] text-white/80 text-xl leading-[1.3] font-sans">
             <AnimatedWords
               baseDelay={0.7}
-              text="No retainers. No bloated agency fees. Vetted influencers, NIL athletes, photographers, and videographers promoting your business to the right audience, for cash, equity, or both."
+              text="No retainers. No bloated agency fees. Vetted influencers, NIL athletes, photographers, and videographers promoting your business to the right audience, at cash rates you agree to up front."
             />
           </p>
 
@@ -230,7 +230,7 @@ export default function ForBusinessesPage() {
               </ul>
               <p className="mt-auto pt-10 text-base text-[#9E948B] font-sans">
                 You pay creators directly through ItCrowd, with no hidden fees and no retainer markup.
-                Equity-based deals can reduce cash spend even further.
+                The rate you agree to is the rate you pay.
               </p>
             </div>
           </div>
