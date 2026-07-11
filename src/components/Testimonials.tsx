@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import A from "@/lib/assets";
 
 const fadeUp = {
@@ -9,11 +10,55 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
-const QUOTE =
-  "Over half of Gen Z and millennials buy what creators recommend, but most local businesses have no way in. Agencies want ten thousand a month. We built ItCrowd so a local business can run a real creator campaign for a few hundred.";
+const ROTATE_MS = 9000;
+
+type Slide = {
+  headingPlain: string;
+  headingAccent: string;
+  quote: string;
+  name: string;
+  role: string;
+  photo: string | null;
+  photoAlt: string;
+  /** Shown in the visual card when there is no photo. */
+  monogram?: { title: string; subtitle: string };
+};
+
+const SLIDES: Slide[] = [
+  {
+    headingPlain: "What our",
+    headingAccent: "clients say",
+    quote:
+      "We went to a traditional agency for marketing and it was going to cost us $20,000 for three months of UGC marketing. ItCrowd was able to accomplish the same level of exposure at a much better price.",
+    name: "Sunny Park,",
+    role: "CEO and Founder, D!ne",
+    photo: null,
+    photoAlt: "",
+    monogram: { title: "D!ne", subtitle: "Client since 2026" },
+  },
+  {
+    headingPlain: "Why we",
+    headingAccent: "built ItCrowd",
+    quote:
+      "Over half of Gen Z and millennials buy what creators recommend, but most local businesses have no way in. Agencies want ten thousand a month. We built ItCrowd so a local business can run a real creator campaign for a few hundred.",
+    name: "Chris Richardson,",
+    role: "Founder and CEO, ItCrowd",
+    photo: A.team.chris,
+    photoAlt: "Chris Richardson, Founder and CEO of ItCrowd",
+  },
+];
 
 export default function Testimonials() {
-  const words = QUOTE.split(" ");
+  const [active, setActive] = useState(0);
+  const slide = SLIDES[active];
+  const words = slide.quote.split(" ");
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActive((a) => (a + 1) % SLIDES.length);
+    }, ROTATE_MS);
+    return () => clearInterval(id);
+  }, [active]);
 
   return (
     <section className="bg-white">
@@ -34,14 +79,34 @@ export default function Testimonials() {
               className="flex flex-row lg:flex-col justify-between lg:h-full lg:min-h-[447px] gap-4 lg:gap-8 items-center lg:items-start"
             >
               <div className="flex flex-col gap-6 flex-1 lg:flex-none">
-                <h3 className="text-3xl text-black leading-tight max-w-[260px]">
-                  <span className="font-medium font-sans">Why we</span>{" "}
-                  <span className="font-accent italic">built ItCrowd</span>
-                </h3>
-                <div className="hidden lg:flex items-center gap-2">
-                  <div className="w-8 h-2 bg-black rounded-full" />
-                  <div className="w-2 h-2 bg-stone-300 rounded-full" />
-                  <div className="w-2 h-2 bg-stone-300 rounded-full" />
+                <AnimatePresence mode="wait">
+                  <motion.h3
+                    key={active}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="text-3xl text-black leading-tight max-w-[260px]"
+                  >
+                    <span className="font-medium font-sans">{slide.headingPlain}</span>{" "}
+                    <span className="font-accent italic">{slide.headingAccent}</span>
+                  </motion.h3>
+                </AnimatePresence>
+                <div className="flex items-center gap-2">
+                  {SLIDES.map((s, i) => (
+                    <button
+                      key={s.name}
+                      type="button"
+                      onClick={() => setActive(i)}
+                      aria-label={`Show quote from ${s.name.replace(/,$/, "")}`}
+                      aria-pressed={i === active}
+                      className={
+                        i === active
+                          ? "w-8 h-2 bg-black rounded-full transition-all duration-300"
+                          : "w-2 h-2 bg-stone-300 hover:bg-stone-400 rounded-full transition-all duration-300"
+                      }
+                    />
+                  ))}
                 </div>
               </div>
               <motion.div
@@ -59,19 +124,48 @@ export default function Testimonials() {
               </motion.div>
             </motion.div>
 
-            {/* Block B */}
+            {/* Block B: who is speaking */}
             <motion.div
               variants={fadeUp}
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="flex flex-col gap-3 w-full lg:w-[282px]"
             >
-              <div className="w-full h-[280px] lg:h-[351px] rounded-2xl overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={A.testimonialPortrait}
-                  alt="Placeholder portrait, real team photo coming soon"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative w-full h-[280px] lg:h-[351px] rounded-2xl overflow-hidden bg-[#F1F0EF]">
+                <AnimatePresence mode="wait">
+                  {slide.photo ? (
+                    <motion.div
+                      key={`photo-${active}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35 }}
+                      className="absolute inset-0 flex items-center justify-center p-8"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={slide.photo}
+                        alt={slide.photoAlt}
+                        className="w-full h-full max-w-[240px] max-h-[240px] object-contain"
+                      />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key={`monogram-${active}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35 }}
+                      className="absolute inset-0 bg-[#141413] flex flex-col items-center justify-center gap-2"
+                    >
+                      <span className="font-accent italic text-white text-6xl">
+                        {slide.monogram?.title}
+                      </span>
+                      <span className="text-white/50 text-sm uppercase tracking-[0.2em] font-sans">
+                        {slide.monogram?.subtitle}
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -95,14 +189,14 @@ export default function Testimonials() {
             className="max-w-[748px] flex-1 p-10 rounded-2xl flex flex-col justify-between gap-10"
             style={{ backgroundColor: "#7D756E1C" }}
           >
-            <p className="text-3xl leading-10 text-black font-sans">
+            <p key={active} className="text-3xl leading-10 text-black font-sans">
               {words.map((word, i) => (
                 <motion.span
                   key={`${word}-${i}`}
                   initial={{ opacity: 0, y: 6 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 0.4 + i * 0.04, ease: "easeOut" }}
+                  transition={{ duration: 0.35, delay: 0.3 + i * 0.025, ease: "easeOut" }}
                   className="inline-block mr-[0.25em]"
                 >
                   {word}
@@ -110,16 +204,15 @@ export default function Testimonials() {
               ))}
             </p>
             <motion.div
+              key={`attr-${active}`}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
+              transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
               className="flex flex-col gap-1"
             >
-              <span className="font-accent italic text-xl text-black">Chris Richardson,</span>
-              <span className="text-xl text-black/50 font-sans">
-                Co-Founder and CEO, ItCrowd
-              </span>
+              <span className="font-accent italic text-xl text-black">{slide.name}</span>
+              <span className="text-xl text-black/50 font-sans">{slide.role}</span>
             </motion.div>
           </motion.div>
         </motion.div>

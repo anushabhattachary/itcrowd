@@ -9,6 +9,7 @@ import A from "@/lib/assets";
 const NAV_LINKS = [
   { label: "For Businesses", href: "/for-businesses" },
   { label: "For Creators", href: "/for-influencers" },
+  { label: "About", href: "/about" },
   { label: "Apply", href: "/apply" },
   { label: "Contact", href: "/contact" },
 ];

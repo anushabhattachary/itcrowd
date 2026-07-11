@@ -23,7 +23,8 @@ Creator network: roughly 25+ creators sourced/onboarded, heavily Atlanta (foodie
 
 ## What this means for the website
 
-- **Do not display client logos or names as customers without founder sign-off.** One campaign is live (D!ne); everything else is pipeline. Publicly naming clients requires their permission, so the site currently shows no client roster at all rather than a fake one.
+- **Do not display client logos or names as customers without founder sign-off.** One campaign is live (D!ne); everything else is pipeline. Publicly naming clients requires their permission, so the site shows no client roster.
+- **Exception (founder-approved 2026-07-10):** Chris supplied a quote from Sunny Park (CEO and Founder, D!ne) for public use; it rotates in the homepage testimonial block. That is the only client naming allowed so far.
 - **Never invent customers.** The old site had a fake brand marquee (Forge Fitness, Northside Coffee, Peak Physio, Bloom Skincare, Rally Sportswear, Harbor Kitchen) and a fake testimonial ("Alex Carter, Forge Fitness"). These were removed on 2026-07-10. Do not bring back this pattern with new invented names.
 - **Stats that are safe to claim:** $500-$2,000 typical monthly packages (real pricing), 5-10 creators per shortlist (real practice from the acquisition handbook), live in under two weeks (deck claim: "from intro call to live campaign in under two weeks"). Do not claim customer counts, revenue, retention percentages, or named-client results; the deck's traction numbers are bracketed placeholders, not audited facts.
-- When ItCrowd has a real testimonial from a real client, it replaces the founder quote in `src/components/Testimonials.tsx`.
+- The homepage testimonial block (`src/components/Testimonials.tsx`) rotates the Sunny Park client quote and Chris's founder statement. Add further client quotes there only with founder plus client sign-off.

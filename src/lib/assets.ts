@@ -20,8 +20,13 @@ const A = {
   heroBackdrop: "/placeholders/hero-backdrop.svg",
   /** Warm stone backdrop behind the creator-niche pill carousel. */
   carouselBackdrop: "/placeholders/card-creators.svg",
-  /** Labeled placeholder portrait for the testimonial block. */
-  testimonialPortrait: "/placeholders/testimonial-portrait.svg",
+  /** Circular team headshots (transparent PNGs) used on /about and the quote block. */
+  team: {
+    chris: "/team/chris-richardson.png",
+    anusha: "/team/anusha-bhattacharya.png",
+    rayan: "/team/rayan-castilla.png",
+    kimi: "/team/kimi-andrew.png",
+  },
 } as const;
 
 export default A;

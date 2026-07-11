@@ -4,7 +4,7 @@
 
 - Production site: **https://itcrowd.space** (Vercel, deploys automatically from `main`).
 - `itcrowd.io` is NOT ItCrowd's domain. It serves a third-party parked lander. All metadata, sitemap, robots, JSON-LD, and visible email addresses must use `itcrowd.space`.
-- Public email used in the investor deck: `hello@itcrowd.space`. If email routing for that address is not yet confirmed by the founders, prefer pointing contact CTAs at the on-site contact form.
+- Public contact email: `anusha@itcrowd.space` (founder-confirmed 2026-07-10; it is checked regularly, unlike `hello@itcrowd.space`).
 - Real LinkedIn: https://www.linkedin.com/company/itcrowd-llc
 
 ## Hard copy rules (founder-mandated)
@@ -29,10 +29,10 @@
 All media is wired through `src/lib/assets.ts`; swap paths there when real assets exist.
 
 - `A.heroVideo` is null: hero falls back to a neutral gradient SVG. Waiting on real campaign footage.
-- `A.carouselBackdrop`, `A.testimonialPortrait`: labeled placeholder SVGs.
+- `A.carouselBackdrop`: labeled placeholder SVG.
 - `/og-image.jpg` referenced in metadata but the file does not exist yet; social shares have no preview image until one is added (1200x630).
-- Footer social links: LinkedIn is real; Instagram and X links plus Privacy Policy and Terms of Service pages do not exist yet.
-- The former fake-brand marquee (`TrustedBy`) and fake testimonial were removed 2026-07-10; the testimonial section now quotes co-founder Chris Richardson (real person, real pitch). Replace with a real client quote when one exists, with the client's permission.
+- Footer social links: LinkedIn is real; Privacy Policy and Terms of Service pages do not exist yet.
+- The testimonial block rotates two REAL quotes (added 2026-07-10, founder-supplied): Sunny Park, CEO and Founder of D!ne (client quote, shared by Chris for public use) and Chris Richardson's founder statement. Real team headshots are live in `public/team/`. Do not add other client names or quotes without founder plus client sign-off.
 
 ## Tech notes
 

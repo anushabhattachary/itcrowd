@@ -6,10 +6,16 @@ ItCrowd LLC is an influencer-marketing service founded at Georgia Tech. It match
 
 ## Team
 
-- Chris Richardson: Co-Founder and CEO. Vision, fundraising, business partnerships, does most client and creator outreach.
+Public roster (shown on the /about page, in this order, per founder sign-off 2026-07-10):
+
+- Chris Richardson: Founder and CEO. Vision, fundraising, business partnerships, does most client and creator outreach.
 - Anusha Bhattacharya: Co-Founder and CTO. Software development and scaling. Owns the GitHub org this repo lives in.
-- Rayan Castilla: engineering (works in this repo).
-- Tobin and Ashrita: summer 2026 growth interns (creator acquisition and ItCrowd's own social presence).
+- Rayan Castilla: Founding Engineer (works in this repo).
+- Kimi Andrew: Intern (specific internship area TBD; founders will confirm).
+
+Also on the team but not on the public page: Tobin and Ashrita, summer 2026 growth interns (creator acquisition and ItCrowd's own social presence).
+
+Headshots live in `public/team/` as circular transparent PNGs, mapped through `A.team` in `src/lib/assets.ts`.
 
 ## The model, and how it evolved
 

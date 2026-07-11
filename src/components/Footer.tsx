@@ -14,6 +14,7 @@ const LinkedInIcon = () => (
 const exploreLinks = [
   { label: "For Businesses", href: "/for-businesses" },
   { label: "For Creators", href: "/for-influencers" },
+  { label: "About", href: "/about" },
   { label: "Join as a Business", href: "/join-as-business" },
   { label: "Apply as a Creator", href: "/apply" },
   { label: "Contact", href: "/contact" },

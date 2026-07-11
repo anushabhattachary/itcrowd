@@ -152,13 +152,16 @@ function SkeletonBubbleContent() {
   );
 }
 
-function MorphBubble() {
-  const [filled, setFilled] = useState(false);
+/* A real exchange in three beats: brief, draft, schedule. */
+const CHAT_STEPS = [
+  { from: "Me", text: "Hi! Could you feature our new menu in a reel this month?" },
+  { from: "Your creator", text: "On it. I'll have a draft ready for your review by Wednesday." },
+  { from: "Me", text: "Loved the draft! Can we push the launch post to Friday?" },
+];
+const CHAT_STEP_MS = 3400;
 
-  useEffect(() => {
-    const id = setTimeout(() => setFilled(true), 1100);
-    return () => clearTimeout(id);
-  }, []);
+function StepBubble({ step, filled }: { step: number; filled: boolean }) {
+  const msg = CHAT_STEPS[step];
 
   return (
     <motion.div
@@ -170,21 +173,21 @@ function MorphBubble() {
       <AnimatePresence mode="wait">
         {filled ? (
           <motion.div
-            key="filled"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
+            key={`step-${step}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
           >
             <div className="flex items-center gap-[12px] h-[44px]">
               <div className="w-[44px] h-[44px] rounded-xl bg-[#141413]/30 flex items-center justify-center shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={A.logo} alt="" aria-hidden="true" className="w-6 h-6" />
               </div>
-              <span className="text-white text-base leading-none font-sans">Me</span>
+              <span className="text-white text-base leading-none font-sans">{msg.from}</span>
             </div>
             <p className="text-white text-[15px] leading-snug mt-[-9px] ml-[56px] font-sans">
-              Loved the draft! Can we push the launch post to Friday?
+              {msg.text}
             </p>
           </motion.div>
         ) : (
@@ -206,6 +209,22 @@ function MorphBubble() {
 
 function MessagingCard() {
   const words = "Message and collaborate directly".split(" ");
+  const [step, setStep] = useState(0);
+  const [filled, setFilled] = useState(false);
+
+  useEffect(() => {
+    const fillId = setTimeout(() => setFilled(true), 1100);
+    return () => clearTimeout(fillId);
+  }, []);
+
+  useEffect(() => {
+    if (!filled) return;
+    const id = setInterval(() => {
+      setStep((s) => (s + 1) % CHAT_STEPS.length);
+    }, CHAT_STEP_MS);
+    return () => clearInterval(id);
+  }, [filled]);
+
   return (
     <div className="relative flex-1 h-[585px] rounded-3xl overflow-hidden bg-[#141413] flex flex-col pt-10 pb-10 justify-between">
       <div className="flex-1 flex flex-col justify-center gap-[10px] mb-6">
@@ -218,7 +237,7 @@ function MessagingCard() {
           <SkeletonBubbleContent />
         </motion.div>
 
-        <MorphBubble />
+        <StepBubble step={step} filled={filled} />
       </div>
 
       <div className="flex justify-between items-end pl-[32px] pr-[32px]">
@@ -237,15 +256,24 @@ function MessagingCard() {
           ))}
         </p>
         <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full border-2 border-[#141413] bg-[#5F5D4D] text-white flex items-center justify-center text-xl font-sans z-30">
-            01
-          </div>
-          <div className="w-10 h-10 rounded-full border-2 border-[#141413] bg-[#252522] text-white/40 flex items-center justify-center text-xl font-sans -ml-3 z-20">
-            2
-          </div>
-          <div className="w-10 h-10 rounded-full border-2 border-[#141413] bg-[#252522] text-white/40 flex items-center justify-center text-xl font-sans -ml-3 z-10">
-            3
-          </div>
+          {CHAT_STEPS.map((s, i) => {
+            const isActive = filled && i === step;
+            return (
+              <motion.div
+                key={s.text}
+                animate={{
+                  backgroundColor: isActive ? "#5F5D4D" : "#252522",
+                  color: isActive ? "#FFFFFF" : "#FFFFFF66",
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className={`w-10 h-10 rounded-full border-2 border-[#141413] flex items-center justify-center text-xl font-sans ${
+                  i === 0 ? "z-30" : i === 1 ? "-ml-3 z-20" : "-ml-3 z-10"
+                }`}
+              >
+                {isActive ? `0${i + 1}` : i + 1}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </div>
