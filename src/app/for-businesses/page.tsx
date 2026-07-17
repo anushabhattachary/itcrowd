@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = {
   title: "For Businesses | ItCrowd",
   description:
-    "Discover how ItCrowd helps established businesses get authentic influencer marketing without bloated agency fees.",
+    "Discover how ItCrowd helps brick-and-mortar brands and consumer apps get authentic influencer marketing without bloated agency fees.",
 };
 
 const STEPS = [
@@ -24,13 +24,13 @@ const STEPS = [
     icon: Phone,
     meta: "Step 01 · 15 minutes",
     title: "Discovery Call",
-    desc: "A quick call to understand your business: your product, target audience, marketing goals, and budget. Just a real conversation, no pitch deck.",
+    desc: "A quick call to understand your business: your product or app, target audience, marketing goals, and budget. Just a real conversation, no pitch deck. We work with storefronts, restaurants, consumer apps, and everything in between.",
   },
   {
     icon: Search,
     meta: "Step 02 · 5-7 days",
     title: "Influencer Research & Shortlist",
-    desc: "Our team digs into your niche and manually vets creators on engagement rate, audience demographics, content quality, and brand alignment. Within 5-7 days you get a curated shortlist of 5-10 vetted creators with full profiles and proposed rates.",
+    desc: "Our team digs into your niche and manually vets creators on engagement rate, audience demographics, content quality, and genuine fit with your brand. We only shortlist creators who would actually use what you sell. Within 5-7 days you get 5-10 trusted creators with full profiles and proposed rates.",
   },
   {
     icon: MousePointerClick,
@@ -66,7 +66,7 @@ const AGENCY_POINTS = [
 
 const HERO_STATS = [
   { figure: "$500-$2K", label: "typical monthly spend, paid straight to creators" },
-  { figure: "5-10", label: "vetted creators on every shortlist we send you" },
+  { figure: "5-10", label: "trusted creators on every shortlist we send you" },
   { figure: "2 weeks", label: "or less from intro call to live campaign" },
 ];
 
@@ -92,7 +92,7 @@ export default function ForBusinessesPage() {
           <p className="mt-6 max-w-[560px] text-white/80 text-xl leading-[1.3] font-sans">
             <AnimatedWords
               baseDelay={0.7}
-              text="No retainers. No bloated agency fees. Vetted influencers, NIL athletes, photographers, and videographers promoting your business to the right audience, at cash rates you agree to up front."
+              text="No retainers. No bloated agency fees. Trusted influencers, NIL athletes, photographers, and videographers delivering authentic exposure for products they enjoy, at cash rates you agree to up front."
             />
           </p>
 

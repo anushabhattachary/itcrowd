@@ -7,7 +7,7 @@ import A from "@/lib/assets";
 export const metadata: Metadata = {
   title: "About | ItCrowd",
   description:
-    "Meet the team behind ItCrowd, the Atlanta startup connecting local businesses with vetted creators.",
+    "Meet the team behind ItCrowd, the Atlanta startup connecting brands with trusted local creators.",
 };
 
 const TEAM = [
@@ -53,7 +53,7 @@ export default function AboutPage() {
           <p className="mt-6 text-white/70 text-lg md:text-xl leading-snug max-w-[560px] font-sans">
             <AnimatedWords
               baseDelay={0.65}
-              text="We are a small team out of Georgia Tech building a simpler way for local businesses and creators to work together."
+              text="We are a small team out of Georgia Tech building a simpler way for brands and local creators to work together."
             />
           </p>
         </div>

@@ -13,6 +13,9 @@
 2. Plain, direct, human sentences. No AI-marketing vocabulary.
 3. Cash is the only payment method. No equity anywhere.
 4. Nothing invented: no fake customers, testimonials, review counts, or traction stats.
+5. Say "brands", not "local businesses" (Chris, 2026-07-16). "Local" belongs with creators, and brick-and-mortar businesses stay emphasized alongside a mention that ItCrowd also works with consumer apps/platforms.
+6. Creators are described as trusted and authentic: they deliver real exposure for products they genuinely enjoy. Never frame them as paid promoters.
+7. Slogans (Chris, 2026-07-16): site-wide slogan is "Content that converts" (replaced "Where businesses meet their match"); the For Creators page slogan is "Built for authentic creators".
 
 ## Claims that are backed by internal docs (safe to keep)
 
@@ -38,4 +41,5 @@ All media is wired through `src/lib/assets.ts`; swap paths there when real asset
 
 - Next.js App Router; read `node_modules/next/dist/docs/` before assuming APIs (this Next version has breaking changes).
 - Supabase backs auth/dashboards; marketing intake currently posts to a Google Apps Script (business interest) and a Supabase table (creator applications).
+- The business interest form (`/join-as-business`) is intentionally just name + phone (Chris, 2026-07-16: "every additional step is a drop off point"). Budget, niche, and goals get collected on the intro call. The Apps Script sheet has no phone column yet, so the API mirrors the number into the `goal` column; ask the founders to add a proper phone column to the sheet/script.
 - Every push to `main` deploys to production. Build locally (`npm run build`) before pushing.

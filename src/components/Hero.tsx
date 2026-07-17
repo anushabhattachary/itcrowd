@@ -50,7 +50,7 @@ export default function Hero() {
             transition={{ delay: 0.5, duration: 0.6 }}
             className="block"
           >
-            Where businesses meet
+            Content that
           </motion.span>
           <motion.span
             initial={{ opacity: 0, y: 12 }}
@@ -58,7 +58,7 @@ export default function Hero() {
             transition={{ delay: 0.7, duration: 0.6 }}
             className="block"
           >
-            <span className="font-accent italic">their match.</span>
+            <span className="font-accent italic">converts.</span>
           </motion.span>
         </h1>
 
@@ -88,7 +88,7 @@ export default function Hero() {
         <p className="w-full md:w-[480px] max-w-prose text-white/80 text-xl leading-[1.25] text-left font-sans">
           <AnimatedWords
             baseDelay={1.2}
-            text="ItCrowd matches growing businesses with vetted influencers, athletes, and photographers, then runs the whole campaign for you. Live in under two weeks, not months."
+            text="ItCrowd matches growing brands with trusted influencers, athletes, and photographers who genuinely enjoy what they promote, then runs the whole campaign for you. Live in under two weeks, not months."
           />
         </p>
 

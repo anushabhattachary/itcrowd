@@ -9,15 +9,7 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 
 interface BusinessFormData {
   name: string;
-  companyName: string;
-  timeToMarket: string;
-  hasWebsite: "Yes" | "No";
-  websiteLink: string;
-  targetNiche: string;
-  brandRep: string;
-  budget: string;
-  deliverable: string;
-  goal: string;
+  phone: string;
 }
 
 const inputBase =
@@ -30,13 +22,8 @@ export default function JoinAsBusinessPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
-  } = useForm<BusinessFormData>({
-    defaultValues: { hasWebsite: "Yes" },
-  });
-
-  const hasWebsite = watch("hasWebsite");
+  } = useForm<BusinessFormData>();
 
   const onSubmit = async (data: BusinessFormData) => {
     setSubmitError("");
@@ -47,15 +34,7 @@ export default function JoinAsBusinessPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: data.name,
-          companyName: data.companyName,
-          timeToMarket: data.timeToMarket,
-          hasWebsite: data.hasWebsite,
-          websiteLink: data.hasWebsite === "Yes" ? data.websiteLink : "",
-          targetNiche: data.targetNiche,
-          brandRep: data.brandRep,
-          budget: data.budget,
-          deliverable: data.deliverable,
-          goal: data.goal,
+          phone: data.phone,
         }),
       });
 
@@ -101,8 +80,8 @@ export default function JoinAsBusinessPage() {
             transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
             className="mt-6 text-white/70 text-lg md:text-xl leading-snug max-w-[560px] font-sans"
           >
-            Tell us about your business and what you&apos;re looking for.
-            We&apos;ll take it from there. No commitment, just a conversation.
+            Leave your name and number and we&apos;ll take it from there.
+            No commitment, just a conversation.
           </motion.p>
         </div>
       </section>
@@ -121,8 +100,8 @@ export default function JoinAsBusinessPage() {
               Business <span className="font-accent italic">interest</span> form
             </h2>
             <p className="mt-4 text-neutral-500 max-w-lg mx-auto text-lg leading-snug font-sans">
-              This helps us understand your budget, target audience, and goals
-              so we can match you with the right creators.
+              Two fields and you&apos;re done. We&apos;ll call you to talk
+              goals, budget, and the right creators for your brand.
             </p>
           </motion.div>
 
@@ -168,181 +147,27 @@ export default function JoinAsBusinessPage() {
                 )}
               </div>
 
-              {/* Company name */}
+              {/* Phone */}
               <div>
                 <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  Business Name
+                  Phone Number
                 </label>
                 <input
-                  {...register("companyName", { required: "Business name is required" })}
-                  type="text"
-                  placeholder="Your business name"
-                  className={`${inputBase} ${errors.companyName ? "border-red-500" : "border-transparent"}`}
+                  {...register("phone", {
+                    required: "Phone number is required",
+                    pattern: {
+                      value: /^[+()\d\s.-]{7,20}$/,
+                      message: "Enter a valid phone number",
+                    },
+                  })}
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="(404) 555-0123"
+                  className={`${inputBase} ${errors.phone ? "border-red-500" : "border-transparent"}`}
                 />
-                {errors.companyName && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">
-                    {errors.companyName.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Time to market */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  When was your business established? (or how long have you been
-                  operating?)
-                </label>
-                <input
-                  {...register("timeToMarket", { required: "This field is required" })}
-                  type="text"
-                  placeholder="e.g. Founded in 2023"
-                  className={`${inputBase} ${errors.timeToMarket ? "border-red-500" : "border-transparent"}`}
-                />
-                {errors.timeToMarket && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">
-                    {errors.timeToMarket.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Has website */}
-              <div>
-                <label className="block text-sm font-medium mb-3 text-[#141413] font-sans">
-                  Do you have a website?
-                </label>
-                <div className="flex gap-3">
-                  {(["Yes", "No"] as const).map((opt) => (
-                    <label
-                      key={opt}
-                      className={`flex-1 text-center py-3 rounded-2xl cursor-pointer transition-all text-sm font-medium font-sans ${
-                        hasWebsite === opt
-                          ? "bg-[#141413] text-white"
-                          : "bg-white text-[#887C71] hover:text-[#141413]"
-                      }`}
-                    >
-                      <input
-                        {...register("hasWebsite")}
-                        type="radio"
-                        value={opt}
-                        className="sr-only"
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Website link (conditional) */}
-              {hasWebsite === "Yes" && (
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                    Business website link
-                  </label>
-                  <input
-                    {...register("websiteLink", {
-                      required: hasWebsite === "Yes" ? "Website link is required" : false,
-                    })}
-                    type="url"
-                    placeholder="https://yourbusiness.com"
-                    className={`${inputBase} ${errors.websiteLink ? "border-red-500" : "border-transparent"}`}
-                  />
-                  {errors.websiteLink && (
-                    <p className="mt-1 text-xs text-red-600 font-sans">
-                      {errors.websiteLink.message}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Target niche */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  What niche do you want to target?
-                </label>
-                <input
-                  {...register("targetNiche", { required: "This field is required" })}
-                  type="text"
-                  placeholder="e.g. Fitness, Tech, Fashion..."
-                  className={`${inputBase} ${errors.targetNiche ? "border-red-500" : "border-transparent"}`}
-                />
-                {errors.targetNiche && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">
-                    {errors.targetNiche.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Brand rep */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  Who do you see representing your brand?
-                </label>
-                <input
-                  {...register("brandRep", { required: "This field is required" })}
-                  type="text"
-                  placeholder="e.g. Local athletes, food creators..."
-                  className={`${inputBase} ${errors.brandRep ? "border-red-500" : "border-transparent"}`}
-                />
-                {errors.brandRep && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">
-                    {errors.brandRep.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Budget */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  Monthly Budget (USD)
-                </label>
-                <div className="relative">
-                  <span className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9E948B] font-medium font-sans">
-                    $
-                  </span>
-                  <input
-                    {...register("budget", { required: "Budget is required" })}
-                    type="number"
-                    min="0"
-                    placeholder="1000"
-                    className={`${inputBase} pl-9 ${errors.budget ? "border-red-500" : "border-transparent"}`}
-                  />
-                </div>
-                {errors.budget && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">{errors.budget.message}</p>
-                )}
-              </div>
-
-              {/* Deliverable */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  What deliverable do you want from the creator?
-                </label>
-                <textarea
-                  {...register("deliverable", { required: "This field is required" })}
-                  rows={4}
-                  placeholder="e.g. Two Reels a month and a story series..."
-                  className={`${inputBase} resize-none ${errors.deliverable ? "border-red-500" : "border-transparent"}`}
-                />
-                {errors.deliverable && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">
-                    {errors.deliverable.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Goal */}
-              <div>
-                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                  What is a goal your business has in the next 6 months?
-                </label>
-                <textarea
-                  {...register("goal", { required: "This field is required" })}
-                  rows={4}
-                  placeholder="Tell us briefly..."
-                  className={`${inputBase} resize-none ${errors.goal ? "border-red-500" : "border-transparent"}`}
-                />
-                {errors.goal && (
-                  <p className="mt-1 text-xs text-red-600 font-sans">{errors.goal.message}</p>
+                {errors.phone && (
+                  <p className="mt-1 text-xs text-red-600 font-sans">{errors.phone.message}</p>
                 )}
               </div>
 

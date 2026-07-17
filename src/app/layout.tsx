@@ -26,9 +26,9 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://itcrowd.space"),
-  title: "ItCrowd | Where businesses meet their match",
+  title: "ItCrowd | Content that converts",
   description:
-    "ItCrowd matches growing businesses with vetted content creators. Creators are paid in cash, and businesses pay no agency fees. Real people curate every match, and campaigns go live in under two weeks.",
+    "ItCrowd matches growing brands with trusted, authentic content creators. Creators are paid in cash, and businesses pay no agency fees. Real people curate every match, and campaigns go live in under two weeks.",
   keywords: [
     "influencer marketing",
     "creator marketplace",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "ItCrowd | Where businesses meet their match",
+    title: "ItCrowd | Content that converts",
     description:
-      "ItCrowd matches growing businesses with vetted content creators. Creators are paid in cash, and businesses pay no agency fees. Real people curate every match, and campaigns go live in under two weeks.",
+      "ItCrowd matches growing brands with trusted, authentic content creators. Creators are paid in cash, and businesses pay no agency fees. Real people curate every match, and campaigns go live in under two weeks.",
     url: "https://itcrowd.space",
     siteName: "ItCrowd",
     images: [
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ItCrowd | Where businesses meet their match",
+    title: "ItCrowd | Content that converts",
     description:
-      "ItCrowd matches growing businesses with vetted content creators. Cash payments, no agency fees.",
+      "ItCrowd matches growing brands with trusted, authentic content creators. Cash payments, no agency fees.",
     images: ["/og-image.jpg"],
   },
 };
@@ -73,7 +73,7 @@ const jsonLd = {
   url: "https://itcrowd.space",
   logo: "https://itcrowd.space/logo-dark.svg",
   description:
-    "A marketplace connecting growing businesses with vetted content creators for cash-paid campaigns with no agency fees.",
+    "A marketplace connecting growing brands with trusted, authentic content creators for cash-paid campaigns with no agency fees.",
   foundingDate: "2025",
   contactPoint: {
     "@type": "ContactPoint",

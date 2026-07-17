@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = {
   title: "For Influencers & Athletes | ItCrowd",
   description:
-    "Join the ItCrowd network and get paid in cash for promoting businesses you believe in.",
+    "Built for authentic creators. Join the ItCrowd network and get paid in cash to share products you genuinely enjoy.",
 };
 
 const PERKS = [
@@ -83,16 +83,16 @@ export default function ForInfluencersPage() {
           </p>
 
           <h1 className="mt-5 max-w-[900px] text-[40px] sm:text-[52px] md:text-[64px] font-normal leading-[1.1] md:leading-[1.05] font-heading">
-            <AnimatedWords text="Stop renting your audience. Start" baseDelay={0.3} />{" "}
+            <AnimatedWords text="Built for" baseDelay={0.3} />{" "}
             <span className="font-accent italic">
-              <AnimatedWords text="owning your deals." baseDelay={0.6} />
+              <AnimatedWords text="authentic creators." baseDelay={0.6} />
             </span>
           </h1>
 
           <p className="mt-6 max-w-[560px] text-white/80 text-xl leading-[1.3] font-sans">
             <AnimatedWords
               baseDelay={0.8}
-              text="ItCrowd matches you with businesses in your niche and pays you in cash for promoting brands you actually believe in."
+              text="ItCrowd matches you with brands in your niche and pays you in cash to share products you genuinely enjoy with your audience."
             />
           </p>
 

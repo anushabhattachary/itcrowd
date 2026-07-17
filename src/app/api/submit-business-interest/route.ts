@@ -9,8 +9,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    const phone = body.phone ?? "";
+
     const payload = {
       name:         body.name         ?? "",
+      phone,
       companyName:  body.companyName  ?? "",
       timeToMarket: body.timeToMarket ?? "",
       hasWebsite:   body.hasWebsite   ?? "",
@@ -21,6 +24,10 @@ export async function POST(req: NextRequest) {
       deliverable:  body.deliverable  ?? "",
       goal:         body.goal         ?? "",
     };
+
+    // The Google Sheet predates the phone field and its Apps Script may drop
+    // unknown keys, so mirror the number into an existing column too.
+    if (phone && !payload.goal) payload.goal = `Phone: ${phone}`;
 
     // Dual-write into Supabase intake (admins review + convert into accounts).
     // Non-fatal: a failure here must not break the existing Sheets flow.
