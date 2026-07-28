@@ -6,21 +6,11 @@ import { motion } from "framer-motion";
 import { Send, CheckCircle } from "lucide-react";
 
 interface FormData {
-  name: string;
   email: string;
   role: "business" | "influencer";
-  company: string;
+  handle: string;
   challenge: string;
-  budget: string;
 }
-
-const businessBudgets = ["Under $500", "$500-$1K", "$1K-$2K", "$2K+"];
-const influencerFollowers = [
-  "Under 10K",
-  "10K-50K",
-  "50K-200K",
-  "200K+",
-];
 
 const inputBase =
   "w-full px-5 py-3.5 rounded-2xl bg-white text-[#141413] placeholder-[#9E948B] border focus:outline-none focus:ring-2 focus:ring-[#141413]/60 transition-all font-sans";
@@ -34,6 +24,7 @@ export default function ContactForm() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: { role: "business" },
+    shouldUnregister: true,
   });
 
   const role = watch("role");
@@ -91,42 +82,6 @@ export default function ContactForm() {
             className="rounded-3xl p-8 md:p-10 space-y-6"
             style={{ backgroundColor: "#7D756E1C" }}
           >
-            {/* Full Name */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                Full Name
-              </label>
-              <input
-                {...register("name", { required: "Name is required" })}
-                type="text"
-                placeholder="Your name"
-                className={`${inputBase} ${errors.name ? "border-red-500" : "border-transparent"}`}
-              />
-              {errors.name && (
-                <p className="mt-1 text-xs text-red-600 font-sans">{errors.name.message}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">Email</label>
-              <input
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Please enter a valid email",
-                  },
-                })}
-                type="email"
-                placeholder="you@example.com"
-                className={`${inputBase} ${errors.email ? "border-red-500" : "border-transparent"}`}
-              />
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-600 font-sans">{errors.email.message}</p>
-              )}
-            </div>
-
             {/* Role radio */}
             <div>
               <label className="block text-sm font-medium mb-3 text-[#141413] font-sans">
@@ -156,55 +111,60 @@ export default function ContactForm() {
               </div>
             </div>
 
-            {/* Company / Handle */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                {role === "business" ? "Business Name" : "Social Handle"}
-              </label>
-              <input
-                {...register("company", { required: "This field is required" })}
-                type="text"
-                placeholder={role === "business" ? "Your business name" : "@yourhandle"}
-                className={`${inputBase} ${errors.company ? "border-red-500" : "border-transparent"}`}
-              />
-              {errors.company && (
-                <p className="mt-1 text-xs text-red-600 font-sans">{errors.company.message}</p>
-              )}
-            </div>
+            {role === "business" ? (
+              <>
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
+                    Email
+                  </label>
+                  <input
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Please enter a valid email",
+                      },
+                    })}
+                    type="email"
+                    placeholder="you@example.com"
+                    className={`${inputBase} ${errors.email ? "border-red-500" : "border-transparent"}`}
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-xs text-red-600 font-sans">{errors.email.message}</p>
+                  )}
+                </div>
 
-            {/* Challenge */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                What&apos;s your biggest challenge right now?
-              </label>
-              <textarea
-                {...register("challenge")}
-                rows={3}
-                placeholder="Tell us briefly..."
-                className={`${inputBase} border-transparent resize-none`}
-              />
-            </div>
-
-            {/* Budget / Follower count */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
-                {role === "business" ? "Monthly Budget" : "Follower Count"}
-              </label>
-              <select
-                {...register("budget", { required: "Please select an option" })}
-                className={`${inputBase} ${errors.budget ? "border-red-500" : "border-transparent"}`}
-              >
-                <option value="">Select...</option>
-                {(role === "business" ? businessBudgets : influencerFollowers).map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-              {errors.budget && (
-                <p className="mt-1 text-xs text-red-600 font-sans">{errors.budget.message}</p>
-              )}
-            </div>
+                {/* Challenge */}
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
+                    What&apos;s your biggest challenge right now?
+                  </label>
+                  <textarea
+                    {...register("challenge")}
+                    rows={3}
+                    placeholder="Tell us briefly..."
+                    className={`${inputBase} border-transparent resize-none`}
+                  />
+                </div>
+              </>
+            ) : (
+              /* Handle */
+              <div>
+                <label className="block text-sm font-medium mb-2 text-[#141413] font-sans">
+                  Social Handle
+                </label>
+                <input
+                  {...register("handle", { required: "Your handle is required" })}
+                  type="text"
+                  placeholder="@yourhandle"
+                  className={`${inputBase} ${errors.handle ? "border-red-500" : "border-transparent"}`}
+                />
+                {errors.handle && (
+                  <p className="mt-1 text-xs text-red-600 font-sans">{errors.handle.message}</p>
+                )}
+              </div>
+            )}
 
             {/* Submit */}
             <button

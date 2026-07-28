@@ -40,7 +40,7 @@ const SLIDES: Slide[] = [
     headingPlain: "Why we",
     headingAccent: "built ItCrowd",
     quote:
-      "Over half of Gen Z and millennials buy what creators recommend, but most local businesses have no way in. Agencies want ten thousand a month. We built ItCrowd so a local business can run a real creator campaign for a few hundred.",
+      "Over half of Gen Z and millennials buy what creators recommend, but most consumer-facing brands have no way in. Agencies want ten thousand a month. We built ItCrowd so a consumer-facing brand can run a real creator campaign for a few hundred.",
     name: "Chris Richardson,",
     role: "Founder and CEO, ItCrowd",
     photo: A.team.chris,
